@@ -1,0 +1,10 @@
+export { CategoriasPage } from './CategoriasPage';
+export { ClientesPage } from './ClientesPage';
+export { ComprasPage } from './ComprasPage';
+export { InventarioPage } from './InventarioPage';
+export { NegocioPage } from './NegocioPage';
+export { NegociosPage } from './NegociosPage';
+export { ProductosPage } from './ProductosPage';
+export { ProvedoresPage } from './ProvedoresPage';
+export { PuntoVentaPage } from './PuntoVentaPage';
+export { VentasPage } from './VentasPage';

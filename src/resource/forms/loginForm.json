@@ -1,0 +1,29 @@
+[
+    {
+        "type": "email",
+        "name": "correo",
+        "placeholder": "alguien@correo.com",
+        "label": "Correo",
+        "value": "",
+        "validations": [
+            {
+                "type": "required"
+            }
+        ]
+    },
+    {
+        "type": "password",
+        "name": "contrasena",
+        "label": "Contraseña",
+        "value": "",
+        "validations": [
+            {
+                "type": "required"
+            },
+            {
+                "type": "minLength",
+                "value": 2
+            }
+        ]
+    }
+]
