@@ -1,12 +1,103 @@
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+
+import superadministradorRoutes from "../../resource/superadministrador.json";
+import administradorRoutes from "../../resource/administrador.json";
+import vendedorRoutes from "../../resource/vendedor.json"
+import { useAppDispatch } from '../../hooks';
+import { startOpenAndCloseMenu } from '../../store/slices/ui';
+import { removerSesion } from '../../store/slices/usuario';
 
 export const Sidebar = () => {
+
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
+
+    const { negocio } = useSelector((state: RootState) => state.negocio);
+    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { openMenu } = useSelector((state: RootState) => state.ui);
+
+    const handleMenu = () => {
+        dispatch(startOpenAndCloseMenu(!openMenu));
+    }
+
+    const handleCerrarSesion = () => {
+        dispatch(removerSesion());
+        // navigate("/login", {
+        //     replace: true
+        // })
+    }
+
+    const rutas = usuario.rolid === 1
+        ? superadministradorRoutes
+        : usuario.rolid === 2
+            ? administradorRoutes
+            : vendedorRoutes;
+
     return (
-        <nav className='col-md-3 col-lg-2 d-md-block bg-light sidebar collapse'>
+        <div className={`offcanvas offcanvas-end ${openMenu ? 'show' : 'hide'} flex-shrink-0 p-3 text-bg-dark`} tabIndex={-1} >
+            <div className="offcanvas-header">
+                <h5 className="offcanvas-title">{negocio.nombre ? negocio.nombre : "NegoManager"}</h5>
+                <button type="button" className='btn btn-primary' onClick={handleMenu} ><i className="bi bi-x-lg"></i></button>
+            </div>
+            <hr />
+            <div className="offcanvas-body">
+                {/* <div> d-flex flex-column flex-shrink-0 p-3 text-bg-dark
+                    Some text as placeholder. In real life you can have the elements you have chosen. Like, text, images, lists, etc.
+                </div> */}
+                {/* <div className="dropdown mt-3">
+                    <button className="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                        Dropdown button
+                    </button>
+                    <ul className="dropdown-menu">
+                        <li><a className="dropdown-item" href="#">Action</a></li>
+                        <li><a className="dropdown-item" href="#">Another action</a></li>
+                        <li><a className="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div> */}
+                <ul className='nav nav-pills flex-column mb-auto'>
+                    {
+                        rutas.map(rt => <li
+                            key={rt.id}
+                            className="nav-item" >
+                            <NavLink className='nav-link text-white' to={rt.ruta} replace={rt.replace} onClick={handleMenu} >
+                                <i className={`bi ${rt.icono}`} ></i> {rt.nombre}
+                            </NavLink>
+                        </li>)
+                    }
+                </ul>
+            </div>
+            <hr />
+            <div>
+                <button className='btn text-white' onClick={handleCerrarSesion}>Cerrar Sesion</button>
+            </div>
+        </div>
+    )
+}
+
+
+/*
+
+        <nav id='sidebarMenu' className='col-md-3 col-lg-2 d-md-block bg-light sidebar collapse'>
             <div className='position-sticky pt-3 sidebar-sticky'>
                 <ul className='nav flex-column'>
-                    <li className='nav-item'>
+                    {
+                        rutas.map(rt => <li
+                            key={rt.id}
+                            className="nav-item" >
+                            <NavLink className='nav-link' to={rt.ruta} replace={rt.replace} >
+                                <i className={`bi ${rt.icono}`} ></i> {rt.nombre}
+                            </NavLink>
+                        </li>)
+                    }
+                </ul>
+            </div>
+        </nav >
+
+<li className='nav-item'>
                         <NavLink className='nav-link active' to='/dashboard' replace={true} >
                             <i className="bi bi-house-door"></i> Punto de Venta
                         </NavLink>
@@ -51,14 +142,9 @@ export const Sidebar = () => {
                             <i className="bi bi-house-door"></i> Ventas
                         </NavLink>
                     </li>
-                </ul>
-            </div>
-        </nav >
-    )
-}
 
 
-/*
+
         <div className='offcanvas offcanvas-start bg-dark' tabIndex={-1} id='offcanvasExample' >
             <div className='offcanvas-header text-light'>
                 <h5 className='offcanvas-title'>Title</h5>

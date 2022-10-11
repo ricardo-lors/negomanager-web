@@ -1,35 +1,38 @@
-import { useFormik } from "formik";
-import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../hooks";
-import { Cliente } from "../../../interfaces";
 import { RootState } from "../../../store";
+import { useEffect } from "react";
+import { useFormik } from "formik";
+import { Usuario, UsuarioForm } from "../../../interfaces";
 
 import * as Yup from 'yup';
 import { MyTextInput } from "../../shared/MyTextInput";
-import { crearCliente } from "../../../store/slices/cliente/thuncks";
+import { crearUsuario } from "../../../store/slices/usuario";
 
-export const ClientesPage = () => {
+export const VendedoresPage = () => {
 
     const dispatch = useAppDispatch();
 
     const { negocio } = useSelector((state: RootState) => state.negocio);
-    const { clientes } = useSelector((state: RootState) => state.cliente);
+    const { usuarios } = useSelector((state: RootState) => state.usuario);
 
     useEffect(() => {
         // negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
     }, [])
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<Cliente>({
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<UsuarioForm>({
         initialValues: {
             nombre: '',
             correo: '',
             telefono: '',
+            rolid: 3,
+            contrasena: '',
+            contrasenaRepeat: '',
             negocioid: negocio.id || 0
         },
         onSubmit: async (values) => {
             console.log(values);
-            dispatch(crearCliente(values));
+            dispatch(crearUsuario(values));
         },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Requerido')
@@ -40,7 +43,7 @@ export const ClientesPage = () => {
         <div className="row">
             <div className="col-3 border-end vh-100">
                 <div className="text-center">
-                    <h2>Clientes</h2>
+                    <h2>Vendedores</h2>
                 </div>
                 <form className="container mt-4" noValidate onSubmit={handleSubmit}>
 
@@ -61,6 +64,18 @@ export const ClientesPage = () => {
                         className="form-control"
                         {...getFieldProps('telefono')}
                     />
+
+                    <MyTextInput
+                        label="Contraseña"
+                        className="form-control"
+                        {...getFieldProps('contrasena')}
+                    />
+
+                    <MyTextInput
+                        label="Repetir contraseña"
+                        className="form-control"
+                        {...getFieldProps('contrasenaRepeat')}
+                    />
                     <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
 
                 </form>
@@ -76,7 +91,7 @@ export const ClientesPage = () => {
                     </thead>
                     <tbody>
                         {
-                            clientes.map(st => <tr key={st.id}>
+                            usuarios.map(st => <tr key={st.id}>
                                 <th>{st.nombre}</th>
                                 <th>{st.correo}</th>
                                 <th>{st.telefono}</th>

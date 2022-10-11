@@ -1,14 +1,16 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { negocio } from '../../../interfaces'
+import { Negocio } from '../../../interfaces'
 
 interface negocioState {
-    cargando: boolean,
-    negocio: negocio
+    cargando: boolean;
+    negocios: Negocio[];
+    negocio: Negocio;
 }
 
 const initialState: negocioState = {
     cargando: false,
+    negocios: [],
     negocio: {
         nombre: '',
         descripcion: '',
@@ -24,22 +26,24 @@ export const negocioSlice = createSlice({
         startGetNegocio: (state) => {
             state.cargando = true;
         },
-        setNegocio: (state, action: PayloadAction<negocio>) => {
+        setNegocio: (state, action: PayloadAction<Negocio>) => {
+            state.cargando = false;
             state.negocio = action.payload;
-        }
-        // increment: (state) => {
-        //     state.value += 1
-        // },
-        // decrement: (state) => {
-        //     state.value -= 1
-        // },
-        // incrementByAmount: (state, action: PayloadAction<number>) => {
-        //     state.value += action.payload
-        // },
+        },
+        setNegocios: (state, action: PayloadAction<Negocio[]>) => {
+            state.cargando = false;
+            state.negocios = action.payload;
+        },
+        removerNegocio: (state) => {
+            state.cargando = initialState.cargando;
+            state.negocios = initialState.negocios;
+            state.negocio = initialState.negocio;
+
+        },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { startGetNegocio, setNegocio } = negocioSlice.actions
+export const { startGetNegocio, setNegocio, setNegocios, removerNegocio } = negocioSlice.actions
 
 // export default templateSlice.reducer

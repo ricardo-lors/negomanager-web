@@ -12,10 +12,22 @@
 //
 //   const usuario = Convert.toUsuario(json);
 
+export interface UsuarioForm {
+    id?: number;
+    nombre: string;
+    correo: string;
+    telefono?: string,
+    rolid: number;
+    contrasena: '';
+    contrasenaRepeat: '';
+    negocioid?: number;
+}
+
 export interface Usuario {
     id?: number;
     nombre: string;
     correo: string;
+    telefono?: string,
     rolid: number;
     negocioid?: number;
 }
@@ -28,5 +40,9 @@ export class UsuarioConvert {
 
     public static usuarioToJson(value: Usuario): string {
         return JSON.stringify(value);
+    }
+
+    public static toUsuarioList(json: string): Usuario[] {
+        return JSON.parse(json);
     }
 }

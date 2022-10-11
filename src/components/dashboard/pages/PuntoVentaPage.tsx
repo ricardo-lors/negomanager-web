@@ -1,69 +1,99 @@
-import { useFormik } from "formik"
-import { useForm } from "../../../hooks/useForm"
-import * as Yup from 'yup';
-
+import { useFormik } from "formik";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { VentaState, Producto, Venta, DetallesVentaState } from "../../../interfaces";
+import { RootState } from "../../../store";
+import { obtenerProductoCodigo } from "../../../store/slices/producto/thuncks";
 export const PuntoVentaPage = () => {
+
+    const { negocio } = useSelector((state: RootState) => state.negocio);
+
+    const [state, setState] = useState<VentaState>({
+        detalles: [],
+        total: 0.0
+    });
 
     const { handleSubmit, errors, touched, getFieldProps } = useFormik({
         initialValues: { codigo: '' },
-        onSubmit: (values) => {
-            console.log(values)
-        },
-        validationSchema: Yup.object({
-            codigo: Yup.string().required('Requerido')
-        })
+        onSubmit: async (values) => {
+            const producto = await obtenerProductoCodigo(values.codigo, negocio.id!);
+            addProducto(producto);
+        }
     });
 
+    // const { handleSubmit: handleSubmitConfirm, errors: errorsConfirm, touched: touchedConfirm, getFieldProps: getFieldPropsConfirm } = useFormik({
+    //     initialValues: { i },
+    //     onSubmit: async (values) => {
+    //         const producto = await obtenerProductoCodigo(values.codigo, negocio.id!);
+    //         addProducto(producto);
+    //     }
+    // });
+
+    const addProducto = (producto: Producto) => {
+        const index = state.detalles.findIndex(prod => prod.producto.id === producto.id);
+        if (index >= 0) {
+            state.detalles[index].cantidad = state.detalles[index].cantidad + 1;
+            state.detalles[index].total = state.detalles[index].producto.precio * state.detalles[index].cantidad;
+            const total = sumaTotal(state.detalles);
+            setState(prev => ({ detalles: [...state.detalles], total }));
+        } else {
+            const detalles: DetallesVentaState = {
+                cantidad: 1,
+                total: producto.precio,
+                producto: producto
+            };
+            const newDetallesList = [...state.detalles, detalles];
+            const total = sumaTotal(newDetallesList);
+            setState(prev => ({ detalles: newDetallesList, total: total }));
+        }
+    }
+
+    const sumaTotal = (detalles: DetallesVentaState[]): number => {
+        let total: number = 0;
+        detalles.map((det) => {
+            total = total + det.total;
+        });
+        return total;
+    }
+
     return (
-        <div>
-            {/* <div className="text-center mt-3">
+        <div className="">
+            <div className="text-center mt-3">
                 <h2>Punto de venta</h2>
-            </div> */}
-            <form className="container mt-4" noValidate onSubmit={handleSubmit}>
-                <div className="input-group">
-                    <input type="text" className="form-control" placeholder="Codigos" {...getFieldProps('codigo')} />
-                    <button type="submit" className="btn btn-primary" >Buscar</button>
-                </div>
-                {/* {touched.codigo && errors.codigo && <span>{errors.codigo}</span>} */}
-            </form>
+            </div>
+            <div className="container">
+                <form noValidate onSubmit={handleSubmit}>
+                    <div className="input-group mb-3">
+                        <input type="text" className="form-control" placeholder="Codigo" {...getFieldProps('codigo')} />
+                        <button type="submit" className="btn btn-primary" >Buscar</button>
+                    </div>
+                </form>
 
-            {/* <div className="container"> */}
-            <table className="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Nombre</th>
-                        <th scope="col">Descripcion</th>
-                        <th scope="col">precio</th>
-                        <th scope="col">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <th>Producto 1</th>
-                        <th>Producto 1 Descripcion</th>
-                        <th>20.0</th>
-                        <th>20.0</th>
-                        {/* <th scope="row">2</th> */}
-                    </tr>
-                </tbody>
-            </table>
-            {/* </div> */}
-
-            {/* <form noValidate onSubmit={handleSubmit}>
-                <label htmlFor='firstName'>First Name</label>
-                <input type="text" {...getFieldProps('firstName')} />
-                {touched.firstName && errors.firstName && <span>{errors.firstName}</span>}
-
-                <label htmlFor='lastName'>Last Name</label>
-                <input type="text" {...getFieldProps('lastName')} />
-                {touched.lastName && errors.lastName && <span>{errors.lastName}</span>}
-
-                <label htmlFor='email'>Email</label>
-                <input type="text" {...getFieldProps('email')} />
-                {touched.email && errors.email && <span>{errors.email}</span>}
-                <button type='submit' >Submit</button>
-            </form> */}
-
+                <table className="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Nombre</th>
+                            <th scope="col">Descripcion</th>
+                            <th scope="col">Precio</th>
+                            <th scope="col">Cantidad</th>
+                            <th scope="col">Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            state.detalles.map(st => <tr key={st.producto.id}>
+                                <th>{st.producto.nombre}</th>
+                                <th>{st.producto.descripcion}</th>
+                                <th>{st.producto.precio}</th>
+                                <th>{st.cantidad}</th>
+                                <th>{st.total}</th>
+                            </tr>)
+                        }
+                    </tbody>
+                </table>
+                <h2>Total: {state.total}</h2>
+                
+            </div>
         </div>
     )
 }

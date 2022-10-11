@@ -4,7 +4,7 @@ import { Provedor } from '../../../interfaces'
 
 export interface provedorState {
     cargando: boolean,
-    provedores: Array<Provedor>
+    provedores: Provedor[]
 }
 
 const initialState: provedorState = {
@@ -19,7 +19,8 @@ export const provedorSlice = createSlice({
         startGetProvedores: (state) => {
             state.cargando = true;
         },
-        setProvedores: (state, actions: PayloadAction<Array<Provedor>>) => {
+        setProvedores: (state, actions: PayloadAction<Provedor[]>) => {
+            state.cargando = false;
             state.provedores = actions.payload;
         }
     },

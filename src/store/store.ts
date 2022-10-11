@@ -8,6 +8,7 @@ import { negocioSlice } from './slices/negocio';
 import { productoSlice } from './slices/producto';
 import { provedorSlice } from './slices/provedor';
 import { rolSlice } from './slices/rol';
+import { uiSlice } from './slices/ui';
 import { usuarioSlice } from './slices/usuario';
 
 export const store = configureStore({
@@ -20,6 +21,7 @@ export const store = configureStore({
         cliente: clienteSlice.reducer,
         producto: productoSlice.reducer,
         provedor: provedorSlice.reducer,
+        ui: uiSlice.reducer,
         // provedor: provedor
     }
 });

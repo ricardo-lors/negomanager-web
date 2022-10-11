@@ -1,0 +1,37 @@
+[
+    {
+        "id": 1,
+        "ruta": "/dashboard/puntoventa",
+        "nombre": "Punto Venta",
+        "replace": true,
+        "icono": "bi-shop"
+    },
+    {
+        "id": 3,
+        "ruta": "/dashboard/productos",
+        "nombre": "Productos",
+        "replace": true,
+        "icono": "bi-clipboard"
+    },
+    {
+        "id": 4,
+        "ruta": "/dashboard/clientes",
+        "nombre": "Clientes",
+        "replace": true,
+        "icono": "bi-file-earmark-person"
+    },
+    {
+        "id": 5,
+        "ruta": "/dashboard/provedores",
+        "nombre": "Provedores",
+        "replace": true,
+        "icono": "bi-bag-plus"
+    },
+    {
+        "id": 6,
+        "ruta": "/dashboard/categorias",
+        "nombre": "Categorias",
+        "replace": true,
+        "icono": "bi-bag-plus"
+    }
+]

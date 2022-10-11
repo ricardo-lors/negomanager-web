@@ -13,7 +13,9 @@ export const NegoManager = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        dispatch(revalidarSesion())
+        if (localStorage.getItem('x-token')) {
+            dispatch(revalidarSesion());
+        }
     }, [dispatch]);
 
     const { cargando } = useSelector((state: RootState) => state.usuario);

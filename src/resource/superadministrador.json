@@ -1,0 +1,9 @@
+[
+    {
+        "id": 1,
+        "ruta": "/dashboard/negocios",
+        "nombre": "Negocios",
+        "replace": true,
+        "icono": "bi-shop"
+    }
+]

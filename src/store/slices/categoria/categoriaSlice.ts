@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { categoria } from '../../../interfaces'
+import { Categoria } from '../../../interfaces'
 
 export interface categoriaState {
     cargando: boolean,
-    categorias: Array<categoria>
+    categorias: Categoria[]
 }
 
 const initialState: categoriaState = {
@@ -19,9 +19,9 @@ export const categoriaSlice = createSlice({
         startGetCategorias: (state) => {
             state.cargando = true;
         },
-        setCategorias: (state, actions: PayloadAction<Array<categoria>>) => {
+        setCategorias: (state, actions: PayloadAction<Categoria[]>) => {
             state.cargando = false;
-            state.categorias = [...state.categorias, ...actions.payload];
+            state.categorias = actions.payload;
         }
     },
 })

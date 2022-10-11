@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { cliente } from '../../../interfaces'
+import { Cliente } from '../../../interfaces'
 
 export interface clienteState {
     cargando: boolean,
-    clientes: Array<cliente>
+    clientes: Cliente[]
 }
 
 const initialState: clienteState = {
@@ -19,8 +19,9 @@ export const clienteSlice = createSlice({
         startGetClientes: (state) => {
             state.cargando = true;
         },
-        setClientes: (state, action: PayloadAction<Array<cliente>>) => {
-            state.clientes = action.payload
+        setClientes: (state, action: PayloadAction<Cliente[]>) => {
+            state.cargando = false;
+            state.clientes = action.payload;
         }
     },
 })
