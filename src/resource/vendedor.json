@@ -7,6 +7,13 @@
         "icono": "bi-shop"
     },
     {
+        "id": 2,
+        "ruta": "/dashboard/inventario",
+        "nombre": "Inventario",
+        "replace": true,
+        "icono": "bi-clipboard"
+    },
+    {
         "id": 3,
         "ruta": "/dashboard/productos",
         "nombre": "Productos",

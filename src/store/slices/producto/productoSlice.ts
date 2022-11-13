@@ -13,7 +13,7 @@ const initialState: productoState = {
 }
 
 export const productoSlice = createSlice({
-  name: 'counter',
+  name: 'producto',
   initialState,
   reducers: {
     startGetProductos: (state) => {

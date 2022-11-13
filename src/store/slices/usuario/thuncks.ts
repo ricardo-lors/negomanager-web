@@ -29,8 +29,9 @@ export const revalidarSesion = () => {
             const usuario = UsuarioConvert.toUsuario(JSON.stringify(data.data));
             dispatch(setUsuario(usuario));
         } else {
-            Swal.fire('Error', data.data, 'info');
             dispatch(endGetUsuario());
+            localStorage.removeItem('x-token');
+            Swal.fire('Error', "Sesion cerrada, vuelva a iniciar", 'info');
         }
     }
 };

@@ -20,7 +20,7 @@ const initialState: negocioState = {
 }
 
 export const negocioSlice = createSlice({
-    name: 'counter',
+    name: 'negocio',
     initialState,
     reducers: {
         startGetNegocio: (state) => {

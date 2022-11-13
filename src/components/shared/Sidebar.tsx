@@ -25,6 +25,7 @@ export const Sidebar = () => {
     }
 
     const handleCerrarSesion = () => {
+        dispatch(startOpenAndCloseMenu(!openMenu));
         dispatch(removerSesion());
         // navigate("/login", {
         //     replace: true
@@ -72,6 +73,7 @@ export const Sidebar = () => {
             </div>
             <hr />
             <div>
+                <h5>{usuario.nombre}</h5>
                 <button className='btn text-white' onClick={handleCerrarSesion}>Cerrar Sesion</button>
             </div>
         </div>

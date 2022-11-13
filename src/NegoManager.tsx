@@ -21,7 +21,11 @@ export const NegoManager = () => {
     const { cargando } = useSelector((state: RootState) => state.usuario);
 
     if (cargando) {
-        return <h2>Cargando</h2>
+        return <div className='d-flex justify-content-center align-items-center vh-100'>
+            <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>
     }
 
     return (

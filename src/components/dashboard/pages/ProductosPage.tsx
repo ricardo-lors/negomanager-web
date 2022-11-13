@@ -21,7 +21,7 @@ export const ProductosPage = () => {
 
     useEffect(() => {
         negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
-    }, [])
+    }, [dispatch, negocio.id])
 
     const { handleSubmit, errors, touched, getFieldProps } = useFormik<Producto>({
         initialValues: {
@@ -122,6 +122,7 @@ export const ProductosPage = () => {
                         <tr>
                             <th scope="col">Nombre</th>
                             <th scope="col">Descripcion</th>
+                            <th scope="col">Almacen</th>
                             <th scope="col">precio</th>
                             {/* <th scope="col">Total</th> */}
                         </tr>
@@ -131,10 +132,11 @@ export const ProductosPage = () => {
                             productos.map(st => <tr key={st.id}>
                                 <th>{st.nombre}</th>
                                 <th>{st.descripcion}</th>
+                                <th>{st.stock}</th>
                                 <th>{st.precio}</th>
                             </tr>)
                         }
-                    </tbody>
+                    </tbody>    
                 </table>
             </div>
         </div >

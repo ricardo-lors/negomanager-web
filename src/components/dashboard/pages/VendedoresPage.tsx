@@ -91,7 +91,7 @@ export const VendedoresPage = () => {
                     </thead>
                     <tbody>
                         {
-                            usuarios.map(st => <tr key={st.id}>
+                            usuarios.map(st => st.rolid === 3 && <tr key={st.id}>
                                 <th>{st.nombre}</th>
                                 <th>{st.correo}</th>
                                 <th>{st.telefono}</th>

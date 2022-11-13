@@ -11,3 +11,18 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.prodhe {
+  height: 400;
+}
+
+
+.ticket {
+  display: none;
+}
+
+@media print {
+  .ticket {
+    display: block;
+  }
+}

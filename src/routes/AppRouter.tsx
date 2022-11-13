@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { Login } from '../components/auth/Login';
 import { DashboardPage } from '../components/dashboard/DashboardPage';
 import { PrivateRoute } from './PrivateRoute';
@@ -21,6 +21,8 @@ export const AppRouter = () => {
                         <DashboardPage />
                     </PrivateRoute>
                 } />
+
+                <Route path='/' element={<Navigate to="/dashboard" replace={true} />} />
             </Routes>
         </>
     )

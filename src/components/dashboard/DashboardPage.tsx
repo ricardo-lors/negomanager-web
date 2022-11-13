@@ -31,7 +31,11 @@ export const DashboardPage = () => {
     const { cargando: cargandoClientes } = useSelector((state: RootState) => state.cliente);
 
     if (cargandoNegocio || cargandoCategoria || cargandoProvedor || cargandoClientes) {
-        return <h1>Cargando data</h1>
+        return <div className='d-flex justify-content-center align-items-center vh-100'>
+            <div className="spinner-border" role="status">
+                <span className="visually-hidden">Loading...</span>
+            </div>
+        </div>
     }
 
     return (
