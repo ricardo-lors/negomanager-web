@@ -16,9 +16,50 @@ code {
   height: 400;
 }
 
-
 .ticket {
+  width: 155px;
+  max-width: 155px;
   display: none;
+  font-size: 12px;
+  font-family: 'Times New Roman', Times, serif;
+}
+
+.ticket td,
+th,
+tr,
+table {
+  border-top: 1px solid black;
+  border-collapse: collapse;
+}
+
+.ticket td.producto,
+td.producto {
+  width: 75px;
+  max-width: 75px;
+}
+
+.ticket td.cantidad,
+th.cantidad {
+  width: 40px;
+  max-width: 40px;
+  word-break: break-all;
+}
+
+.ticket td.precio,
+th.precio {
+  width: 40px;
+  max-width: 40px;
+  word-break: break-all;
+}
+
+.ticket .centrado {
+  text-align: center;
+  align-content: center;
+}
+
+.ticket img {
+  max-width: inherit;
+  width: inherit;
 }
 
 @media print {
@@ -26,3 +67,68 @@ code {
     display: block;
   }
 }
+
+
+
+.contenedor-modal {
+  width: 500px;
+  min-height: 100px;
+  background: #ffff;
+  position: relative;
+  border-radius: 5px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  padding: 20px;
+}
+
+.encabezado-modal {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #e8e8e8;
+}
+
+.boton-cerrar {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: .3s ease all;
+  border-radius: 5px;
+  color: #1766DC;
+}
+
+.boton-cerrar:hover {
+  background: #f2f2f2;
+}
+
+/*Modal Styles*/
+/* .overlay {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background: rgba(0, 0, 0, .5);
+
+  padding: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+}
+
+.encabezado-modal h3 {
+  font-weight: 500;
+  font-size: 16px;
+  color: #1766DC;
+}
+ */
+
+/*End Modal Styles*/

@@ -1,0 +1,15 @@
+
+// export const Modal = () => {
+//     return (
+//         <div className="overlay">
+//             <div className="contenedor-modal">
+//                 <div className="encabezado-modal">
+//                     <h3>Modal</h3>
+//                 </div>
+
+//                 <button className="boton-cerrar">x</button>
+
+//             </div>
+//         </div>
+//     )
+// }

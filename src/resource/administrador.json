@@ -14,13 +14,6 @@
         "icono": "bi-person"
     },
     {
-        "id": 3,
-        "ruta": "/dashboard/productos",
-        "nombre": "Productos",
-        "replace": true,
-        "icono": "bi-clipboard"
-    },
-    {
         "id": 4,
         "ruta": "/dashboard/clientes",
         "nombre": "Clientes",

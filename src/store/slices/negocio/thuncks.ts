@@ -1,11 +1,11 @@
 import Swal from "sweetalert2";
-import { NegocioConvert, NegocioUsuario } from "../../../interfaces";
+import { NegocioConvert, NuevoNegocio } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/sesionApi";
 import { AppDispatch } from "../../store";
 import { setNegocio, setNegocios, startGetNegocio } from "./negocioSlice";
 
 
-export const crearNegocio = (negocio: NegocioUsuario) => {
+export const crearNegocio = (negocio: NuevoNegocio) => {
     return async (dispatch: AppDispatch) => {
         const { data } = await servicesApiToken.post(`/negocio`, negocio);
         if (data.ok) {

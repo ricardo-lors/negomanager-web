@@ -1,5 +1,5 @@
 import Swal from "sweetalert2";
-import { Categoria, CategoriaConvert, NegocioConvert, ProductoConverto, ProvedorConvert } from "../../../interfaces";
+import { Categoria, CategoriaConvert } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/sesionApi";
 import { AppDispatch } from "../../store";
 import { setCategorias, startGetCategorias } from "./categoriaSlice";

@@ -14,13 +14,6 @@
         "icono": "bi-clipboard"
     },
     {
-        "id": 3,
-        "ruta": "/dashboard/productos",
-        "nombre": "Productos",
-        "replace": true,
-        "icono": "bi-clipboard"
-    },
-    {
         "id": 4,
         "ruta": "/dashboard/clientes",
         "nombre": "Clientes",
@@ -38,6 +31,13 @@
         "id": 6,
         "ruta": "/dashboard/categorias",
         "nombre": "Categorias",
+        "replace": true,
+        "icono": "bi-bag-plus"
+    },
+    {
+        "id": 7,
+        "ruta": "/dashboard/ventas",
+        "nombre": "Ventas",
         "replace": true,
         "icono": "bi-bag-plus"
     }

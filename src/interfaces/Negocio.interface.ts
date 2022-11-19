@@ -1,6 +1,6 @@
 
 
-export interface NegocioUsuario {
+export interface NuevoNegocio {
     nombreNegocio: string,
     descripcionNegocio: string,
     correoNegocio: string,

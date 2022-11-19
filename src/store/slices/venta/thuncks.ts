@@ -22,9 +22,9 @@ export const crearVenta = async (venta: NuevaVenta) => {
     try {
         const { data } = await servicesApiToken.post(`/venta`, venta);
         if (data.ok) {
-            Swal.fire('Creado', data.data, 'success');
+            Swal.fire('Creado', `${data.mensaje}`, 'success');
         } else {
-            Swal.fire('Error', data.data, 'info');
+            Swal.fire('Error', data.mensaje, 'info');
         }
     } catch (error) {
         Swal.fire('Error', `${error}`, 'error');

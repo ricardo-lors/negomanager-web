@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { MyTextInput } from "../../shared/MyTextInput";
 import { MySelect } from "../../shared/MySelect";
 import { crearNegocio, obtenerNegocios } from "../../../store/slices/negocio/thuncks";
-import { NegocioUsuario } from "../../../interfaces";
+import { NuevoNegocio } from "../../../interfaces";
 
 export const NegociosPage = () => {
 
@@ -20,7 +20,7 @@ export const NegociosPage = () => {
         dispatch(obtenerNegocios());
     }, [])
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<NegocioUsuario>({
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<NuevoNegocio>({
         initialValues: {
             nombreNegocio: '',
             descripcionNegocio: '',

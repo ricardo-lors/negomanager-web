@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useState, useRef, ReactInstance } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../hooks";
-import { VentaState, Producto, DetallesVentaState } from "../../../interfaces";
+import { VentaState, Producto, DetallesVentaState, NuevaVenta } from "../../../interfaces";
 import { RootState } from "../../../store";
 import { obtenerProductoCodigo } from "../../../store/slices/producto/thuncks";
 import { crearVenta, obtenerVentaNegocio } from "../../../store/slices/venta";
@@ -10,6 +10,9 @@ import { MySelect } from "../../shared/MySelect";
 import * as Yup from 'yup';
 import { useReactToPrint } from "react-to-print";
 import { Ticket } from "../../shared/Ticket";
+import { Modal } from "../../shared/Modal";
+import { number } from "yup/lib/locale";
+import Swal from "sweetalert2";
 
 export const PuntoVentaPage = () => {
 
@@ -30,31 +33,42 @@ export const PuntoVentaPage = () => {
         total: 0.0
     });
 
-    const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch } = useFormik({
+    const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch } = useFormik({
         initialValues: { codigo: '' },
         onSubmit: async (values) => {
             const producto = await obtenerProductoCodigo(values.codigo, negocio.id!);
             addProducto(producto);
+            resetFormSearch();
         },
         validationSchema: Yup.object({
             codigo: Yup.string().required('Requerido')
         })
     });
 
-    const { handleSubmit: handleSubmitConfirm, errors: errorsConfirm, touched: touchedConfirm, getFieldProps: getFieldPropsConfirm } = useFormik({
-        initialValues: { pago: '', clienteid: 0 },
+    const { handleSubmit: handleSubmitConfirm, errors: errorsConfirm, touched: touchedConfirm, getFieldProps: getFieldPropsConfirm, resetForm: resetFormConfirm } = useFormik({
+        initialValues: { pago: 0, clienteid: 0 },
         onSubmit: async (values) => {
-            // const nuevaVenta: NuevaVenta = {
-            //     total: state.total,
-            //     usuarioid: usuario.id!,
-            //     clienteid: values.clienteid!,
-            //     negocioid: negocio.id!,
-            //     detalles: state.detalles
-            // }
-            // await crearVenta(nuevaVenta);
-            // dispatch(obtenerVentaNegocio(negocio.id!));
+
+            if(state.total > values.pago) return Swal.fire( 'Pago Insuficiente','El Pago no cubre el total de la venta','warning' );
+
+            const nuevaVenta: NuevaVenta = {
+                total: state.total,
+                pago: values.pago,
+                usuarioid: usuario.id!,
+                clienteid: values.clienteid!,
+                negocioid: negocio.id!,
+                detalles: state.detalles
+            }
+            await crearVenta(nuevaVenta);
             handleImprimirTicket();
-        }
+            setState({ detalles: [], total: 0.0 });
+        },
+        validationSchema: Yup.object({
+            pago: Yup.string().required('EL dato es requerido'),
+            clienteid: Yup.string()
+                .notOneOf(['0'], 'Esta opcion no esta permitida')
+                .required('Requerido'),
+        })
     });
 
     const addProducto = (producto: Producto) => {
@@ -95,7 +109,7 @@ export const PuntoVentaPage = () => {
                     <input type="text" className="form-control" placeholder="Codigo" {...getFieldPropsSearch('codigo')} />
                     <button type="submit" className="btn btn-primary" >Buscar</button>
                 </div>
-                <span className="text-danger">{errorsSearch.codigo}</span>
+                {touchedSearch.codigo && errorsSearch.codigo && <span className="text-danger">{errorsSearch.codigo}</span>}
             </form>
 
             <div className="container border h-50 overflow-auto mt-3">
@@ -131,6 +145,7 @@ export const PuntoVentaPage = () => {
                             label="Cliente"
                             className="form-control"
                             {...getFieldPropsConfirm('clienteid')}
+                            errors={touchedConfirm.clienteid && errorsConfirm.clienteid ? errorsConfirm.clienteid : undefined}
                         >
                             <option value={0}>Seleccione una opcion</option>
                             {
@@ -143,6 +158,7 @@ export const PuntoVentaPage = () => {
                             <input type="text" className="form-control" placeholder="Pago" {...getFieldPropsConfirm('pago')} />
                             <button type="submit" className="btn btn-primary" >Generar Compra</button>
                         </div>
+                        {touchedConfirm.pago && errorsConfirm.pago && <span className="text-danger">{errorsConfirm.pago}</span>}
                     </form>
                 </div>
             </div>

@@ -11,29 +11,38 @@ export const Ticket = forwardRef((props: TicketProps, ref: LegacyRef<HTMLDivElem
             ref={ref}
             className="ticket"
         >
-            <p className="" >Ticket
+            {/* En caso que se use Imagen */}
+            {/* <img
+                src="https://yt3.ggpht.com/-3BKTe8YFlbA/AAAAAAAAAAI/AAAAAAAAAAA/ad0jqQ4IkGE/s900-c-k-no-mo-rj-c0xffffff/photo.jpg"
+                alt="Logotipo" /> */}
+            <p className="centrado" >Ticket
                 <br />Venta de papeleria
                 <br />Papeleria Lopez
-                <br />fecha
+                <br />14/11/2022
             </p>
-            <table>
+            <table className='centrado'>
                 <thead>
                     <tr>
-                        <th className="">Prod</th>
-                        <th className="">Cant</th>
-                        <th className="">Total</th>
+                        <th className="cantidad">Prod</th>
+                        <th className="producto">Cant</th>
+                        <th className="precio">Total</th>
                     </tr>
                 </thead>
                 <tbody>
                     {
                         props.venta?.detalles.map(det =>
                             <tr key={det.producto.id}>
-                                <td>{det.producto.nombre}</td>
-                                <td>{det.cantidad}</td>
-                                <td>{det.total}</td>
+                                <td className='cantidad' >{det.cantidad}</td>
+                                <td className='producto' >{det.producto.nombre}</td>
+                                <td className='precio'>{det.total}</td>
                             </tr>
                         )
                     }
+                    <tr>
+                        <td></td>
+                        <td>Total</td>
+                        <td>{props.venta?.total}</td>
+                    </tr>
                 </tbody>
             </table>
             <p className="centrado">¡GRACIAS POR SU COMPRA!
