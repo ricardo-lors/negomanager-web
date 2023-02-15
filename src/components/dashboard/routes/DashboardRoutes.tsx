@@ -35,9 +35,9 @@ export const DashboardRoutes = () => {
                 <Route path="/vendedores" element={<VendedoresPage />} />
 
                 <Route path="/" element={
-                    usuario.rolid === 1
+                    usuario?.roles.includes('super-administrador')
                         ? <Navigate to='/dashboard/negocios' replace={true} />
-                        : usuario.rolid === 2
+                        : usuario?.roles.includes('administrador')
                             ? <Navigate to='/dashboard/inventario' replace={true} />
                             : <Navigate to='/dashboard/puntoventa' replace={true} />
                 } />

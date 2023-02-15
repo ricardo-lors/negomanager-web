@@ -13,7 +13,6 @@ export const VendedoresPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { negocio } = useSelector((state: RootState) => state.negocio);
     const { usuarios } = useSelector((state: RootState) => state.usuario);
 
     useEffect(() => {
@@ -24,11 +23,8 @@ export const VendedoresPage = () => {
         initialValues: {
             nombre: '',
             correo: '',
-            telefono: '',
-            rolid: 3,
             contrasena: '',
-            contrasenaRepeat: '',
-            negocioid: negocio.id || 0
+            roles: []
         },
         onSubmit: async (values) => {
             console.log(values);
@@ -91,10 +87,10 @@ export const VendedoresPage = () => {
                     </thead>
                     <tbody>
                         {
-                            usuarios.map(st => st.rolid === 3 && <tr key={st.id}>
+                            usuarios?.map(st => st.roles.includes('vendedor') && <tr key={st.id}>
                                 <th>{st.nombre}</th>
                                 <th>{st.correo}</th>
-                                <th>{st.telefono}</th>
+                                {/* <th>{st.telefono}</th> */}
                             </tr>)
                         }
                     </tbody>

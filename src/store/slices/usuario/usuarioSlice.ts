@@ -5,20 +5,13 @@ import { Usuario } from '../../../interfaces'
 export interface usuarioState {
     cargando: boolean,
     logueado: boolean,
-    usuarios: Usuario[]
-    usuario: Usuario
+    usuarios?: Usuario[]
+    usuario?: Usuario
 }
 
 const initialState: usuarioState = {
     cargando: false,
     logueado: false,
-    usuarios: [],
-    usuario: {
-        nombre: '',
-        correo: '',
-        rolid: 0,
-        negocioid: 0
-    }
 }
 
 export const usuarioSlice = createSlice({

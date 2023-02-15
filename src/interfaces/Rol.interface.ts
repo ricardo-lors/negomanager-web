@@ -1,5 +1,7 @@
 
-export interface rol {
-    id?: number,
-    nombre: string
-} 
+export enum ValidRoles {
+    superAdministrador = 'super-administrador',
+    administrador = 'administrador',
+    vendedor = 'vendedor',
+    cliente = 'cliente'
+}

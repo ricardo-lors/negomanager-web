@@ -14,14 +14,14 @@ export const ProductosPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { negocio } = useSelector((state: RootState) => state.negocio);
+    const { usuario } = useSelector((state: RootState) => state.usuario);
     const { provedores } = useSelector((state: RootState) => state.provedor);
     const { categorias } = useSelector((state: RootState) => state.categoria);
     const { productos } = useSelector((state: RootState) => state.producto);
 
     useEffect(() => {
-        negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
-    }, [dispatch, negocio.id]);
+        usuario && dispatch(obtenerProductosNegocio(usuario?.negocio?.id!))
+    }, [dispatch]);
 
     return (
         <div className="row">

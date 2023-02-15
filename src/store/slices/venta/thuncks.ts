@@ -1,13 +1,13 @@
 import Swal from "sweetalert2";
 import { NuevaVenta, Venta, VentaConvert } from "../../../interfaces";
-import { servicesApiToken } from "../../../services/sesionApi";
+import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setVentas, startGetVentas } from "./ventaSlice";
 
-export const obtenerVentaNegocio = (negocioid: number) => {
+export const obtenerVentaNegocio = (negocioid: string) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         dispatch(startGetVentas());
-        const { data } = await servicesApiToken.get(`/venta/negocio/${negocioid}`);
+        const { data } = await servicesApiToken(`/venta/negocio/${negocioid}`);
         console.log(data);
         if (data.ok) {
             const ventas = VentaConvert.toVentaList(JSON.stringify(data.data));
@@ -20,7 +20,7 @@ export const obtenerVentaNegocio = (negocioid: number) => {
 
 export const crearVenta = async (venta: NuevaVenta) => {
     try {
-        const { data } = await servicesApiToken.post(`/venta`, venta);
+        const { data } = await servicesApiToken(`/venta`, 'POST', venta);
         if (data.ok) {
             Swal.fire('Creado', `${data.mensaje}`, 'success');
         } else {

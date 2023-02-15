@@ -1,12 +1,12 @@
 import Swal from "sweetalert2";
-import { Provedor, ProvedorConvert } from "../../../interfaces";
-import { servicesApiToken } from "../../../services/sesionApi";
+import { NuevoProvedor, ProvedorConvert } from "../../../interfaces";
+import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProvedores, startGetProvedores } from "./provedorSlice";
 
-export const crearProvedor = (provedor: Provedor) => {
+export const crearProvedor = (provedor: NuevoProvedor) => {
     return async (dispatch: AppDispatch) => {
-        const { data } = await servicesApiToken.post(`/provedor`, provedor);
+        const { data } = await servicesApiToken(`/provedor`, 'POST', provedor);
         if (data.ok) {
             Swal.fire('Creado', `${data.data}`, 'success');
         } else {
@@ -15,10 +15,10 @@ export const crearProvedor = (provedor: Provedor) => {
     }
 }
 
-export const obtenerProvedoresNegocio = (negocioid: number) => {
+export const obtenerProvedoresNegocio = (negocioid: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(startGetProvedores());
-        const { data } = await servicesApiToken.get(`/provedor/negocio/${negocioid}`);
+        const { data } = await servicesApiToken(`/provedor/negocio/${negocioid}`);
         if (data.ok) {
             console.log(data);
             const provedores = ProvedorConvert.toProvedorList(JSON.stringify(data.data));

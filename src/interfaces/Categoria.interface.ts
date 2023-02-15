@@ -1,9 +1,9 @@
+import { Negocio } from "./Negocio.interface";
 
 export interface Categoria {
     id?: number,
     nombre: string,
-    color: string,
-    negocioid: number
+    negocio: Negocio
 }
 
 // Converts JSON strings to/from your types

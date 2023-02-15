@@ -13,7 +13,7 @@ export const CategoriasPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { negocio } = useSelector((state: RootState) => state.negocio);
+    const { usuario } = useSelector((state: RootState) => state.usuario);
     const { categorias } = useSelector((state: RootState) => state.categoria);
 
     useEffect(() => {
@@ -23,8 +23,7 @@ export const CategoriasPage = () => {
     const { handleSubmit, errors, touched, getFieldProps } = useFormik<Categoria>({
         initialValues: {
             nombre: '',
-            color: '#1D29EA',
-            negocioid: negocio.id || 0
+            negocio: usuario?.negocio!
         },
         onSubmit: async (values) => {
             dispatch(crearCategoria(values));
@@ -70,7 +69,7 @@ export const CategoriasPage = () => {
                         {
                             categorias.map(st => <tr key={st.id}>
                                 <th>{st.nombre}</th>
-                                <th><div style={{ backgroundColor: st.color, maxWidth: 100, color: 'white' }}  >{st.color}</div></th>
+                                {/* <th><div >{st.color}</div></th> */}
                             </tr>)
                         }
                     </tbody>

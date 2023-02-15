@@ -5,17 +5,13 @@ import * as Yup from 'yup';
 import { MyTextInput } from "../shared/MyTextInput";
 import { sesion } from "../../store/slices/usuario";
 import { useAppDispatch } from "../../hooks/index";
-
-interface formLogin {
-    correo: string,
-    contrasena: string
-}
+import { UsuarioForm } from "../../interfaces";
 
 export const Login = () => {
 
     const dispatch = useAppDispatch();
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<formLogin>({
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<UsuarioForm>({
         initialValues: {
             correo: '',
             contrasena: ''

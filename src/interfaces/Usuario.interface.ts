@@ -1,35 +1,20 @@
 
-// export interface usuario {
-//     id?: number,
-//     nombre: string,
-//     correo: string,
-//     rolid: number,
-//     negocioid?: number
-// }
-// To parse this data:
-//
-//   import { Convert, Usuario } from "./file";
-//
-//   const usuario = Convert.toUsuario(json);
+import { Negocio } from "./Negocio.interface";
 
 export interface UsuarioForm {
-    id?: number;
-    nombre: string;
     correo: string;
-    telefono?: string,
-    rolid: number;
-    contrasena: '';
-    contrasenaRepeat: '';
-    negocioid?: number;
+    nombre?: string;
+    contrasena: string;
+    roles?: string[];
 }
 
 export interface Usuario {
-    id?: number;
-    nombre: string;
+    id: string;
     correo: string;
-    telefono?: string,
-    rolid: number;
-    negocioid?: number;
+    nombre: string;
+    activo: boolean;
+    roles: string[];
+    negocio?: Negocio;
 }
 
 // Converts JSON strings to/from your types
@@ -42,7 +27,7 @@ export class UsuarioConvert {
         return JSON.stringify(value);
     }
 
-    public static toUsuarioList(json: string): Usuario[] {
-        return JSON.parse(json);
+    public static toUsuarioList(value: string): Usuario[] {
+        return JSON.parse(value);
     }
 }

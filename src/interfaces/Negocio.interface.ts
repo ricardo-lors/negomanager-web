@@ -12,11 +12,11 @@ export interface NuevoNegocio {
 }
 
 export interface Negocio {
-    id?: number,
-    nombre: string,
-    descripcion?: string,
-    correo?: string,
-    telefono?: string,
+    id: string;
+    nombre: string;
+    descripcion: string;
+    correo: string;
+    telefono: string;
 }
 
 // Converts JSON strings to/from your types

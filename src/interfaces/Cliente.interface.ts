@@ -1,10 +1,11 @@
+import { Negocio } from "./Negocio.interface";
 
 export interface Cliente {
     id?: number,
     nombre: string,
     correo?: string,
     telefono?: string,
-    negocioid: number
+    negocio: Negocio
 }
 
 // Converts JSON strings to/from your types

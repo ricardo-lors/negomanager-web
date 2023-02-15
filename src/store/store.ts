@@ -7,7 +7,6 @@ import { counterSlice } from "./slices/counter";
 import { negocioSlice } from './slices/negocio';
 import { productoSlice } from './slices/producto';
 import { provedorSlice } from './slices/provedor';
-import { rolSlice } from './slices/rol';
 import { uiSlice } from './slices/ui';
 import { usuarioSlice } from './slices/usuario';
 import { ventaSlice } from './slices/venta';
@@ -15,7 +14,6 @@ import { ventaSlice } from './slices/venta';
 export const store = configureStore({
     reducer: {
         counter: counterSlice.reducer,
-        rol: rolSlice.reducer,
         negocio: negocioSlice.reducer,
         usuario: usuarioSlice.reducer,
         categoria: categoriaSlice.reducer,

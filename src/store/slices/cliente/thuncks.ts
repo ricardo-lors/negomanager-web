@@ -1,13 +1,13 @@
 import Swal from "sweetalert2";
 import { Cliente, ClienteConvert } from "../../../interfaces";
-import { servicesApiToken } from "../../../services/sesionApi";
+import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setClientes, startGetClientes } from "./clienteSlice";
 
-export const obtenerClientes = (negocioid: number) => {
+export const obtenerClientes = (negocioid: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(startGetClientes());
-        const { data } = await servicesApiToken.get(`/cliente/negocio/${negocioid}`);
+        const { data } = await servicesApiToken(`/cliente/negocio/${negocioid}`);
         if (data.ok) {
             const clientes = ClienteConvert.toClienteList(JSON.stringify(data.data));
             dispatch(setClientes(clientes));
@@ -20,9 +20,9 @@ export const obtenerClientes = (negocioid: number) => {
 export const crearCliente = (cliente: Cliente) => {
     return async (dispatch: AppDispatch) => {
         try {
-            const { data } = await servicesApiToken.post(`/cliente`, cliente);
+            const { data } = await servicesApiToken(`/cliente`,'POST', cliente);
             if (data.ok) {
-                const { data } = await servicesApiToken.get(`/cliente/negocio/${cliente.negocioid}`);
+                const { data } = await servicesApiToken(`/cliente/negocio/${cliente.negocio.id}`);
                 if (data.ok) {
                     const clientes = ClienteConvert.toClienteList(JSON.stringify(data.data));
                     dispatch(setClientes(clientes));

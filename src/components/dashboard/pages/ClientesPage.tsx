@@ -13,7 +13,7 @@ export const ClientesPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { negocio } = useSelector((state: RootState) => state.negocio);
+    const { usuario } = useSelector((state: RootState) => state.usuario);
     const { clientes } = useSelector((state: RootState) => state.cliente);
 
     useEffect(() => {
@@ -25,7 +25,7 @@ export const ClientesPage = () => {
             nombre: '',
             correo: '',
             telefono: '',
-            negocioid: negocio.id || 0
+            negocio: usuario!.negocio!
         },
         onSubmit: async (values) => {
             console.log(values);

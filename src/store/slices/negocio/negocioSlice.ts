@@ -5,18 +5,12 @@ import { Negocio } from '../../../interfaces'
 interface negocioState {
     cargando: boolean;
     negocios: Negocio[];
-    negocio: Negocio;
+    negocio?: Negocio;
 }
 
 const initialState: negocioState = {
     cargando: false,
     negocios: [],
-    negocio: {
-        nombre: '',
-        descripcion: '',
-        correo: '',
-        telefono: ''
-    }
 }
 
 export const negocioSlice = createSlice({

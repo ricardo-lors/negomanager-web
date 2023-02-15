@@ -18,11 +18,10 @@ export const DashboardPage = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        usuario.negocioid && dispatch(obtenerNegocio(usuario.negocioid!));
-        usuario.negocioid && dispatch(obtenerCategorias(usuario.negocioid!));
-        usuario.negocioid && dispatch(obtenerProvedoresNegocio(usuario.negocioid!));
-        usuario.negocioid && dispatch(obtenerClientes(usuario.negocioid!));
-        usuario.rolid === 2 && dispatch(obtenerUsuarios(usuario.negocioid!));
+        // usuario?.negocio && dispatch(obtenerCategorias(usuario?.negocio!.id));
+        // usuario?.negocio && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id));
+        // usuario?.negocio && dispatch(obtenerClientes(usuario?.negocio!.id));
+        // usuario?.negocio && dispatch(obtenerUsuarios(usuario?.negocio!.id));
     }, [dispatch]);
 
     const { cargando: cargandoNegocio } = useSelector((state: RootState) => state.negocio);

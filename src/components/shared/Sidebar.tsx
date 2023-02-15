@@ -32,16 +32,16 @@ export const Sidebar = () => {
         // })
     }
 
-    const rutas = usuario.rolid === 1
+    const rutas = usuario?.roles.includes('super-administrador')
         ? superadministradorRoutes
-        : usuario.rolid === 2
+        : usuario?.roles.includes('administrador')
             ? administradorRoutes
             : vendedorRoutes;
 
     return (
         <div className={`offcanvas offcanvas-end ${openMenu ? 'show' : 'hide'} flex-shrink-0 p-3 text-bg-dark`} tabIndex={-1} >
             <div className="offcanvas-header">
-                <h5 className="offcanvas-title">{negocio.nombre ? negocio.nombre : "NegoManager"}</h5>
+                <h5 className="offcanvas-title">{negocio?.nombre ? negocio.nombre : "NegoManager"}</h5>
                 <button type="button" className='btn btn-primary' onClick={handleMenu} ><i className="bi bi-x-lg"></i></button>
             </div>
             <hr />
@@ -73,7 +73,7 @@ export const Sidebar = () => {
             </div>
             <hr />
             <div>
-                <h5>{usuario.nombre}</h5>
+                <h5>{usuario?.nombre}</h5>
                 <button className='btn text-white' onClick={handleCerrarSesion}>Cerrar Sesion</button>
             </div>
         </div>

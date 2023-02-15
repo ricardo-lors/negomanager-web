@@ -1,7 +1,7 @@
 import { FormikErrors } from "formik";
 
 interface Props {
-    type?: 'text' | 'email' | 'password';
+    type?: 'text' | 'email' | 'password' | 'number';
     name: string;
     label?: string;
     errors?: FormikErrors<string>;

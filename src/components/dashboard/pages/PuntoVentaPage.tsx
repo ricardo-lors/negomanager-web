@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useState, useRef, ReactInstance } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../hooks";
-import { VentaState, Producto, DetallesVentaState, NuevaVenta } from "../../../interfaces";
+import { VentaState, Producto, DetallesVenta, NuevaVenta } from "../../../interfaces";
 import { RootState } from "../../../store";
 import { obtenerProductoCodigo } from "../../../store/slices/producto/thuncks";
 import { crearVenta, obtenerVentaNegocio } from "../../../store/slices/venta";
@@ -20,7 +20,7 @@ export const PuntoVentaPage = () => {
 
     const ticket = useRef<HTMLDivElement>(null);
 
-    const { negocio } = useSelector((state: RootState) => state.negocio);
+    // const { negocio } = useSelector((state: RootState) => state.negocio);
     const { usuario } = useSelector((state: RootState) => state.usuario);
     const { clientes } = useSelector((state: RootState) => state.cliente);
 
@@ -36,7 +36,7 @@ export const PuntoVentaPage = () => {
     const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch } = useFormik({
         initialValues: { codigo: '' },
         onSubmit: async (values) => {
-            const producto = await obtenerProductoCodigo(values.codigo, negocio.id!);
+            const producto = await obtenerProductoCodigo(values.codigo, usuario?.negocio!.id!);
             addProducto(producto);
             resetFormSearch();
         },
@@ -49,14 +49,14 @@ export const PuntoVentaPage = () => {
         initialValues: { pago: 0, clienteid: 0 },
         onSubmit: async (values) => {
 
-            if(state.total > values.pago) return Swal.fire( 'Pago Insuficiente','El Pago no cubre el total de la venta','warning' );
+            if (state.total > values.pago) return Swal.fire('Pago Insuficiente', 'El Pago no cubre el total de la venta', 'warning');
 
             const nuevaVenta: NuevaVenta = {
                 total: state.total,
                 pago: values.pago,
-                usuarioid: usuario.id!,
-                clienteid: values.clienteid!,
-                negocioid: negocio.id!,
+                vendedor: usuario!,
+                comprador: usuario!,
+                negocio: usuario!.negocio!,
                 detalles: state.detalles
             }
             await crearVenta(nuevaVenta);
@@ -79,7 +79,7 @@ export const PuntoVentaPage = () => {
             const total = sumaTotal(state.detalles);
             setState(prev => ({ detalles: [...state.detalles], total }));
         } else {
-            const detalles: DetallesVentaState = {
+            const detalles: DetallesVenta = {
                 cantidad: 1,
                 total: producto.precio,
                 producto: producto
@@ -91,7 +91,7 @@ export const PuntoVentaPage = () => {
         }
     }
 
-    const sumaTotal = (detalles: DetallesVentaState[]): number => {
+    const sumaTotal = (detalles: DetallesVenta[]): number => {
         let total: number = 0;
         detalles.map((det) => {
             total = total + Number(det.total);

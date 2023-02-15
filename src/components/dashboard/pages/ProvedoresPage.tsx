@@ -3,7 +3,7 @@ import { useAppDispatch } from "../../../hooks";
 import { RootState } from "../../../store";
 import { useEffect } from 'react';
 import { useFormik } from "formik";
-import { Provedor } from "../../../interfaces";
+import { NuevoProvedor, Provedor } from "../../../interfaces";
 
 import * as Yup from 'yup';
 import { MyTextInput } from "../../shared/MyTextInput";
@@ -13,17 +13,17 @@ export const ProvedoresPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { negocio } = useSelector((state: RootState) => state.negocio);
+    const { usuario } = useSelector((state: RootState) => state.usuario);
     const { provedores } = useSelector((state: RootState) => state.provedor);
 
     useEffect(() => {
         // negocio.id && dispatch(obtenerCategorias(negocio.id));
     }, []);
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<Provedor>({
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<NuevoProvedor>({
         initialValues: {
             nombre: '',
-            negocioid: negocio.id || 0
+            negocio: usuario!.negocio!
         },
         onSubmit: async (values) => {
             console.log(values);

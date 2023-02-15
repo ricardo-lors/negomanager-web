@@ -1,18 +1,19 @@
 import { Categoria } from "./Categoria.interface";
+import { Negocio } from "./Negocio.interface";
 import { Provedor } from "./Provedor.interface";
 
 
 export interface NuevoProducto {
     codigo: string,
     nombre: string,
-    descripcion: string,
-    stock: number,
-    costo: number,
-    precio: number,
-    registro: string,
-    provedorid: number,
-    categoriaid: number,
-    negocioid: number
+    descripcion?: string,
+    stock?: number,
+    costo?: number,
+    precio?: number,
+    activo?: boolean,
+    provedores?: string[],
+    categorias: string[],
+    attributos?: Object
 }
 
 export interface Producto {

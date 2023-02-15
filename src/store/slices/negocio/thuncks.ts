@@ -1,16 +1,16 @@
 import Swal from "sweetalert2";
 import { NegocioConvert, NuevoNegocio } from "../../../interfaces";
-import { servicesApiToken } from "../../../services/sesionApi";
+import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setNegocio, setNegocios, startGetNegocio } from "./negocioSlice";
 
 
 export const crearNegocio = (negocio: NuevoNegocio) => {
     return async (dispatch: AppDispatch) => {
-        const { data } = await servicesApiToken.post(`/negocio`, negocio);
+        const { data } = await servicesApiToken(`/negocio`, 'POST', negocio);
         if (data.ok) {
 
-            const { data } = await servicesApiToken.get(`/negocio`);
+            const { data } = await servicesApiToken(`/negocio`);
             if (data.ok) {
                 const negocios = NegocioConvert.toNegocioList(JSON.stringify(data.data));
                 dispatch(setNegocios(negocios));
@@ -26,7 +26,7 @@ export const crearNegocio = (negocio: NuevoNegocio) => {
 
 export const obtenerNegocios = () => {
     return async (dispatch: AppDispatch) => {
-        const { data } = await servicesApiToken.get(`/negocio`);
+        const { data } = await servicesApiToken(`/negocio`);
         if (data.ok) {
             const negocios = NegocioConvert.toNegocioList(JSON.stringify(data.data));
             dispatch(setNegocios(negocios));
@@ -36,10 +36,10 @@ export const obtenerNegocios = () => {
     }
 }
 
-export const obtenerNegocio = (negocioid: number) => {
+export const obtenerNegocio = (negocioid: string) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         dispatch(startGetNegocio());
-        const { data } = await servicesApiToken.get(`/negocio/${negocioid}`);
+        const { data } = await servicesApiToken(`/negocio/${negocioid}`);
         if (data.ok) {
             const negocio = NegocioConvert.toNegocio(JSON.stringify(data.data));
             dispatch(setNegocio(negocio));

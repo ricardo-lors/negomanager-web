@@ -14,7 +14,7 @@ export const InventarioPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { negocio } = useSelector((state: RootState) => state.negocio);
+    const { usuario } = useSelector((state: RootState) => state.usuario);
     const { productos } = useSelector((state: RootState) => state.producto);
     const { categorias } = useSelector((state: RootState) => state.categoria);
     const { provedores } = useSelector((state: RootState) => state.provedor);
@@ -24,8 +24,8 @@ export const InventarioPage = () => {
     });
 
     useEffect(() => {
-        negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
-    }, [dispatch, negocio.id]);
+        usuario && dispatch(obtenerProductosNegocio(usuario?.negocio?.id!))
+    }, [dispatch]);
 
     const { handleSubmit, errors, touched, getFieldProps } = useFormik<NuevoProducto>({
         initialValues: {
@@ -35,14 +35,12 @@ export const InventarioPage = () => {
             stock: 0,
             costo: 0.0,
             precio: 0.0,
-            registro: '',
-            provedorid: 0,
-            categoriaid: 0,
-            negocioid: negocio.id || 0
+            provedores: [],
+            categorias: []
         },
         onSubmit: async (values) => {
             await crearProducto(values);
-            dispatch(obtenerProductosNegocio(negocio.id!));
+            dispatch(obtenerProductosNegocio(usuario?.negocio!.id!));
             setState({ openModal: false });
         },
         validationSchema: Yup.object({
@@ -54,7 +52,7 @@ export const InventarioPage = () => {
         initialValues: { query: '' },
         onSubmit: async (values) => {
             // dispatch(obtenerProductosQuery(values.query));
-            const resp = await obtenerProductosQuery(values.query, `${negocio.id}`);
+            const resp = await obtenerProductosQuery(values.query, `${usuario?.negocio!.id!}`);
             console.log(resp);
             resetFormSearch();
         },
@@ -129,6 +127,7 @@ export const InventarioPage = () => {
                         <div className="col-6">
                             <MyTextInput
                                 label="Stock"
+                                type="number"
                                 className="form-control"
                                 {...getFieldProps('stock')}
                             />
@@ -136,6 +135,7 @@ export const InventarioPage = () => {
                         <div className="col-6">
                             <MyTextInput
                                 label="Costo (Compra)"
+                                type="number"
                                 className="form-control"
                                 {...getFieldProps('costo')}
                             />
@@ -145,6 +145,7 @@ export const InventarioPage = () => {
                         <div className="col-6">
                             <MyTextInput
                                 label="Precio (Venta)"
+                                type="number"
                                 className="form-control"
                                 {...getFieldProps('precio')}
                             />
@@ -154,6 +155,7 @@ export const InventarioPage = () => {
                             <MySelect
                                 label="Categoria"
                                 className="form-control"
+                                multiple
                                 {...getFieldProps('categoriaid')}
                             >
                                 <option value={0}>Selet an optionm</option>

@@ -1,15 +1,32 @@
+import { Negocio } from "./Negocio.interface";
 import { Producto } from "./Producto.interface";
-
-
-/* Interfaces Ventas */
+import { Usuario } from "./Usuario.interface";
 
 export interface Venta {
-    id?: number,
+    id: string;
+    fecha: Date;
+    vendedor: Usuario;
+    comprador: Usuario;
+    negocio: Negocio;
+    total: number;
+    pago: number;
+    detalles: DetallesVenta
+}
+
+export interface DetallesVenta {
+    cantidad: number,
     total: number,
-    pago: number,
-    fecha: Date,
-    usuarionombre: string,
-    clientenombre: string,
+    producto: Producto,
+}
+
+/* Interfaces de Nuevas Ventas */
+export interface NuevaVenta {
+    total: number;
+    pago: number;
+    vendedor: Usuario;
+    comprador: Usuario;
+    negocio: Negocio;
+    detalles: DetallesVenta[]
 }
 
 export class VentaConvert {
@@ -26,23 +43,9 @@ export class VentaConvert {
     }
 }
 
-/* Interfaces de Nuevas Ventas */
-export interface NuevaVenta {
-    total: number,
-    pago: number,
-    usuarioid: number,
-    clienteid: number,
-    negocioid: number,
-    detalles: DetallesVentaState[]
-}
 
 export interface VentaState {
-    detalles: DetallesVentaState[];
+    detalles: DetallesVenta[];
     total: number;
 }
 
-export interface DetallesVentaState {
-    cantidad: number,
-    total: number,
-    producto: Producto,
-}
