@@ -26,12 +26,13 @@ export const crearNegocio = (negocio: NuevoNegocio) => {
 
 export const obtenerNegocios = () => {
     return async (dispatch: AppDispatch) => {
-        const { data } = await servicesApiToken(`/negocio`);
-        if (data.ok) {
-            const negocios = NegocioConvert.toNegocioList(JSON.stringify(data.data));
+        try {
+            const { data } = await servicesApiToken(`/negocios`);
+            const negocios = NegocioConvert.toNegocioList(JSON.stringify(data));
             dispatch(setNegocios(negocios));
-        } else {
-            Swal.fire('Error', data.data, 'info');
+        } catch (e) {
+            console.log(e);
+            Swal.fire('Error')
         }
     }
 }

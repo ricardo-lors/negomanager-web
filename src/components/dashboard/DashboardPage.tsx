@@ -2,14 +2,16 @@ import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "../../hooks"
 import { RootState } from "../../store"
-import { obtenerCategorias } from "../../store/slices/categoria/thuncks"
-import { obtenerClientes } from "../../store/slices/cliente/thuncks"
-import { obtenerNegocio } from "../../store/slices/negocio/thuncks"
-import { obtenerProvedoresNegocio } from "../../store/slices/provedor"
-import { obtenerUsuarios } from "../../store/slices/usuario"
+// import { obtenerCategorias } from "../../store/slices/categoria/thuncks"
+// import { obtenerClientes } from "../../store/slices/cliente/thuncks"
+// import { obtenerNegocio } from "../../store/slices/negocio/thuncks"
+// import { obtenerProvedoresNegocio } from "../../store/slices/provedor"
+// import { obtenerUsuarios } from "../../store/slices/usuario"
 import { Navbar } from "../shared/Navbar"
 import { Sidebar } from "../shared/Sidebar"
-import { DashboardRoutes } from "./routes/DashboardRoutes"
+import { Administrador } from "./pages/administrador/Administrador"
+import { SuperAdministrador } from "./pages/superadministrador/SuperAdministrador"
+// import { DashboardRoutes } from "./routes/DashboardRoutes"
 
 export const DashboardPage = () => {
 
@@ -29,31 +31,27 @@ export const DashboardPage = () => {
     const { cargando: cargandoProvedor } = useSelector((state: RootState) => state.provedor);
     const { cargando: cargandoClientes } = useSelector((state: RootState) => state.cliente);
 
-    if (cargandoNegocio || cargandoCategoria || cargandoProvedor || cargandoClientes) {
-        return <div className='d-flex justify-content-center align-items-center vh-100'>
-            <div className="spinner-border" role="status">
-                <span className="visually-hidden">Loading...</span>
-            </div>
-        </div>
-    }
-
     return (
         <>
-            <Navbar />
-            <div className="container-fluid">
-                <Sidebar />
-                <DashboardRoutes />
-            </div>
+            {
+                cargandoNegocio || cargandoCategoria || cargandoProvedor || cargandoClientes
+                    ? <div className='d-flex justify-content-center align-items-center vh-100'>
+                        <div className="spinner-border" role="status">
+                            <span className="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                    : <>
+                        <Navbar />
+                        <div className="container-fluid">
+                            <Sidebar />
+                            {
+                                usuario?.roles.includes('super-administrador')
+                                    ? <SuperAdministrador />
+                                    : <Administrador />
+                            }
+                        </div>
+                    </>
+            }
         </>
     )
 }
-
-
-{/* <div className="container-fluid">
-<div className="row">
-    <Sidebar />
-    <div className="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-        <DashboardRoutes />
-    </div>
-</div>
-</div> */}

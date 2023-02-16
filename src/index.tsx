@@ -4,7 +4,6 @@ import './index.css';
 import { NegoManager } from './NegoManager';
 import { Provider } from 'react-redux';
 import { store } from './store';
-import { BrowserRouter } from 'react-router-dom';
 // import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(
@@ -13,11 +12,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <NegoManager />
-      </Provider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <NegoManager />
+    </Provider>
   </React.StrictMode>
 );
 

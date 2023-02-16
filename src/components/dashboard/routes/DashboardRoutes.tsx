@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { Navigate, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { RootState } from '../../../store';
 import {
     CategoriasPage,
@@ -17,8 +17,6 @@ import { VendedoresPage } from '../pages/VendedoresPage';
 
 export const DashboardRoutes = () => {
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
-
     return (
         <>
             <Routes>
@@ -33,16 +31,6 @@ export const DashboardRoutes = () => {
                 <Route path="/provedores" element={<ProvedoresPage />} />
                 <Route path="/ventas" element={<VentasPage />} />
                 <Route path="/vendedores" element={<VendedoresPage />} />
-
-                <Route path="/" element={
-                    usuario?.roles.includes('super-administrador')
-                        ? <Navigate to='/dashboard/negocios' replace={true} />
-                        : usuario?.roles.includes('administrador')
-                            ? <Navigate to='/dashboard/inventario' replace={true} />
-                            : <Navigate to='/dashboard/puntoventa' replace={true} />
-                } />
-
-                {/* <Navigate to="/marvel" /> */}
             </Routes>
         </>
     )
