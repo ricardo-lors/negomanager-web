@@ -1,4 +1,3 @@
-
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Routes, Route, Navigate, BrowserRouter } from 'react-router-dom';
@@ -11,7 +10,6 @@ import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
 export const AppRouter = () => {
-    // Retirar 
     const dispatch = useAppDispatch();
 
     useEffect(() => {
@@ -31,7 +29,6 @@ export const AppRouter = () => {
     }
     return (
         <BrowserRouter>
-
             <Routes>
                 <Route path="login/*" element={
                     <PublicRoute>
