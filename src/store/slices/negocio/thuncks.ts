@@ -7,26 +7,20 @@ import { setNegocio, setNegocios, startGetNegocio } from "./negocioSlice";
 
 export const crearNegocio = (negocio: NuevoNegocio) => {
     return async (dispatch: AppDispatch) => {
-        const resp = await servicesApiToken(`/negocios`, 'POST', {
-            nombre: negocio.nombreNegocio,
-            descripcion: negocio.descripcionNegocio,
-            correo: negocio.correoNegocio,
-            telefono: negocio.telefonoNegocio,
-        });
-        console.log(resp);
-        // if (data.ok) {
+        const { data } = await servicesApiToken(`/negocio`, 'POST', negocio);
+        if (data.ok) {
 
-        //     const { data } = await servicesApiToken(`/negocio`);
-        //     if (data.ok) {
-        //         const negocios = NegocioConvert.toNegocioList(JSON.stringify(data.data));
-        //         dispatch(setNegocios(negocios));
-        //         Swal.fire('Creado', data.data, 'success');
-        //     } else {
-        //         Swal.fire('Error', data.data, 'info');
-        //     }
-        // } else {
-        //     Swal.fire('Error', data.data, 'info');
-        // }
+            const { data } = await servicesApiToken(`/negocio`);
+            if (data.ok) {
+                const negocios = NegocioConvert.toNegocioList(JSON.stringify(data.data));
+                dispatch(setNegocios(negocios));
+                Swal.fire('Creado', data.data, 'success');
+            } else {
+                Swal.fire('Error', data.data, 'info');
+            }
+        } else {
+            Swal.fire('Error', data.data, 'info');
+        }
     }
 }
 
