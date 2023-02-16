@@ -13,11 +13,9 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
-      <Provider store={store}>
-        <NegoManager />
-      </Provider>
-    </BrowserRouter>
+    <Provider store={store}>
+      <NegoManager />
+    </Provider>
   </React.StrictMode>
 );
 
