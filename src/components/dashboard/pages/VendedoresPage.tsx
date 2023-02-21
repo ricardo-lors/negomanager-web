@@ -24,6 +24,7 @@ export const VendedoresPage = () => {
             nombre: '',
             correo: '',
             contrasena: '',
+            contrasenaRepeat: '',
             roles: []
         },
         onSubmit: async (values) => {

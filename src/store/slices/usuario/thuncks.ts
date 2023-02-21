@@ -4,18 +4,35 @@ import { AppDispatch, RootState } from "../../store";
 import { startGetUsuario, setUsuario, endGetUsuario, setUsuarios, removerUsuario } from "./usuarioSlice";
 import Swal from 'sweetalert2'
 import { removerNegocio } from "../negocio";
+import { AxiosError } from "axios";
 
 export const sesion = (credenciales: UsuarioForm) => {
     return async (dispatch: AppDispatch) => {
-        dispatch(startGetUsuario());
+        // dispatch(startGetUsuario());
+        Swal.fire('Cargando');
+        Swal.showLoading();
         try {
             const { data } = await servicesApi(`/auth/login`, 'POST', credenciales);
             localStorage.setItem('x-token', data.token);
             const usuario = UsuarioConvert.toUsuario(JSON.stringify(data));
             dispatch(setUsuario(usuario));
+            Swal.close();
         } catch (e) {
-            console.log(e);
-            Swal.fire('Error')
+            console.log(e)
+            if (e instanceof AxiosError) {
+                // ✅ TypeScript knows err is Error
+                Swal.fire('Error', `${e.response?.data.message}`, 'error');
+            } else {
+                console.log('Unexpected error', e);
+            }
+            // 👈️ err is unknown
+            // if (typeof e === 'object' && e !== null) {
+            //     console.log(e.toString());
+            //     Swal.fire('Error', `${e.response}`, 'error');
+            // } else {
+            //     console.log('Unexpected error', e);
+            // }
+
         }
     }
 }
@@ -47,8 +64,13 @@ export const removerSesion = () => {
 
 export const crearUsuario = (usuario: UsuarioForm) => {
     return async (dispatch: AppDispatch /*, getState: RootState*/) => {
-        const { data } = await servicesApiToken(`/auth/registro`, 'POST', usuario);
-        console.log(data);
+        try {
+            const { data } = await servicesApiToken(`/auth/registro`, 'POST', usuario);
+
+            console.log(data);
+        } catch (error) {
+
+        }
         // if (data.ok) {
         //     const { data } = await servicesApiToken.get(`/usuario/negocio/${negocioid}`);
         //     if (data.ok) {

@@ -17,7 +17,8 @@ import axios, { AxiosRequestConfig } from 'axios';
 // });
 
 // const baseUrl = 'http://localhost:5000'; // Obtener de el sistema
-const baseUrl = 'http://localhost:5000/api';//process.env.REACT_APP_API_URL;//'http://sistemascbs.dynns.com:4000'; //  
+// const baseUrl = 'http://localhost:4000/api';
+const baseUrl = process.env.REACT_APP_API_URL;//'http://sistemascbs.dynns.com:4000'; //  
 // const baseUrl = 'http://sistemascbs.dynns.com:9001';
 // const baseUrl = 'http://localhost:4000';
 // console.log("Conectado en el 5000");

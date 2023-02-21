@@ -5,6 +5,7 @@ export interface UsuarioForm {
     correo: string;
     nombre?: string;
     contrasena: string;
+    contrasenaRepeat?: string;
     roles?: string[];
 }
 

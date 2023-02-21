@@ -33,5 +33,12 @@
         "nombre": "Categorias",
         "replace": true,
         "icono": "bi-bag-plus"
+    },
+    {
+        "id": 7,
+        "ruta": "/dashboard/negocio",
+        "nombre": "Negocio",
+        "replace": true,
+        "icono": "bi bi-shop"
     }
 ]

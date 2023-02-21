@@ -10,7 +10,7 @@ export const SuperAdministrador = () => {
 
     useEffect(() => {
         dispatch(obtenerNegocios());
-    }, [])
+    }, []);
 
     return (
         <Routes>
