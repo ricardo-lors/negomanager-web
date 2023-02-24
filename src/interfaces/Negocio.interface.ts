@@ -1,14 +1,10 @@
 
 
 export interface NuevoNegocio {
-    nombreNegocio: string,
-    descripcionNegocio: string,
-    correoNegocio: string,
-    telefonoNegocio: string,
-    nombre: string;
-    correo: string;
-    contrasena: string;
-    rolid: number;
+    nombre: string,
+    descripcion: string,
+    correo: string,
+    telefono: string,
 }
 
 export interface Negocio {

@@ -13,9 +13,9 @@ export const PublicRoute = ({ children }: props) => {
     return (
         <>
             {
-                (!logueado)
-                    ? children
-                    : <Navigate to='/dashboard' replace={true} />
+                (logueado)
+                    ? <Navigate to='/dashboard' replace={true} />
+                    : children
             }
         </>
     )

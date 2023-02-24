@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import Swal from "sweetalert2";
 import { NegocioConvert, NuevoNegocio } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
@@ -7,20 +8,31 @@ import { setNegocio, setNegocios, startGetNegocio } from "./negocioSlice";
 
 export const crearNegocio = (negocio: NuevoNegocio) => {
     return async (dispatch: AppDispatch) => {
-        const { data } = await servicesApiToken(`/negocio`, 'POST', negocio);
-        if (data.ok) {
+        try {
+            const { data, status } = await servicesApiToken(`/negocios`, 'POST', negocio);
+            console.log(data);
+            console.log(status);
+        } catch (e) {
 
-            const { data } = await servicesApiToken(`/negocio`);
-            if (data.ok) {
-                const negocios = NegocioConvert.toNegocioList(JSON.stringify(data.data));
-                dispatch(setNegocios(negocios));
-                Swal.fire('Creado', data.data, 'success');
+            if (e instanceof AxiosError) {
+                // ✅ TypeScript knows err is Error
+                Swal.fire('Error', `${e.response?.data.message}`, 'error');
             } else {
-                Swal.fire('Error', data.data, 'info');
+                console.log('Unexpected error', e);
             }
-        } else {
-            Swal.fire('Error', data.data, 'info');
         }
+        // if (data.ok) {
+        //     const { data } = await servicesApiToken(`/negocio`);
+        //     if (data.ok) {
+        //         const negocios = NegocioConvert.toNegocioList(JSON.stringify(data.data));
+        //         dispatch(setNegocios(negocios));
+        //         Swal.fire('Creado', data.data, 'success');
+        //     } else {
+        //         Swal.fire('Error', data.data, 'info');
+        //     }
+        // } else {
+        //     Swal.fire('Error', data.data, 'info');
+        // }
     }
 }
 

@@ -1,14 +1,21 @@
 [
     {
         "id": 1,
-        "ruta": "/dashboard/inventario",
+        "ruta": "/dashboard",
+        "nombre": "Inicio",
+        "replace": true,
+        "icono": "bi bi-house"
+    },
+    {
+        "id": 2,
+        "ruta": "/dashboard/admin/inventario",
         "nombre": "Inventario",
         "replace": true,
         "icono": "bi-clipboard"
     },
     {
-        "id": 2,
-        "ruta": "/dashboard/vendedores",
+        "id": 3,
+        "ruta": "/dashboard/admin/vendedores",
         "nombre": "Vendedores",
         "replace": true,
         "icono": "bi-person"
@@ -22,21 +29,21 @@
     },
     {
         "id": 5,
-        "ruta": "/dashboard/provedores",
+        "ruta": "/dashboard/admin/provedores",
         "nombre": "Provedores",
         "replace": true,
         "icono": "bi-bag-plus"
     },
     {
         "id": 6,
-        "ruta": "/dashboard/categorias",
+        "ruta": "/dashboard/admin/categorias",
         "nombre": "Categorias",
         "replace": true,
         "icono": "bi-bag-plus"
     },
     {
         "id": 7,
-        "ruta": "/dashboard/negocio",
+        "ruta": "/dashboard/admin/negocio",
         "nombre": "Negocio",
         "replace": true,
         "icono": "bi bi-shop"

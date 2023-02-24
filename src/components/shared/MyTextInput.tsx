@@ -6,6 +6,7 @@ interface Props {
     label?: string;
     errors?: FormikErrors<string>;
     placeholder?: string;
+    disabled?: boolean;
     [x: string]: any;
 }
 

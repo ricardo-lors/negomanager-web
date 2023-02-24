@@ -10,7 +10,7 @@ export interface usuarioState {
 }
 
 const initialState: usuarioState = {
-    cargando: false,
+    cargando: true,
     logueado: false,
 }
 
@@ -30,8 +30,8 @@ export const usuarioSlice = createSlice({
             state.cargando = false;
         },
         setUsuarios: (state, actions: PayloadAction<Usuario[]>) => {
-            // state.cargando = false;
-            // state.logueado = true;
+            state.cargando = false;
+            state.logueado = true;
             state.usuarios = actions.payload;
         },
         removerUsuario: (state) => {

@@ -5,7 +5,7 @@ import { Login } from '../components/auth/Login';
 import { DashboardPage } from '../components/dashboard/DashboardPage';
 import { useAppDispatch } from '../hooks';
 import { RootState } from '../store';
-import { revalidarSesion } from '../store/slices/usuario';
+import { endGetUsuario, revalidarSesion } from '../store/slices/usuario';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
@@ -15,6 +15,8 @@ export const AppRouter = () => {
     useEffect(() => {
         if (localStorage.getItem('x-token')) {
             dispatch(revalidarSesion());
+        } else {
+            dispatch(endGetUsuario());
         }
     }, [dispatch]);
 
@@ -30,21 +32,19 @@ export const AppRouter = () => {
     return (
         <BrowserRouter>
             <Routes>
-                <Route path="login/*" element={
+                <Route path="/login" element={
                     <PublicRoute>
-                        <Routes>
-                            <Route path="/*" element={<Login />} />
-                        </Routes>
+                        <Login />
                     </PublicRoute>
                 } />
 
-                <Route path="dashboard/*" element={
+                <Route path="/dashboard/*" element={
                     <PrivateRoute>
                         <DashboardPage />
                     </PrivateRoute>
                 } />
 
-                {/* <Route path='/' element={<Navigate to="/dashboard" replace={true} />} /> */}
+                <Route path='/' element={<Navigate to="/dashboard" replace={true} />} />
             </Routes>
         </BrowserRouter>
     )

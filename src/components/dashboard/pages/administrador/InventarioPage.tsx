@@ -1,14 +1,13 @@
 import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../../hooks";
-import { NuevoProducto, Producto, ProductoConvert } from "../../../interfaces";
-import { RootState } from "../../../store";
-import { crearProducto, obtenerProductosNegocio, obtenerProductosQuery } from "../../../store/slices/producto/thuncks";
+import { useAppDispatch } from "../../../../hooks";
+import { NuevoProducto, Producto, ProductoConvert } from "../../../../interfaces";
+import { RootState } from "../../../../store";
+import { crearProducto, obtenerProductosNegocio, obtenerProductosQuery } from "../../../../store/slices/producto/thuncks";
 import * as Yup from 'yup';
 
-
-import { Modal, MySelect, MyTextInput } from "../../shared";
+import { Modal, MySelect, MyTextInput } from "../../../shared";
 
 export const InventarioPage = () => {
 
@@ -78,22 +77,32 @@ export const InventarioPage = () => {
                     </form>
                 </div>
             </div>
-            <div className="album py-2">
-                <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                    {
-                        productos.map(prod =>
-                            <div key={prod.id} className="col">
-                                <div className="card shadow-sm">
-                                    <div className="card-body">
-                                        <h5 className="card-title">{prod.nombre}</h5>
-                                        <p className="card-text" >{prod.descripcion}</p>
+            {
+                productos.length !== 0
+                    ? <div className="album py-2">
+                        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                            <h5>Inventario</h5>
+                            {/* <hr /> */}
+                            {
+                                productos.map(prod =>
+                                    <div key={prod.id} className="col">
+                                        <div className="card shadow-sm">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{prod.nombre}</h5>
+                                                <p className="card-text" >{prod.descripcion}</p>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        )
-                    }
-                </div>
-            </div>
+                                )
+                            }
+                        </div>
+                    </div>
+                    : <div className="text-center">
+                        <hr />
+                        <h3>Sin Productos</h3>
+                        <h4>Agrege algunos</h4>
+                    </div>
+            }
             <Modal
                 isOpen={openModal}
                 onRequestClose={() => setState({ openModal: false })}

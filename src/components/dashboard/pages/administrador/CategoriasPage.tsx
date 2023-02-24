@@ -1,13 +1,13 @@
 import { useFormik } from "formik";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useAppDispatch } from "../../../hooks";
-import { Categoria } from "../../../interfaces";
-import { RootState } from "../../../store";
-import { crearCategoria, obtenerCategorias } from "../../../store/slices/categoria/thuncks";
+import { useAppDispatch } from "../../../../hooks";
+import { Categoria } from "../../../../interfaces";
+import { RootState } from "../../../../store";
+import { crearCategoria, obtenerCategorias } from "../../../../store/slices/categoria/thuncks";
 import * as Yup from 'yup';
-import { MySelect } from "../../shared/MySelect";
-import { MyTextInput } from "../../shared/MyTextInput";
+import { MySelect } from "../../../shared/MySelect";
+import { MyTextInput } from "../../../shared/MyTextInput";
 
 export const CategoriasPage = () => {
 

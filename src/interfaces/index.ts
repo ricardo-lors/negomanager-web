@@ -1,5 +1,4 @@
 
-
 export * from './Negocio.interface';
 export * from './Rol.interface';
 export * from './Usuario.interface';

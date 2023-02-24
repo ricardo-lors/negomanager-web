@@ -1,14 +1,13 @@
-import { Usuario, UsuarioConvert, UsuarioForm } from "../../../interfaces";
+import { UsuarioConvert, UsuarioForm } from "../../../interfaces";
 import { servicesApi, servicesApiToken } from "../../../services/services.api";
-import { AppDispatch, RootState } from "../../store";
-import { startGetUsuario, setUsuario, endGetUsuario, setUsuarios, removerUsuario } from "./usuarioSlice";
+import { AppDispatch } from "../../store";
+import { setUsuario, endGetUsuario, setUsuarios, removerUsuario } from "./usuarioSlice";
 import Swal from 'sweetalert2'
 import { removerNegocio } from "../negocio";
 import { AxiosError } from "axios";
 
 export const sesion = (credenciales: UsuarioForm) => {
     return async (dispatch: AppDispatch) => {
-        // dispatch(startGetUsuario());
         Swal.fire('Cargando');
         Swal.showLoading();
         try {
@@ -18,6 +17,7 @@ export const sesion = (credenciales: UsuarioForm) => {
             dispatch(setUsuario(usuario));
             Swal.close();
         } catch (e) {
+            dispatch(endGetUsuario());
             console.log(e)
             if (e instanceof AxiosError) {
                 // ✅ TypeScript knows err is Error
@@ -39,7 +39,7 @@ export const sesion = (credenciales: UsuarioForm) => {
 
 export const revalidarSesion = () => {
     return async (dispatch: AppDispatch) => {
-        dispatch(startGetUsuario());
+        // dispatch(startGetUsuario());
         try {
             const { data } = await servicesApiToken(`/auth/check-status`);
             localStorage.setItem('x-token', data.token);
