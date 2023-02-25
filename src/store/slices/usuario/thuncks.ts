@@ -68,8 +68,14 @@ export const crearUsuario = (usuario: UsuarioForm) => {
             const { data } = await servicesApiToken(`/auth/registro`, 'POST', usuario);
 
             console.log(data);
-        } catch (error) {
+        } catch (e) {
 
+            if (e instanceof AxiosError) {
+                // ✅ TypeScript knows err is Error
+                Swal.fire('Error', `${e.response?.data.message}`, 'error');
+            } else {
+                console.log('Unexpected error', e);
+            }
         }
         // if (data.ok) {
         //     const { data } = await servicesApiToken.get(`/usuario/negocio/${negocioid}`);
