@@ -25,11 +25,16 @@ export const VendedoresPage = () => {
             correo: '',
             contrasena: '',
             contrasenaRepeat: '',
-            roles: []
+            roles: ['vendedor']
         },
         onSubmit: async (values) => {
             console.log(values);
-            dispatch(crearUsuario(values));
+            dispatch(crearUsuario({
+                nombre: values.nombre,
+                contrasena: values.contrasena,
+                correo: values.correo,
+                roles: values.roles
+            }));
         },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Requerido')

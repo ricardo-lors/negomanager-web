@@ -3,7 +3,7 @@ import { Negocio } from "./Negocio.interface";
 export interface Categoria {
     id?: number,
     nombre: string,
-    negocio: Negocio
+    negocioid?: string
 }
 
 // Converts JSON strings to/from your types

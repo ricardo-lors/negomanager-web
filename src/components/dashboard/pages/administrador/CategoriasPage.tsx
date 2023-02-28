@@ -23,7 +23,7 @@ export const CategoriasPage = () => {
     const { handleSubmit, errors, touched, getFieldProps } = useFormik<Categoria>({
         initialValues: {
             nombre: '',
-            negocio: usuario?.negocio!
+            negocioid: usuario!.negocio?.id
         },
         onSubmit: async (values) => {
             dispatch(crearCategoria(values));

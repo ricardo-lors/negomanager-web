@@ -22,7 +22,7 @@ export const crearCategoria = (categoria: Categoria) => {
         try {
             const { data } = await servicesApiToken(`/categoria`, 'POST', categoria);
             if (data.ok) {
-                const { data } = await servicesApiToken(`/categoria/negocio/${categoria.negocio.id}`);
+                const { data } = await servicesApiToken(`/categoria/negocio/${categoria.negocioid}`);
                 if (data.ok) {
                     const categorias = CategoriaConvert.toCategoriaList(JSON.stringify(data.data));
                     dispatch(setCategorias(categorias));

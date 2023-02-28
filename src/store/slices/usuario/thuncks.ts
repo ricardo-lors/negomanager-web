@@ -25,14 +25,6 @@ export const sesion = (credenciales: UsuarioForm) => {
             } else {
                 console.log('Unexpected error', e);
             }
-            // 👈️ err is unknown
-            // if (typeof e === 'object' && e !== null) {
-            //     console.log(e.toString());
-            //     Swal.fire('Error', `${e.response}`, 'error');
-            // } else {
-            //     console.log('Unexpected error', e);
-            // }
-
         }
     }
 }
@@ -69,7 +61,7 @@ export const crearUsuario = (usuario: UsuarioForm) => {
 
             console.log(data);
         } catch (e) {
-
+            console.log(e);
             if (e instanceof AxiosError) {
                 // ✅ TypeScript knows err is Error
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
