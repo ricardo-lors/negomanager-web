@@ -1,18 +1,23 @@
 import { Negocio } from "./Negocio.interface";
 
-export interface NuevoProvedor {
-    nombre: string,
-    correo?: string,
-    telefono?: string,
-    negocio: Negocio
-}
+// export interface NuevoProvedor {
+//     nombre: string,
+//     correo?: string,
+//     telefono?: string,
+//     negocio: Negocio
+// }
 
 export interface Provedor {
-    id: number,
+    id?: number,
     nombre: string,
-    correo: string,
-    telefono: string,
-    negocio: Negocio
+    descripcion?: string,
+    correo?: string,
+    telefono?: string,
+    activo?: boolean,
+    attribitos?: object,
+    creado?: Date,
+    actualizado?: Date,
+    negocio?: Negocio
 }
 
 // Converts JSON strings to/from your types

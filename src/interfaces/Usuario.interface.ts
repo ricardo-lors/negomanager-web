@@ -6,6 +6,7 @@ export interface UsuarioForm {
     nombre?: string;
     contrasena: string;
     contrasenaRepeat?: string;
+    negocio?: Negocio;
     roles?: string[];
 }
 

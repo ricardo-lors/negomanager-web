@@ -1,6 +1,6 @@
 import axios from "axios";
 import Swal from "sweetalert2";
-import { NuevoProducto, Producto, ProductoConvert, ProvedorConvert } from "../../../interfaces";
+import { Producto, ProductoConvert, ProvedorConvert } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProductos, startGetProductos } from "./productoSlice";
@@ -11,9 +11,6 @@ export const obtenerProductosNegocio = (negocioid: string) => {
         dispatch(startGetProductos());
         try {
             const { data } = await servicesApiToken(`/productos/${negocioid}`);
-            // const { data } = await axios.get(`http://localhost:4000/api/productos/${negocioid}`, {
-            //     headers: { Authorization: `Bearer ${localStorage.getItem('x-token')}` }
-            // })
             const productos = ProductoConvert.toProducToList(JSON.stringify(data));
             dispatch(setProductos(productos));
         } catch (e) {
@@ -22,6 +19,10 @@ export const obtenerProductosNegocio = (negocioid: string) => {
         }
     }
 }
+
+// const { data } = await axios.get(`http://localhost:4000/api/productos/${negocioid}`, {
+//     headers: { Authorization: `Bearer ${localStorage.getItem('x-token')}` }
+// })
 
 // export const obtenerProductosQuery = async (query: string) => {
 //     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
@@ -54,17 +55,18 @@ export const obtenerProductosNegocio = (negocioid: string) => {
 ////////////////////////
 ////////////////////////
 
-export const crearProducto = async (producto: NuevoProducto) => {
-    try {
-        const { data } = await servicesApiToken(`/producto`, 'POST', producto);
-        if (data.ok) {
-            Swal.fire('Creado', `${data.data}`, 'success');
-        } else {
-            Swal.fire('Error', data.data, 'info');
+export const crearProducto = (producto: Producto) => {
+    return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
+        try {
+            console.log(producto);
+            const { data } = await servicesApiToken(`/productos`, 'POST', producto);
+            dispatch(setProductos(data));
+        } catch (error) {
+            console.log(error)
+            Swal.fire('Error', `${error}`, 'error');
         }
-    } catch (error) {
-        Swal.fire('Error', `${error}`, 'error');
     }
+
 }
 
 export const obtenerProductoCodigo = async (codigo: string, negocioid: string) => {

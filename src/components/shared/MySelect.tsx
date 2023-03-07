@@ -17,7 +17,7 @@ export const MySelect = ({ label, errors, multiple = false, ...props }: Props) =
     return (
         <div className="mb-2">
             {label ?? <label className='form-label' htmlFor={props.id || props.name}>{label}</label>}
-            <select  {...props} multiple />
+            <select  {...props} multiple={multiple} />
             <span className="text-danger">{errors}</span>
         </div>
     )

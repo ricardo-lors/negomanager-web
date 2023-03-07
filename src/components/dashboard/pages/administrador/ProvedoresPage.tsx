@@ -3,7 +3,7 @@ import { useAppDispatch } from "../../../../hooks";
 import { RootState } from "../../../../store";
 import { useEffect } from 'react';
 import { useFormik } from "formik";
-import { NuevoProvedor, Provedor } from "../../../../interfaces";
+import { Provedor } from "../../../../interfaces";
 
 import * as Yup from 'yup';
 import { MyTextInput } from "../../../shared/MyTextInput";
@@ -16,14 +16,12 @@ export const ProvedoresPage = () => {
   const { usuario } = useSelector((state: RootState) => state.usuario);
   const { provedores } = useSelector((state: RootState) => state.provedor);
 
-  useEffect(() => {
-    // negocio.id && dispatch(obtenerCategorias(negocio.id));
-  }, []);
-
-  const { handleSubmit, errors, touched, getFieldProps } = useFormik<NuevoProvedor>({
+  const { handleSubmit, errors, touched, getFieldProps } = useFormik<Provedor>({
     initialValues: {
       nombre: '',
-      negocio: usuario!.negocio!
+      descripcion: '',
+      correo: '',
+      telefono: ''
     },
     onSubmit: async (values) => {
       console.log(values);
@@ -48,6 +46,23 @@ export const ProvedoresPage = () => {
           {...getFieldProps('nombre')}
         />
 
+        <MyTextInput
+          label="Descripcion"
+          className='form-control'
+          {...getFieldProps('descripcion')}
+        />
+        <MyTextInput
+          label="Correo"
+          className='form-control'
+          {...getFieldProps('correo')}
+        />
+
+        <MyTextInput
+          label="Telefono"
+          className='form-control'
+          {...getFieldProps('telefono')}
+        />
+
         <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
 
       </form>
@@ -57,12 +72,20 @@ export const ProvedoresPage = () => {
           <thead>
             <tr>
               <th scope="col">Nombre</th>
+              <th scope="col">Descripcion</th>
+              <th scope="col">Correo</th>
+              <th scope="col">Telefono</th>
+              <th scope="col">Activo</th>
             </tr>
           </thead>
           <tbody>
             {
               provedores.map(pb => <tr key={pb.id}>
                 <th>{pb.nombre}</th>
+                <th>{pb.descripcion}</th>
+                <th>{pb.correo}</th>
+                <th>{pb.telefono}</th>
+                <th>{pb.activo ? 'SI' : 'NO'}</th>
                 {/* <th><div style={{ backgroundColor: st.color, maxWidth: 100, color: 'white' }}  >{st.color}</div></th> */}
               </tr>)
             }

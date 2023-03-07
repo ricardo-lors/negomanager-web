@@ -13,7 +13,7 @@ export const VendedoresPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { usuarios } = useSelector((state: RootState) => state.usuario);
+    const { usuario, usuarios } = useSelector((state: RootState) => state.usuario);
 
     useEffect(() => {
         // negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
@@ -25,6 +25,7 @@ export const VendedoresPage = () => {
             correo: '',
             contrasena: '',
             contrasenaRepeat: '',
+            negocio: usuario!.negocio,
             roles: ['vendedor']
         },
         onSubmit: async (values) => {
@@ -33,7 +34,8 @@ export const VendedoresPage = () => {
                 nombre: values.nombre,
                 contrasena: values.contrasena,
                 correo: values.correo,
-                roles: values.roles
+                roles: values.roles,
+                negocio: values.negocio
             }));
         },
         validationSchema: Yup.object({
@@ -59,12 +61,6 @@ export const VendedoresPage = () => {
                         label="Correo"
                         className="form-control"
                         {...getFieldProps('correo')}
-                    />
-
-                    <MyTextInput
-                        label="Telefono"
-                        className="form-control"
-                        {...getFieldProps('telefono')}
                     />
 
                     <MyTextInput

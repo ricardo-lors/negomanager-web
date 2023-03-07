@@ -3,31 +3,19 @@ import { Negocio } from "./Negocio.interface";
 import { Provedor } from "./Provedor.interface";
 
 
-export interface NuevoProducto {
-    codigo: string,
-    nombre: string,
-    descripcion?: string,
-    stock?: number,
-    costo?: number,
-    precio?: number,
-    activo?: boolean,
-    provedores?: string[],
-    categorias: string[],
-    attributos?: Object
-}
 
 export interface Producto {
     id?: number,
     codigo: string,
     nombre: string,
-    descripcion: string,
+    descripcion?: string,
     stock: number,
     costo: number,
     precio: number,
-    registro: string,
-    provedor?: Provedor,
-    categoria?: Categoria,
-    negocioid: number
+    registro?: string,
+    provedores: Provedor[],
+    categorias: Categoria[],
+    negocioid?: number
 }
 
 // Converts JSON strings to/from your types

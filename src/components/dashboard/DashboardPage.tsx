@@ -2,6 +2,8 @@ import { useEffect } from "react"
 import { useSelector } from "react-redux"
 import { useAppDispatch } from "../../hooks"
 import { RootState } from "../../store"
+import { obtenerCategorias } from "../../store/slices/categoria/thuncks"
+import { obtenerProvedoresNegocio } from "../../store/slices/provedor"
 // import { obtenerCategorias } from "../../store/slices/categoria/thuncks"
 // import { obtenerClientes } from "../../store/slices/cliente/thuncks"
 // import { obtenerNegocio } from "../../store/slices/negocio/thuncks"
@@ -20,8 +22,8 @@ export const DashboardPage = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        // usuario?.negocio && dispatch(obtenerCategorias(usuario?.negocio!.id));
-        // usuario?.negocio && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id));
+        usuario?.negocio && dispatch(obtenerCategorias(usuario?.negocio!.id));
+        usuario?.negocio && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id));
         // usuario?.negocio && dispatch(obtenerClientes(usuario?.negocio!.id));
         // usuario?.negocio && dispatch(obtenerUsuarios(usuario?.negocio!.id));
     }, [dispatch]);

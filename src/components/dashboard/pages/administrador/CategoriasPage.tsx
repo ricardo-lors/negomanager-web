@@ -16,16 +16,16 @@ export const CategoriasPage = () => {
     const { usuario } = useSelector((state: RootState) => state.usuario);
     const { categorias } = useSelector((state: RootState) => state.categoria);
 
-    useEffect(() => {
-        // negocio.id && dispatch(obtenerCategorias(negocio.id));
-    }, []);
+    // useEffect(() => {
+    //     usuario?.negocio && dispatch(obtenerCategorias(usuario.negocio.id));
+    // }, []);
 
     const { handleSubmit, errors, touched, getFieldProps } = useFormik<Categoria>({
         initialValues: {
-            nombre: '',
-            negocioid: usuario!.negocio?.id
+            nombre: ''
         },
         onSubmit: async (values) => {
+            console.log(values)
             dispatch(crearCategoria(values));
         },
         validationSchema: Yup.object({
@@ -47,11 +47,11 @@ export const CategoriasPage = () => {
                     {...getFieldProps('nombre')}
                 />
 
-                <div className="mb-3">
+                {/* <div className="mb-3">
                     <label className="form-label">Color</label>
                     <input type="color" className="form-control form-control-color w-100" {...getFieldProps('color')} title="Choose your color" />
-                    {/* value="#563d7c"  */}
-                </div>
+                    {/* value="#563d7c"  
+                </div> */}
 
                 <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
 
@@ -62,14 +62,12 @@ export const CategoriasPage = () => {
                     <thead>
                         <tr>
                             <th scope="col">Nombre</th>
-                            <th scope="col">Descripcion</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             categorias.map(st => <tr key={st.id}>
                                 <th>{st.nombre}</th>
-                                {/* <th><div >{st.color}</div></th> */}
                             </tr>)
                         }
                     </tbody>

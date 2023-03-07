@@ -1,16 +1,17 @@
 import Swal from "sweetalert2";
-import { NuevoProvedor, ProvedorConvert } from "../../../interfaces";
+import { Provedor, ProvedorConvert } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProvedores, startGetProvedores } from "./provedorSlice";
 
-export const crearProvedor = (provedor: NuevoProvedor) => {
+export const crearProvedor = (provedor: Provedor) => {
     return async (dispatch: AppDispatch) => {
-        const { data } = await servicesApiToken(`/provedor`, 'POST', provedor);
-        if (data.ok) {
-            Swal.fire('Creado', `${data.data}`, 'success');
-        } else {
-            Swal.fire('Error', `${data.data}`, 'info');
+        try {
+            const { data } = await servicesApiToken(`/provedores`, 'POST', provedor);
+            dispatch(setProvedores(data));
+            Swal.fire('Perfecto', 'Provedor Creado', 'success');
+        } catch (error) {
+            Swal.fire('Error', `${error}`, 'info');
         }
     }
 }
@@ -18,13 +19,11 @@ export const crearProvedor = (provedor: NuevoProvedor) => {
 export const obtenerProvedoresNegocio = (negocioid: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(startGetProvedores());
-        const { data } = await servicesApiToken(`/provedor/negocio/${negocioid}`);
-        if (data.ok) {
-            console.log(data);
-            const provedores = ProvedorConvert.toProvedorList(JSON.stringify(data.data));
-            dispatch(setProvedores(provedores));
-        } else {
-            Swal.fire('Error', `${data.data}`, 'info');
+        try {
+            const { data } = await servicesApiToken(`/provedores/${negocioid}`);
+            dispatch(setProvedores(data));
+        } catch (error) {
+            Swal.fire('Error', `${error}`, 'info');
         }
     }
 }

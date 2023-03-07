@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../../hooks";
-import { NuevoProducto, Producto, ProductoConvert } from "../../../../interfaces";
+import { Producto, ProductoConvert } from "../../../../interfaces";
 import { RootState } from "../../../../store";
 import { crearProducto, obtenerProductosNegocio, obtenerProductosQuery } from "../../../../store/slices/producto/thuncks";
 import * as Yup from 'yup';
@@ -26,7 +26,7 @@ export const InventarioPage = () => {
         usuario && dispatch(obtenerProductosNegocio(usuario?.negocio?.id!))
     }, [dispatch]);
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<NuevoProducto>({
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<Producto>({
         initialValues: {
             codigo: '',
             nombre: '',
@@ -38,9 +38,9 @@ export const InventarioPage = () => {
             categorias: []
         },
         onSubmit: async (values) => {
-            await crearProducto(values);
-            dispatch(obtenerProductosNegocio(usuario?.negocio!.id!));
-            setState({ openModal: false });
+            await dispatch(crearProducto(values));
+            // dispatch(obtenerProductosNegocio(usuario?.negocio!.id!));
+            // setState({ openModal: false });
         },
         validationSchema: Yup.object({
             codigo: Yup.string().required('Requerido')
@@ -82,7 +82,6 @@ export const InventarioPage = () => {
                     ? <div className="album py-2">
                         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                             <h5>Inventario</h5>
-                            {/* <hr /> */}
                             {
                                 productos.map(prod =>
                                     <div key={prod.id} className="col">
@@ -164,13 +163,12 @@ export const InventarioPage = () => {
                             <MySelect
                                 label="Categoria"
                                 className="form-control"
-                                multiple
-                                {...getFieldProps('categoriaid')}
+                                multiple={true}
+                                {...getFieldProps('categorias')}
                             >
-                                <option value={0}>Selet an optionm</option>
                                 {
                                     categorias?.map(opt => (
-                                        <option key={opt.id} value={opt.id}>{opt.nombre}</option>
+                                        <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
                                     ))
                                 }
                             </MySelect>
@@ -180,9 +178,9 @@ export const InventarioPage = () => {
                     <MySelect
                         label="Provedor"
                         className="form-control"
-                        {...getFieldProps('provedorid')}
+                        multiple={true}
+                        {...getFieldProps('provedores')}
                     >
-                        <option value={0}>Selet an optionm</option>
                         {
                             provedores?.map(opt => (
                                 <option key={opt.id} value={opt.id}>{opt.nombre}</option>
@@ -190,7 +188,7 @@ export const InventarioPage = () => {
                         }
                     </MySelect>
 
-                    <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
+                    <button type="submit" className="btn btn-primary text-decoration-none w-100">Guardar</button>
                 </form>
             </Modal>
         </>
