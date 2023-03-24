@@ -5,7 +5,6 @@ import { Usuario } from '../../../interfaces'
 export interface usuarioState {
     cargando: boolean,
     logueado: boolean,
-    usuarios?: Usuario[]
     usuario?: Usuario
 }
 
@@ -32,12 +31,10 @@ export const usuarioSlice = createSlice({
         setUsuarios: (state, actions: PayloadAction<Usuario[]>) => {
             state.cargando = false;
             state.logueado = true;
-            state.usuarios = actions.payload;
         },
         removerUsuario: (state) => {
             state.cargando = initialState.cargando;
             state.logueado = initialState.logueado;
-            state.usuarios = initialState.usuarios;
             state.usuario = initialState.usuario;
         },
     },

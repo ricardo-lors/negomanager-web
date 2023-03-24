@@ -50,7 +50,6 @@ export const removerSesion = () => {
     return async (dispatch: AppDispatch) => {
         localStorage.removeItem('x-token');
         dispatch(removerUsuario());
-        dispatch(removerNegocio());
     }
 };
 
@@ -69,29 +68,27 @@ export const crearUsuario = (usuario: UsuarioForm) => {
                 console.log('Unexpected error', e);
             }
         }
-        // if (data.ok) {
-        //     const { data } = await servicesApiToken.get(`/usuario/negocio/${negocioid}`);
-        //     if (data.ok) {
-        //         const usuarios = UsuarioConvert.toUsuarioList(JSON.stringify(data.data));
-        //         dispatch(setUsuarios(usuarios));
-        //         Swal.fire('Creado', data.data, 'success');
-        //     } else {
-        //         Swal.fire('Error', data.data, 'info');
-        //     }
-        // } else {
-        //     Swal.fire('Error', data.data, 'info');
-        // }
     }
 };
+// http://localhost:4000/api/auth/usuarios?rol=vendedor&negocio=ad2824cc-622f-4796-a989-1a60e2cd00ba
+// export const obtenerUsuarios = (negocioid: string, rol: string) => {
+//     return async (dispatch: AppDispatch) => {
+//         const { data } = await servicesApiToken(`/usuarios?rol=${rol}&negocio=${negocioid}`);
+//         if (data.ok) {
+//             const usuarios = UsuarioConvert.toUsuarioList(JSON.stringify(data.data));
+//             dispatch(setUsuarios(usuarios));
+//         } else {
+//             Swal.fire('Error', data.data, 'info');
+//         }
+//     }
+// };
 
-export const obtenerUsuarios = (negocioid: string) => {
-    return async (dispatch: AppDispatch) => {
-        const { data } = await servicesApiToken(`/usuario/negocio/${negocioid}`);
-        if (data.ok) {
-            const usuarios = UsuarioConvert.toUsuarioList(JSON.stringify(data.data));
-            dispatch(setUsuarios(usuarios));
-        } else {
-            Swal.fire('Error', data.data, 'info');
-        }
+
+export const obtenerUsuarios = async (negocioid: string, rol: string) => {
+    try {
+        const { data } = await servicesApiToken(`/auth/usuarios?rol=${rol}&negocio=${negocioid}`);
+        return data;
+    } catch (error) {
+        Swal.fire('Error', `error`, 'info');
     }
-};
+}

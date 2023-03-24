@@ -13,6 +13,7 @@ import { Navbar } from "../shared/Navbar"
 import { Sidebar } from "../shared/Sidebar"
 import { Administrador } from "./pages/administrador/Administrador"
 import { SuperAdministrador } from "./pages/superadministrador/SuperAdministrador"
+import { Vendedor } from "./pages/vendedor/Vendedor"
 // import { DashboardRoutes } from "./routes/DashboardRoutes"
 
 export const DashboardPage = () => {
@@ -49,7 +50,9 @@ export const DashboardPage = () => {
                             {
                                 usuario?.roles.includes('super-administrador')
                                     ? <SuperAdministrador />
-                                    : <Administrador />
+                                    : usuario?.roles.includes('administrador')
+                                        ? <Administrador />
+                                        : <Vendedor />
                             }
                         </div>
                     </>

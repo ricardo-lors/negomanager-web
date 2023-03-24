@@ -1,5 +1,5 @@
 
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink } from 'react-router-dom'
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -14,7 +14,6 @@ import { removerSesion } from '../../store/slices/usuario';
 export const Sidebar = () => {
 
     const dispatch = useAppDispatch();
-    const navigate = useNavigate();
 
     const { negocio } = useSelector((state: RootState) => state.negocio);
     const { usuario } = useSelector((state: RootState) => state.usuario);
@@ -64,7 +63,7 @@ export const Sidebar = () => {
                         rutas.map(rt => <li
                             key={rt.id}
                             className="nav-item" >
-                            <NavLink className='nav-link text-white' to={rt.ruta} replace={rt.replace} onClick={handleMenu} >
+                            <NavLink className='nav-link text-white' to={rt.ruta} replace={rt.replace} onClick={handleMenu} end >
                                 <i className={`bi ${rt.icono}`} ></i> {rt.nombre}
                             </NavLink>
                         </li>)

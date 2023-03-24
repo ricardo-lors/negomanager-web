@@ -1,23 +1,34 @@
 import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../../hooks";
 import { RootState } from "../../../../store";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { Usuario, UsuarioForm } from "../../../../interfaces";
 
 import * as Yup from 'yup';
 import { MyTextInput } from "../../../shared/MyTextInput";
-import { crearUsuario } from "../../../../store/slices/usuario";
+import { crearUsuario, obtenerUsuarios } from "../../../../store/slices/usuario";
+
+interface VendedoresState {
+    usuarios: Usuario[]
+}
 
 export const VendedoresPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { usuario, usuarios } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const [{ usuarios }, setState] = useState<VendedoresState>({
+        usuarios: []
+    });
 
     useEffect(() => {
         // negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
-    }, [])
+        obtenerUsuarios(usuario!.negocio!.id, 'vendedor').then(resp => {
+            console.log(resp)
+            setState({ usuarios: resp });
+        });
+    }, [usuario])
 
     const { handleSubmit, errors, touched, getFieldProps } = useFormik<UsuarioForm>({
         initialValues: {

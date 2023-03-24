@@ -5,22 +5,26 @@ import { Provedor } from "./Provedor.interface";
 
 
 export interface Producto {
-    id?: number,
+    id?: string,
     codigo: string,
+    activo?: boolean,
+    attributos?: object,
+    actualizado?: string,
     nombre: string,
     descripcion?: string,
     stock: number,
     costo: number,
     precio: number,
     registro?: string,
-    provedores: Provedor[],
-    categorias: Categoria[],
+    provedores: string[],
+    categorias: string[],
     negocioid?: number
 }
 
 // Converts JSON strings to/from your types
 export class ProductoConvert {
     public static toProducto(json: string): Producto {
+        console.log(json);
         return JSON.parse(json);
     }
 

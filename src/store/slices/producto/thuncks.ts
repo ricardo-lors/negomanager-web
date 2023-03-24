@@ -71,14 +71,13 @@ export const crearProducto = (producto: Producto) => {
 
 export const obtenerProductoCodigo = async (codigo: string, negocioid: string) => {
     try {
-        const { data } = await servicesApiToken(`/producto/negocio/${codigo}/${negocioid}'`);
-        if (data.ok) {
-            return data.data;
-        } else {
-            Swal.fire('Error', `${data.data}`, 'info');
-        }
-    } catch (error) {
-        Swal.fire('Error', `${error}`, 'error');
+        const { data } = await servicesApiToken(`/productos/${codigo}/${negocioid}`);
+        // console.log(data);
+        // const producto = ProductoConvert.toProducto(data);
+        return data;
+    } catch (e) {
+        console.log(e);
+        Swal.fire('Error',)
     }
 }
 

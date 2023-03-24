@@ -10,7 +10,10 @@ import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 
 export const AppRouter = () => {
+
     const dispatch = useAppDispatch();
+
+    const { cargando } = useSelector((state: RootState) => state.usuario);
 
     useEffect(() => {
         if (localStorage.getItem('x-token')) {
@@ -18,9 +21,8 @@ export const AppRouter = () => {
         } else {
             dispatch(endGetUsuario());
         }
-    }, [dispatch]);
+    }, [dispatch, cargando]);
 
-    const { cargando } = useSelector((state: RootState) => state.usuario);
 
     if (cargando) {
         return <div className='d-flex justify-content-center align-items-center vh-100'>
