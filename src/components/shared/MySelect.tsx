@@ -6,13 +6,19 @@ interface Props {
     placeholder?: string;
     errors?: FormikErrors<string>;
     multiple?: boolean;
+    simple?: boolean;
     [x: string]: any;
 }
 
 
-export const MySelect = ({ label, errors, multiple = false, ...props }: Props) => {
+export const MySelect = ({ label, errors, multiple = false, simple = false, ...props }: Props) => {
 
     // const [field] = useField(props) {...field}
+
+    if (simple) return (
+        <select className="form-select" {...props} aria-label={label}>
+        </select>
+    )
 
     return (
         <div className="mb-2">

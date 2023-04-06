@@ -89,6 +89,6 @@ export const obtenerUsuarios = async (negocioid: string, rol: string) => {
         const { data } = await servicesApiToken(`/auth/usuarios?rol=${rol}&negocio=${negocioid}`);
         return data;
     } catch (error) {
-        Swal.fire('Error', `error`, 'info');
+        Swal.fire('Error', `error: ${error}`, 'info');
     }
 }

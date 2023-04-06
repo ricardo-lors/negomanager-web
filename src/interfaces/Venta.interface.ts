@@ -23,9 +23,10 @@ export interface DetallesVenta {
 export interface NuevaVenta {
     total: number;
     pago: number;
-    vendedor: Usuario;
-    comprador: Usuario;
-    negocio: Negocio;
+    cambio: number;
+    // vendedor: string;
+    comprador: string;
+    // negocio: string;
     detalles: DetallesVenta[]
 }
 

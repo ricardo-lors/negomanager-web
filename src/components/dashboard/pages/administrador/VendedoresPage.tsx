@@ -2,12 +2,13 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../../hooks";
 import { RootState } from "../../../../store";
 import { useEffect, useState } from "react";
-import { useFormik } from "formik";
+import { FormikHelpers, useFormik } from "formik";
 import { Usuario, UsuarioForm } from "../../../../interfaces";
 
 import * as Yup from 'yup';
 import { MyTextInput } from "../../../shared/MyTextInput";
 import { crearUsuario, obtenerUsuarios } from "../../../../store/slices/usuario";
+import { FormularioAgregarUsuarios } from "../../../shared/FormularioAgregarUsuarios";
 
 interface VendedoresState {
     usuarios: Usuario[]
@@ -30,65 +31,27 @@ export const VendedoresPage = () => {
         });
     }, [usuario])
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<UsuarioForm>({
-        initialValues: {
-            nombre: '',
-            correo: '',
-            contrasena: '',
-            contrasenaRepeat: '',
-            negocio: usuario!.negocio,
-            roles: ['vendedor']
-        },
-        onSubmit: async (values) => {
-            console.log(values);
-            dispatch(crearUsuario({
-                nombre: values.nombre,
-                contrasena: values.contrasena,
-                correo: values.correo,
-                roles: values.roles,
-                negocio: values.negocio
-            }));
-        },
-        validationSchema: Yup.object({
-            nombre: Yup.string().required('Requerido')
-        })
-    });
+    const onSubmit: (values: UsuarioForm, formikHelpers: FormikHelpers<UsuarioForm>) => void | Promise<any> = async (values) => {
+        console.log(values);
+        dispatch(crearUsuario({
+            nombre: values.nombre,
+            contrasena: values.contrasena,
+            correo: values.correo,
+            roles: values.roles,
+            negocio: values.negocio
+        }));
+    };
 
     return (
+
+
         <div className="row">
             <div className="col-3 border-end vh-100">
                 <div className="text-center">
                     <h2>Vendedores</h2>
                 </div>
-                <form className="container mt-4" noValidate onSubmit={handleSubmit}>
-
-                    <MyTextInput
-                        label="Nombre"
-                        className="form-control"
-                        {...getFieldProps('nombre')}
-                    />
-
-                    <MyTextInput
-                        label="Correo"
-                        className="form-control"
-                        {...getFieldProps('correo')}
-                    />
-
-                    <MyTextInput
-                        label="Contraseña"
-                        className="form-control"
-                        {...getFieldProps('contrasena')}
-                    />
-
-                    <MyTextInput
-                        label="Repetir contraseña"
-                        className="form-control"
-                        {...getFieldProps('contrasenaRepeat')}
-                    />
-                    <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
-
-                </form>
-            </div >
+                <FormularioAgregarUsuarios rol={['vendedor']} submit={onSubmit} />
+            </div>
             <div className="col-9">
                 <table className="table">
                     <thead>
@@ -109,6 +72,7 @@ export const VendedoresPage = () => {
                     </tbody>
                 </table>
             </div>
-        </div >
+        </div>
+
     )
 }
