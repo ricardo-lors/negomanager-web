@@ -6,7 +6,6 @@ import { FormikHelpers, useFormik } from "formik";
 import { Usuario, UsuarioForm } from "../../../../interfaces";
 
 import * as Yup from 'yup';
-import { MyTextInput } from "../../../shared/MyTextInput";
 import { crearUsuario, obtenerUsuarios } from "../../../../store/slices/usuario";
 import { FormularioAgregarUsuarios } from "../../../shared/FormularioAgregarUsuarios";
 
@@ -38,7 +37,6 @@ export const VendedoresPage = () => {
             contrasena: values.contrasena,
             correo: values.correo,
             roles: values.roles,
-            negocio: values.negocio
         }));
     };
 

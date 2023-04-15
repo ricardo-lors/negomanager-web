@@ -1,5 +1,5 @@
 import { Negocio } from "./Negocio.interface";
-import { Producto } from "./Producto.interface";
+import { Producto, ProductoCorto } from "./Producto.interface";
 import { Usuario } from "./Usuario.interface";
 
 export interface Venta {
@@ -16,7 +16,7 @@ export interface Venta {
 export interface DetallesVenta {
     cantidad: number,
     total: number,
-    producto: Producto,
+    producto: ProductoCorto,
 }
 
 /* Interfaces de Nuevas Ventas */

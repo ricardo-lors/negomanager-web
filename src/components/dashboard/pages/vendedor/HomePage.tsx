@@ -42,7 +42,7 @@ export const HomePage = () => {
     // negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
     obtenerUsuarios(usuario!.negocio!.id, 'cliente').then(resp => {
       console.log(resp)
-      setClientes(resp);
+      setClientes(resp ? resp : []);
     });
   }, [usuario]);
 
@@ -98,7 +98,16 @@ export const HomePage = () => {
       const detalles: DetallesVenta = {
         cantidad: 1,
         total: producto.precio,
-        producto: producto
+        producto: {
+          id: producto.id!,
+          nombre: producto.nombre,
+          descripcion: producto.descripcion,
+          stock: producto.stock,
+          codigo: producto.codigo,
+          precio: producto.precio,
+          costo: producto.costo,
+          categorias: producto.categorias
+        }
       };
       const newDetallesList = [...state.detalles, detalles];
       const total = sumaTotal(newDetallesList);

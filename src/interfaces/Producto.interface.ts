@@ -21,6 +21,17 @@ export interface Producto {
     negocioid?: number
 }
 
+export interface ProductoCorto {
+    id: string,
+    codigo: string,
+    nombre: string,
+    descripcion?: string,
+    stock: number,
+    costo: number,
+    precio: number,
+    categorias: string[]
+}
+
 // Converts JSON strings to/from your types
 export class ProductoConvert {
     public static toProducto(json: string): Producto {

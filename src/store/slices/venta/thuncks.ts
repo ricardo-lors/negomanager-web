@@ -21,6 +21,7 @@ export const obtenerVentaNegocio = (negocioid: string) => {
 export const crearVenta = async (venta: NuevaVenta) => {
     try {
         const { data } = await servicesApiToken(`/ventas`, 'POST', venta);
+        console.log(data);
         if (data.ok) {
             Swal.fire('Creado', `${data.mensaje}`, 'success');
         } else {
