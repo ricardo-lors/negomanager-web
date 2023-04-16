@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import Swal from "sweetalert2";
 import { Producto, ProductoConvert, ProvedorConvert } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
@@ -61,9 +61,13 @@ export const crearProducto = (producto: Producto) => {
             console.log(producto);
             const { data } = await servicesApiToken(`/productos`, 'POST', producto);
             dispatch(setProductos(data));
-        } catch (error) {
-            console.log(error)
-            Swal.fire('Error', `${error}`, 'error');
+        } catch (e) {
+            if (e instanceof AxiosError) {
+                // ✅ TypeScript knows err is Error
+                Swal.fire('Error', `${e.response?.data.message}`, 'error');
+            } else {
+                console.log('Unexpected error', e);
+            }
         }
     }
 
