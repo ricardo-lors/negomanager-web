@@ -63,7 +63,7 @@ export const crearProducto = (producto: Producto) => {
             dispatch(setProductos(data));
         } catch (e) {
             if (e instanceof AxiosError) {
-                // ✅ TypeScript knows err is Error
+                // ✅ TypeScript knows err is Error   
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
             } else {
                 console.log('Unexpected error', e);
