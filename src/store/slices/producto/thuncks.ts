@@ -1,6 +1,6 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import Swal from "sweetalert2";
-import { Producto, ProductoConvert, ProvedorConvert } from "../../../interfaces";
+import { Producto, ProductoConvert } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProductos, startGetProductos } from "./productoSlice";

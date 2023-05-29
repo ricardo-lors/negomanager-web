@@ -40,10 +40,10 @@ export const HomePage = () => {
 
   useEffect(() => {
     // negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
-    obtenerUsuarios(usuario!.negocio!.id, 'cliente').then(resp => {
-      console.log(resp)
-      setClientes(resp ? resp : []);
-    });
+    // obtenerUsuarios(usuario!.negocio!.id, 'cliente').then(resp => {
+    //   console.log(resp)
+    //   setClientes(resp ? resp : []);
+    // });
   }, [usuario]);
 
   const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch } = useFormik({

@@ -64,6 +64,7 @@ export const InventarioPage = () => {
     return (
         <>
             <div className="row mt-3">
+                <h2 className="text-center">INVENTARIO</h2>
                 <div className="col">
                     <button className="btn btn-primary" onClick={() => setState({ openModal: !openModal })}>Agregar</button>
                 </div>
@@ -81,14 +82,15 @@ export const InventarioPage = () => {
                 productos.length !== 0
                     ? <div className="album py-2">
                         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                            <h5>Inventario</h5>
+                            {/* <h5>Inventario</h5> */}
                             {
                                 productos.map(prod =>
                                     <div key={prod.id} className="col">
                                         <div className="card shadow-sm">
                                             <div className="card-body">
-                                                <h5 className="card-title">{prod.nombre}</h5>
+                                                <h5 className="card-title">{prod.nombre} - {prod.codigo}</h5>
                                                 <p className="card-text" >{prod.descripcion}</p>
+                                                <p className="card-text" >Stock: {prod.stock} - Precio: {prod.precio}</p>
                                             </div>
                                         </div>
                                     </div>

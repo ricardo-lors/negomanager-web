@@ -1,9 +1,8 @@
 import { UsuarioConvert, UsuarioForm } from "../../../interfaces";
 import { servicesApi, servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
-import { setUsuario, endGetUsuario, setUsuarios, removerUsuario } from "./usuarioSlice";
+import { setUsuario, endGetUsuario, removerUsuario } from "./usuarioSlice";
 import Swal from 'sweetalert2'
-import { removerNegocio } from "../negocio";
 import { AxiosError } from "axios";
 
 export const sesion = (credenciales: UsuarioForm) => {
@@ -21,6 +20,8 @@ export const sesion = (credenciales: UsuarioForm) => {
             console.log(e)
             if (e instanceof AxiosError) {
                 // ✅ TypeScript knows err is Error
+                if(e.code === "ERR_NETWORK") return Swal.fire('Error', `Error de red, Verifique su conexion`, 'error');
+
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
             } else {
                 console.log('Unexpected error', e);
