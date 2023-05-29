@@ -28,7 +28,7 @@ export const VendedoresPage = () => {
             console.log(resp)
             setState({ usuarios: resp });
         });
-    }, [usuario])
+    }, [usuario]);
 
     const onSubmit: (values: UsuarioForm, formikHelpers: FormikHelpers<UsuarioForm>) => void | Promise<any> = async (values) => {
         console.log(values);
@@ -38,10 +38,9 @@ export const VendedoresPage = () => {
             correo: values.correo,
             roles: values.roles,
         }));
-    };
+    }
 
     return (
-
 
         <div className="row">
             <div className="col-3 border-end vh-100">
@@ -71,6 +70,5 @@ export const VendedoresPage = () => {
                 </table>
             </div>
         </div>
-
     )
 }
