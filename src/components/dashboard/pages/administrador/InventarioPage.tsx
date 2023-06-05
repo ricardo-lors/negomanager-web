@@ -7,7 +7,7 @@ import { RootState } from "../../../../store";
 import { crearProducto, obtenerProductosNegocio, obtenerProductosQuery } from "../../../../store/slices/producto/thuncks";
 import * as Yup from 'yup';
 
-import { Modal, MySelect, MyTextInput } from "../../../shared";
+import { Modal, MyCheckbox, MySelect, MyTextInput } from "../../../shared";
 
 export const InventarioPage = () => {
 
@@ -32,8 +32,12 @@ export const InventarioPage = () => {
             nombre: '',
             descripcion: '',
             stock: 0,
+            stock_minimo: 0,
             costo: 0.0,
             precio: 0.0,
+            mayoreo: false,
+            cantidad_mayoreo: 0,
+            precio_mayoreo: 0,
             provedores: [],
             categorias: []
         },
@@ -64,6 +68,7 @@ export const InventarioPage = () => {
     return (
         <>
             <div className="row mt-3">
+                <h2 className="text-center">INVENTARIO</h2>
                 <div className="col">
                     <button className="btn btn-primary" onClick={() => setState({ openModal: !openModal })}>Agregar</button>
                 </div>
@@ -81,14 +86,15 @@ export const InventarioPage = () => {
                 productos.length !== 0
                     ? <div className="album py-2">
                         <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                            <h5>Inventario</h5>
+                            {/* <h5>Inventario</h5> */}
                             {
                                 productos.map(prod =>
                                     <div key={prod.id} className="col">
                                         <div className="card shadow-sm">
                                             <div className="card-body">
-                                                <h5 className="card-title">{prod.nombre}</h5>
+                                                <h5 className="card-title">{prod.nombre} - {prod.codigo}</h5>
                                                 <p className="card-text" >{prod.descripcion}</p>
+                                                <p className="card-text" >Stock: {prod.stock} - Precio: {prod.precio}</p>
                                             </div>
                                         </div>
                                     </div>
@@ -142,14 +148,22 @@ export const InventarioPage = () => {
                         </div>
                         <div className="col-6">
                             <MyTextInput
+                                label="Stock Minimo"
+                                type="number"
+                                className="form-control"
+                                {...getFieldProps('stock_minimo')}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-6">
+                            <MyTextInput
                                 label="Costo (Compra)"
                                 type="number"
                                 className="form-control"
                                 {...getFieldProps('costo')}
                             />
                         </div>
-                    </div>
-                    <div className="row">
                         <div className="col-6">
                             <MyTextInput
                                 label="Precio (Venta)"
@@ -158,23 +172,26 @@ export const InventarioPage = () => {
                                 {...getFieldProps('precio')}
                             />
                         </div>
-                        <div className="col-6">
 
-                            <MySelect
-                                label="Categoria"
-                                className="form-control"
-                                multiple={true}
-                                {...getFieldProps('categorias')}
-                            >
-                                {
-                                    categorias?.map(opt => (
-                                        <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
-                                    ))
-                                }
-                            </MySelect>
-                        </div>
                     </div>
-
+                    <div className="row">
+                        {/* <MyCheckbox
+                            label="Mayoreo"
+                            {...getFieldProps('mayoreo')}
+                        /> */}
+                    </div>
+                    <MySelect
+                        label="Categoria"
+                        className="form-control"
+                        multiple={true}
+                        {...getFieldProps('categorias')}
+                    >
+                        {
+                            categorias?.map(opt => (
+                                <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
+                            ))
+                        }
+                    </MySelect>
                     <MySelect
                         label="Provedor"
                         className="form-control"

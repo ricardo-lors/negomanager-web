@@ -13,8 +13,12 @@ export interface Producto {
     nombre: string,
     descripcion?: string,
     stock: number,
+    stock_minimo?: number;
     costo: number,
     precio: number,
+    mayoreo?: boolean,
+    precio_mayoreo?: number,
+    cantidad_mayoreo?: number,
     registro?: string,
     provedores: string[],
     categorias: string[],

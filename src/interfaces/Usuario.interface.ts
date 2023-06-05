@@ -2,8 +2,8 @@
 import { Negocio } from "./Negocio.interface";
 
 export interface UsuarioForm {
-    correo: string;
     nombre?: string;
+    correo: string;
     contrasena: string;
     contrasenaRepeat?: string;
     negocio?: Negocio;
@@ -12,8 +12,9 @@ export interface UsuarioForm {
 
 export interface Usuario {
     id: string;
-    correo: string;
     nombre: string;
+    correo: string;
+    telefono?: string;
     activo: boolean;
     roles: string[];
     negocio?: Negocio;

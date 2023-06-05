@@ -1,6 +1,6 @@
-import axios, { AxiosError } from "axios";
+import { AxiosError } from "axios";
 import Swal from "sweetalert2";
-import { Producto, ProductoConvert, ProvedorConvert } from "../../../interfaces";
+import { Producto, ProductoConvert } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProductos, startGetProductos } from "./productoSlice";
@@ -63,7 +63,7 @@ export const crearProducto = (producto: Producto) => {
             dispatch(setProductos(data));
         } catch (e) {
             if (e instanceof AxiosError) {
-                // ✅ TypeScript knows err is Error
+                // ✅ TypeScript knows err is Error   
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
             } else {
                 console.log('Unexpected error', e);
