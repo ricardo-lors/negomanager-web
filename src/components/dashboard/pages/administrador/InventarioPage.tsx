@@ -7,7 +7,7 @@ import { RootState } from "../../../../store";
 import { crearProducto, obtenerProductosNegocio, obtenerProductosQuery } from "../../../../store/slices/producto/thuncks";
 import * as Yup from 'yup';
 
-import { Modal, MySelect, MyTextInput } from "../../../shared";
+import { Modal, MyCheckbox, MySelect, MyTextInput } from "../../../shared";
 
 export const InventarioPage = () => {
 
@@ -32,8 +32,12 @@ export const InventarioPage = () => {
             nombre: '',
             descripcion: '',
             stock: 0,
+            stock_minimo: 0,
             costo: 0.0,
             precio: 0.0,
+            mayoreo: false,
+            cantidad_mayoreo: 0,
+            precio_mayoreo: 0,
             provedores: [],
             categorias: []
         },
@@ -144,14 +148,22 @@ export const InventarioPage = () => {
                         </div>
                         <div className="col-6">
                             <MyTextInput
+                                label="Stock Minimo"
+                                type="number"
+                                className="form-control"
+                                {...getFieldProps('stock_minimo')}
+                            />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <div className="col-6">
+                            <MyTextInput
                                 label="Costo (Compra)"
                                 type="number"
                                 className="form-control"
                                 {...getFieldProps('costo')}
                             />
                         </div>
-                    </div>
-                    <div className="row">
                         <div className="col-6">
                             <MyTextInput
                                 label="Precio (Venta)"
@@ -160,23 +172,26 @@ export const InventarioPage = () => {
                                 {...getFieldProps('precio')}
                             />
                         </div>
-                        <div className="col-6">
 
-                            <MySelect
-                                label="Categoria"
-                                className="form-control"
-                                multiple={true}
-                                {...getFieldProps('categorias')}
-                            >
-                                {
-                                    categorias?.map(opt => (
-                                        <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
-                                    ))
-                                }
-                            </MySelect>
-                        </div>
                     </div>
-
+                    <div className="row">
+                        {/* <MyCheckbox
+                            label="Mayoreo"
+                            {...getFieldProps('mayoreo')}
+                        /> */}
+                    </div>
+                    <MySelect
+                        label="Categoria"
+                        className="form-control"
+                        multiple={true}
+                        {...getFieldProps('categorias')}
+                    >
+                        {
+                            categorias?.map(opt => (
+                                <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
+                            ))
+                        }
+                    </MySelect>
                     <MySelect
                         label="Provedor"
                         className="form-control"

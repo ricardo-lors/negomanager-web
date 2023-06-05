@@ -14,7 +14,7 @@ export const MyCheckbox = ({ label, ...props }: Props) => {
     return (
         <>
             <label>
-                <input type="checkbox" {...field} {...props} />
+                <input type="checkbox" {...field} {...props}  />
                 {label}
             </label>
             <ErrorMessage name={props.name} component="span" />
