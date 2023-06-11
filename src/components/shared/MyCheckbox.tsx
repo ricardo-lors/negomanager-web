@@ -4,7 +4,7 @@ interface Props {
     name: string;
     label: string;
     checked: boolean;
-    onChange: React.ChangeEventHandler<HTMLInputElement> | undefined;
+    onChange: React.ChangeEventHandler<HTMLInputElement> | undefined; 
     style?: React.CSSProperties | undefined;
     className?: string;
     [x: string]: any;
