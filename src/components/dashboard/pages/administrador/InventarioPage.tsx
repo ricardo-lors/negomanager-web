@@ -47,7 +47,8 @@ export const InventarioPage = () => {
             // setState({ openModal: false });
         },
         validationSchema: Yup.object({
-            codigo: Yup.string().required('Requerido')
+            codigo: Yup.string().required('Requerido'),
+            cantidad_mayoreo: Yup.number().when('mayoreo', { is: true, then: Yup.number().optional().min(1) })
         })
     });
 
@@ -64,7 +65,7 @@ export const InventarioPage = () => {
         }),
 
     });
-
+    console.log(errors)
     return (
         <div className="accordion ">
             <div className="accordion-item ">
@@ -135,15 +136,32 @@ export const InventarioPage = () => {
                                             {...getFieldProps('precio')}
                                         />
                                     </div>
-
                                 </div>
                                 <div className="row">
                                     <MyCheckbox
                                         checked={values.mayoreo!}
-                                        label=" Mayoreo"
+                                        label="Mayoreo"
                                         // onChange={(e) => { }}
                                         {...getFieldProps('mayoreo')}
                                     />
+                                    <div className="col-6">
+                                        <MyTextInput
+                                            label="Cantidad"
+                                            type="number"
+                                            className="form-control"
+                                            disabled={!values.mayoreo}
+                                            {...getFieldProps('cantidad_mayoreo')}
+                                        />
+                                    </div>
+                                    <div className="col-6">
+                                        <MyTextInput
+                                            label="Precio (Venta Mayoreo)"
+                                            type="number"
+                                            className="form-control"
+                                            disabled={!values.mayoreo}
+                                            {...getFieldProps('precio_mayoreo')}
+                                        />
+                                    </div>
                                 </div>
                                 <MySelect
                                     label="Categoria"
