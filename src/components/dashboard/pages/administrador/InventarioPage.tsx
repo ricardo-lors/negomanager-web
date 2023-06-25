@@ -145,31 +145,37 @@ export const InventarioPage = () => {
                                         {...getFieldProps('mayoreo')}
                                     />
                                 </div>
-                                <MySelect
-                                    label="Categoria"
-                                    className="form-control"
-                                    multiple={true}
-                                    {...getFieldProps('categorias')}
-                                >
-                                    {
-                                        categorias?.map(opt => (
-                                            <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
-                                        ))
-                                    }
-                                </MySelect>
-                                <MySelect
-                                    label="Provedor"
-                                    className="form-control"
-                                    multiple={true}
-                                    {...getFieldProps('provedores')}
-                                >
-                                    {
-                                        provedores?.map(opt => (
-                                            <option key={opt.id} value={opt.id}>{opt.nombre}</option>
-                                        ))
-                                    }
-                                </MySelect>
+                                <div className="row">
+                                    <div className="col-6">
+                                        <MySelect
+                                            label="Categoria"
+                                            className="form-control"
+                                            multiple={true}
+                                            {...getFieldProps('categorias')}
+                                        >
+                                            {
+                                                categorias?.map(opt => (
+                                                    <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
+                                                ))
+                                            }
+                                        </MySelect>
+                                    </div>
+                                    <div className="col">
+                                        <MySelect
+                                            label="Provedor"
+                                            className="form-control"
+                                            multiple={true}
+                                            {...getFieldProps('provedores')}
+                                        >
+                                            {
+                                                provedores?.map(opt => (
+                                                    <option key={opt.id} value={opt.id}>{opt.nombre}</option>
+                                                ))
+                                            }
+                                        </MySelect>
+                                    </div>
 
+                                </div>
                                 <button type="submit" className="btn btn-primary text-decoration-none w-100">Guardar</button>
                             </form>
                         </div>
