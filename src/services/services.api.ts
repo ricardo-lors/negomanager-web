@@ -32,6 +32,16 @@ export const servicesApiToken = (endpoint: string, method = "GET", data?: Object
     });
 }
 
+
+export const servicesApiTokenFile = (endpoint: string, method = "GET", data?: Object) => {
+    const url = `${baseUrl}${endpoint}`;
+    return axios(url, {
+        method,
+        data,
+        headers: { "Content-Type": "multipart/form-data", Authorization: `Bearer ${localStorage.getItem('x-token')}` }
+    });
+}
+
 export const servicesApi = (endpoint: string, method = "GET", data?: Object) => {
     const url = `${baseUrl}${endpoint}`;
     console.log(url);

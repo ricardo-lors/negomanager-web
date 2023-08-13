@@ -1,10 +1,9 @@
 import { AxiosError } from "axios";
 import Swal from "sweetalert2";
-import { Producto, ProductoConvert } from "../../../interfaces";
-import { servicesApiToken } from "../../../services/services.api";
+import { NuevoProducto, Producto, ProductoConvert } from "../../../interfaces";
+import { servicesApiToken, servicesApiTokenFile } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProductos, startGetProductos } from "./productoSlice";
-
 
 export const obtenerProductosNegocio = (negocioid: string) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
@@ -58,6 +57,9 @@ export const obtenerProductosNegocio = (negocioid: string) => {
 export const crearProducto = (producto: Producto) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         try {
+
+            // http://localhost:4000/api/files/productos/76a5fd58-d809-471a-bdcb-d1739c655ab6.jpeg
+
             console.log(producto);
             const { data } = await servicesApiToken(`/productos`, 'POST', producto);
             dispatch(setProductos(data));
@@ -100,3 +102,29 @@ export const obtenerProductosQuery = async (query: string, negocioid: string) =>
         Swal.fire('Error', `${error}`, 'error');
     }
 };
+
+export const agregarImagenes = async (file: File) => {
+    try {
+
+        // http://localhost:4000/api/files/productos/76a5fd58-d809-471a-bdcb-d1739c655ab6.jpeg
+        // const formData: any = new FormData();
+
+        // Array(files).map((file) => formData.append("file", file));
+        // // formData.append('file', files);
+
+        // console.log(producto);
+        const { data } = await servicesApiTokenFile(`/files/producto`, 'POST', { file });
+
+        console.log(data);
+        return data;
+    } catch (e) {
+        console.log(e);
+        if (e instanceof AxiosError) {
+            // ✅ TypeScript knows err is Error   
+            Swal.fire('Error', `${e.response?.data.message}`, 'error');
+        } else {
+            console.log('Unexpected error', e);
+        }
+    }
+
+}

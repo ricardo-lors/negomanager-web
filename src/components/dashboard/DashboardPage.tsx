@@ -23,8 +23,8 @@ export const DashboardPage = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        usuario?.negocio && dispatch(obtenerCategorias(usuario?.negocio!.id));
-        usuario?.negocio && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id));
+        usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerCategorias(usuario?.negocio!.id));
+        usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id));
         // usuario?.negocio && dispatch(obtenerClientes(usuario?.negocio!.id));
         // usuario?.negocio && dispatch(obtenerUsuarios(usuario?.negocio!.id));
     }, [dispatch]);

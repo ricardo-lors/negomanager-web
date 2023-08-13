@@ -22,6 +22,7 @@ export interface Producto {
     registro?: string,
     provedores: string[],
     categorias: string[],
+    imagenes?: ProductoImagen[]
     negocioid?: number
 }
 
@@ -34,6 +35,15 @@ export interface ProductoCorto {
     costo: number,
     precio: number,
     categorias: string[]
+}
+
+export interface NuevoProducto extends Producto {
+    files?: FileList
+}
+
+export interface ProductoImagen {
+    id: number;
+    url: string;
 }
 
 // Converts JSON strings to/from your types
