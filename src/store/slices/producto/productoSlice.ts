@@ -20,7 +20,7 @@ export const productoSlice = createSlice({
       state.cargando = true;
     },
     setProductos: (state, actions: PayloadAction<Array<Producto>>) => {
-      state.productos = actions.payload
+      state.productos = [...state.productos, ...actions.payload]
     }
   },
 })

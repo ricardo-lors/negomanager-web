@@ -1,21 +1,32 @@
 import { AxiosError } from "axios";
 import Swal from "sweetalert2";
-import { NuevoProducto, Producto, ProductoConvert } from "../../../interfaces";
+import { NuevoProducto, Producto, ProductoConvert, QueryParamsProducto } from "../../../interfaces";
 import { servicesApiToken, servicesApiTokenFile } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProductos, startGetProductos } from "./productoSlice";
 
-export const obtenerProductosNegocio = (negocioid: string) => {
+export const obtenerProductosNegocio = (queryParamsProducto: QueryParamsProducto) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         dispatch(startGetProductos());
         try {
-            const { data } = await servicesApiToken(`/productos/${negocioid}`);
+            const { data } = await servicesApiToken(`/productos`, {params: queryParamsProducto} );
             const productos = ProductoConvert.toProducToList(JSON.stringify(data));
             dispatch(setProductos(productos));
         } catch (e) {
             console.log(e);
             Swal.fire('Error',)
         }
+    }
+}
+
+export const obtenerProducto = async (id: string) => {
+    try {
+        const { data } = await servicesApiToken(`/productos/${id}`, {});
+        console.log(data);
+        // const productos = ProductoConvert.toProducToList(JSON.stringify(data));
+    } catch (e) {
+        console.log(e);
+        Swal.fire('Error',)
     }
 }
 
@@ -61,7 +72,7 @@ export const crearProducto = (producto: Producto) => {
             // http://localhost:4000/api/files/productos/76a5fd58-d809-471a-bdcb-d1739c655ab6.jpeg
 
             console.log(producto);
-            const { data } = await servicesApiToken(`/productos`, 'POST', producto);
+            const { data } = await servicesApiToken(`/productos`, {method: 'POST', data: producto});
             dispatch(setProductos(data));
         } catch (e) {
             if (e instanceof AxiosError) {
@@ -77,7 +88,7 @@ export const crearProducto = (producto: Producto) => {
 
 export const obtenerProductoCodigo = async (codigo: string, negocioid: string) => {
     try {
-        const { data } = await servicesApiToken(`/productos/${codigo}/${negocioid}`);
+        const { data } = await servicesApiToken(`/productos/${codigo}/${negocioid}`, {});
         // console.log(data);
         // const producto = ProductoConvert.toProducto(data);
         return data;
@@ -91,7 +102,7 @@ export const obtenerProductosQuery = async (query: string, negocioid: string) =>
     try {
         const params = new URLSearchParams({ query, negocioid });
         console.log(params.toString());
-        const { data } = await servicesApiToken(`/producto/buscar/query?${params.toString()}`);
+        const { data } = await servicesApiToken(`/producto/buscar/query?${params.toString()}`, {});
         console.log(data);
         if (data.ok) {
             return data.data;

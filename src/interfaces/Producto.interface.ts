@@ -46,6 +46,42 @@ export interface ProductoImagen {
     url: string;
 }
 
+export interface QueryParamsProducto {
+    
+    codigo?: string;
+
+    nombre?: string;
+
+    descripcion?: string;
+
+    // @IsNumber()
+    // @IsPositive()
+    // @IsOptional()
+    // stock?: number;
+
+    // @IsNumber()
+    // @IsPositive()
+    // @IsOptional()
+    // costo?: number;
+
+    // @IsNumber()
+    // @IsPositive()
+    // @IsOptional()
+    // precio?: number;
+
+    // @IsBoolean()
+    // @IsOptional()
+    // mayoreo?: boolean;
+
+    activo?: boolean;
+
+    categorias?: string[];
+
+    negocio?: string;
+
+    take?: number;
+}
+
 // Converts JSON strings to/from your types
 export class ProductoConvert {
     public static toProducto(json: string): Producto {

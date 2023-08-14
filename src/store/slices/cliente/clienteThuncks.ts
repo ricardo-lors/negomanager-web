@@ -7,7 +7,7 @@ import { setClientes, startGetClientes } from "./clienteSlice";
 export const obtenerClientes = (negocioid: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(startGetClientes());
-        const { data } = await servicesApiToken(`/cliente/negocio/${negocioid}`);
+        const { data } = await servicesApiToken(`/cliente/negocio/${negocioid}`, {});
         if (data.ok) {
             const clientes = ClienteConvert.toClienteList(JSON.stringify(data.data));
             dispatch(setClientes(clientes));
@@ -20,9 +20,9 @@ export const obtenerClientes = (negocioid: string) => {
 export const crearCliente = (cliente: Cliente) => {
     return async (dispatch: AppDispatch) => {
         try {
-            const { data } = await servicesApiToken(`/cliente`,'POST', cliente);
+            const { data } = await servicesApiToken(`/cliente`, {method: 'POST', data: cliente});
             if (data.ok) {
-                const { data } = await servicesApiToken(`/cliente/negocio/${cliente.negocio.id}`);
+                const { data } = await servicesApiToken(`/cliente/negocio/${cliente.negocio.id}`, {});
                 if (data.ok) {
                     const clientes = ClienteConvert.toClienteList(JSON.stringify(data.data));
                     dispatch(setClientes(clientes));

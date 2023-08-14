@@ -1,9 +1,9 @@
 import { useFormik } from 'formik';
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { NuevoProducto, Producto } from '../../../../interfaces';
 import { useAppDispatch } from '../../../../hooks';
-import { agregarImagenes, crearProducto } from '../../../../store/slices/producto/thuncks';
+import { agregarImagenes, crearProducto } from '../../../../store/slices/producto/productoThuncks';
 import * as Yup from 'yup';
 import { MyCheckbox, MySelect, MyTextInput } from '../../../shared';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,17 @@ import { RootState } from '../../../../store';
 
 
 export const NuevoProductoPage = () => {
+
+    let { id } = useParams();
+    
+
+    useEffect(() => {
+
+    //   return () => {
+    //     second
+    //   }
+    }, [])
+    
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();

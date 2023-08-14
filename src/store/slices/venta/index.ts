@@ -1,4 +1,4 @@
 
 
 export * from './ventaSlice';
-export * from './thuncks';
+export * from './ventaThuncks';

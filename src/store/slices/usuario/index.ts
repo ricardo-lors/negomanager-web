@@ -1,4 +1,4 @@
 
 
 export * from './usuarioSlice';
-export * from './thuncks';
+export * from './usuarioThuncks';

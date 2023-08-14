@@ -4,7 +4,7 @@ import { useReactToPrint } from "react-to-print";
 import { useAppDispatch } from "../../../../hooks";
 import { Cliente, DetallesVenta, NuevaVenta, Producto, UsuarioForm, VentaState } from "../../../../interfaces";
 import { RootState } from "../../../../store";
-import { obtenerProductoCodigo } from "../../../../store/slices/producto/thuncks";
+import { obtenerProductoCodigo } from "../../../../store/slices/producto/productoThuncks";
 
 import * as Yup from 'yup';
 import { FormikHelpers, useFormik } from "formik";

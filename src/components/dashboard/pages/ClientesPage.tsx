@@ -7,7 +7,7 @@ import { RootState } from "../../../store";
 
 import * as Yup from 'yup';
 import { MyTextInput } from "../../shared/MyTextInput";
-import { crearCliente } from "../../../store/slices/cliente/thuncks";
+import { crearCliente } from "../../../store/slices/cliente";
 
 export const ClientesPage = () => {
 

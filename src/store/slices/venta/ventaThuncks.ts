@@ -7,7 +7,7 @@ import { setVentas, startGetVentas } from "./ventaSlice";
 export const obtenerVentaNegocio = (negocioid: string) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         dispatch(startGetVentas());
-        const { data } = await servicesApiToken(`/venta/negocio/${negocioid}`);
+        const { data } = await servicesApiToken(`/venta/negocio/${negocioid}`,{});
         console.log(data);
         if (data.ok) {
             const ventas = VentaConvert.toVentaList(JSON.stringify(data.data));
@@ -20,7 +20,7 @@ export const obtenerVentaNegocio = (negocioid: string) => {
 
 export const crearVenta = async (venta: NuevaVenta) => {
     try {
-        const { data } = await servicesApiToken(`/ventas`, 'POST', venta);
+        const { data } = await servicesApiToken(`/ventas`, {method: 'POST', data: venta});
         console.log(data);
         if (data.ok) {
             Swal.fire('Creado', `${data.mensaje}`, 'success');

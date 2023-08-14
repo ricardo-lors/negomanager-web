@@ -1,4 +1,4 @@
 
 
 export * from './provedorSlice';
-export * from './thuncks';
+export * from './provedorThuncks';

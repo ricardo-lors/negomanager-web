@@ -20,7 +20,7 @@ export const sesion = (credenciales: UsuarioForm) => {
             console.log(e)
             if (e instanceof AxiosError) {
                 // ✅ TypeScript knows err is Error
-                if(e.code === "ERR_NETWORK") return Swal.fire('Error', `Error de red, Verifique su conexion`, 'error');
+                if (e.code === "ERR_NETWORK") return Swal.fire('Error', `Error de red, Verifique su conexion`, 'error');
 
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
             } else {
@@ -34,7 +34,7 @@ export const revalidarSesion = () => {
     return async (dispatch: AppDispatch) => {
         // dispatch(startGetUsuario());
         try {
-            const { data } = await servicesApiToken(`/auth/check-status`);
+            const { data } = await servicesApiToken(`/auth/check-status`, {});
             localStorage.setItem('x-token', data.token);
             const usuario = UsuarioConvert.toUsuario(JSON.stringify(data));
             dispatch(setUsuario(usuario));
@@ -57,7 +57,7 @@ export const removerSesion = () => {
 export const crearUsuario = (usuario: UsuarioForm) => {
     return async (dispatch: AppDispatch /*, getState: RootState*/) => {
         try {
-            const { data } = await servicesApiToken(`/auth/registro`, 'POST', usuario);
+            const { data } = await servicesApiToken(`/auth/registro`, { method: 'POST', data: usuario });
 
             console.log(data);
         } catch (e) {
@@ -87,7 +87,7 @@ export const crearUsuario = (usuario: UsuarioForm) => {
 
 export const obtenerUsuarios = async (negocioid: string, rol: string) => {
     try {
-        const { data } = await servicesApiToken(`/auth/usuarios?rol=${rol}&negocio=${negocioid}`);
+        const { data } = await servicesApiToken(`/auth/usuarios?rol=${rol}&negocio=${negocioid}`, {});
         return data;
     } catch (error) {
         Swal.fire('Error', `error: ${error}`, 'info');

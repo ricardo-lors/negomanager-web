@@ -8,7 +8,7 @@ export const obtenerCategorias = (negocioid: string) => {
     return async (dispatch: AppDispatch) => {
         dispatch(startGetCategorias());
         try {
-            const { data } = await servicesApiToken(`/categorias/${negocioid}`);
+            const { data } = await servicesApiToken(`/categorias/${negocioid}`, {});
             dispatch(setCategorias(data));
         } catch (error) {
             console.log(error)
@@ -20,7 +20,7 @@ export const obtenerCategorias = (negocioid: string) => {
 export const crearCategoria = (categoria: Categoria) => {
     return async (dispatch: AppDispatch) => {
         try {
-            const { data } = await servicesApiToken(`/categorias`, 'POST', categoria);
+            const { data } = await servicesApiToken(`/categorias`, { method: 'POST', data: categoria });
             dispatch(setCategorias(data));
         } catch (error) {
             Swal.fire('Error', `${error}`, 'info');

@@ -9,7 +9,7 @@ import { setNegocio, setNegocios, startGetNegocio } from "./negocioSlice";
 export const crearNegocio = (negocio: NuevoNegocio) => {
     return async (dispatch: AppDispatch) => {
         try {
-            const { data, status } = await servicesApiToken(`/negocios`, 'POST', negocio);
+            const { data, status } = await servicesApiToken(`/negocios`, { method: 'POST', data: negocio });
             console.log(data);
             console.log(status);
         } catch (e) {
@@ -39,7 +39,7 @@ export const crearNegocio = (negocio: NuevoNegocio) => {
 export const obtenerNegocios = () => {
     return async (dispatch: AppDispatch) => {
         try {
-            const { data } = await servicesApiToken(`/negocios`);
+            const { data } = await servicesApiToken(`/negocios`, {});
             const negocios = NegocioConvert.toNegocioList(JSON.stringify(data));
             dispatch(setNegocios(negocios));
         } catch (e) {
@@ -52,7 +52,7 @@ export const obtenerNegocios = () => {
 export const obtenerNegocio = (negocioid: string) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         dispatch(startGetNegocio());
-        const { data } = await servicesApiToken(`/negocio/${negocioid}`);
+        const { data } = await servicesApiToken(`/negocio/${negocioid}`, {});
         if (data.ok) {
             const negocio = NegocioConvert.toNegocio(JSON.stringify(data.data));
             dispatch(setNegocio(negocio));

@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../../hooks";
 import { Categoria } from "../../../../interfaces";
 import { RootState } from "../../../../store";
-import { crearCategoria, obtenerCategorias } from "../../../../store/slices/categoria/thuncks";
+import { crearCategoria, obtenerCategorias } from "../../../../store/slices/categoria/categoriaThuncks";
 import * as Yup from 'yup';
 import { MySelect } from "../../../shared/MySelect";
 import { MyTextInput } from "../../../shared/MyTextInput";

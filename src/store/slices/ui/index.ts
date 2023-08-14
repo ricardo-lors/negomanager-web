@@ -1,4 +1,4 @@
 
 
 export * from './uiSlice';
-export * from './thuncks';
+export * from './uiThuncks';

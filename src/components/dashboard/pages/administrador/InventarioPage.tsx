@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../../hooks";
 import { Producto, ProductoConvert } from "../../../../interfaces";
 import { RootState } from "../../../../store";
-import { crearProducto, obtenerProductosNegocio, obtenerProductosQuery } from "../../../../store/slices/producto/thuncks";
+import { crearProducto, obtenerProductosNegocio, obtenerProductosQuery } from "../../../../store/slices/producto";
 import * as Yup from 'yup';
 
 import { Modal, MyCheckbox, MySelect, MyTextInput } from "../../../shared";
@@ -24,8 +24,9 @@ export const InventarioPage = () => {
     });
 
     useEffect(() => {
-        usuario && dispatch(obtenerProductosNegocio(usuario?.negocio?.id!))
+        usuario && dispatch(obtenerProductosNegocio({negocio: usuario?.negocio?.id!, take: 10}))
     }, [dispatch]);
+
     const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch, } = useFormik({
         initialValues: { query: '' },
         onSubmit: async (values) => {
@@ -47,7 +48,7 @@ export const InventarioPage = () => {
                 <h2 className="text-center">INVENTARIO</h2>
                 <div className="col">
                     {/* <button className="btn btn-primary" onClick={() => setState({ openModal: !openModal })}>Agregar</button>/admin/inventario/nuevo/producto */}
-                    <Link to='/dashboard/admin/inventario/nuevo/producto' replace className="btn btn-primary">Agregar</Link>
+                    <Link to='/dashboard/admin/inventario/producto' replace className="btn btn-primary">Agregar</Link>
                 </div>
                 <div className="col">
                     <form onSubmit={handleSubmitSearch}>
@@ -68,7 +69,7 @@ export const InventarioPage = () => {
                                 productos.map(prod =>
                                     <div key={prod.id} className="col">
                                         <div className="card shadow-sm">
-                                            { prod.imagenes![0] && <img src={prod.imagenes![0].url} alt="" /> }
+                                            {prod.imagenes![0] && <img src={prod.imagenes![0].url} alt="" />}
                                             <div className="card-body">
                                                 <h5 className="card-title">{prod.nombre} - {prod.codigo}</h5>
                                                 {/* {
@@ -76,6 +77,7 @@ export const InventarioPage = () => {
                                                 } */}
                                                 <p className="card-text" >{prod.descripcion}</p>
                                                 <p className="card-text" >Stock: {prod.stock} - Precio: {prod.precio}</p>
+                                                <Link to={`/dashboard/admin/inventario/producto/${prod.id}`} replace className="btn btn-primary">Modificar</Link>
                                             </div>
                                         </div>
                                     </div>

@@ -22,12 +22,30 @@ const baseUrl = process.env.REACT_APP_API_URL;//'http://sistemascbs.dynns.com:40
 // const baseUrl = 'http://sistemascbs.dynns.com:9001';
 // const baseUrl = 'http://localhost:4000';
 // console.log("Conectado en el 5000");
-export const servicesApiToken = (endpoint: string, method = "GET", data?: Object) => {
+
+// export const servicesApiToken = (endpoint: string, { data, method = 'GET', params }: AxiosConfig) => {
+//     const url = `${baseUrl}${endpoint}`;
+//     // console.log(url);
+//     return axios(url, {
+//         method,
+//         data,
+//         params,
+//         headers: { Authorization: `Bearer ${localStorage.getItem('x-token')}` }
+//     });
+// }
+interface AxiosConfig {
+    method?: string;
+    data?: Object;
+    params?: Object;
+}
+
+export const servicesApiToken = (endpoint: string, { method = "GET", data, params }: AxiosConfig) => {
     const url = `${baseUrl}${endpoint}`;
     console.log(url);
     return axios(url, {
         method,
         data,
+        params,
         headers: { Authorization: `Bearer ${localStorage.getItem('x-token')}` }
     });
 }

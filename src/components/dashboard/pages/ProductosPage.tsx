@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useAppDispatch } from "../../../hooks";
 import { Producto } from "../../../interfaces";
 import { RootState } from "../../../store";
-import { crearProducto, obtenerProductosNegocio } from "../../../store/slices/producto/thuncks";
+import { crearProducto, obtenerProductosNegocio } from "../../../store/slices/producto/productoThuncks";
 import { MySelect } from "../../shared/MySelect";
 import { MyTextInput } from "../../shared/MyTextInput";
 
@@ -20,7 +20,7 @@ export const ProductosPage = () => {
     const { productos } = useSelector((state: RootState) => state.producto);
 
     useEffect(() => {
-        usuario && dispatch(obtenerProductosNegocio(usuario?.negocio?.id!))
+        // usuario && dispatch(obtenerProductosNegocio(usuario?.negocio?.id!))
     }, [dispatch]);
 
     return (

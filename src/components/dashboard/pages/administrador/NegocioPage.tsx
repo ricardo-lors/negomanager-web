@@ -7,7 +7,7 @@ import { RootState } from "../../../../store";
 import { MyTextInput } from "../../../shared/MyTextInput";
 import { NuevoNegocio } from "../../../../interfaces";
 import { useAppDispatch } from "../../../../hooks";
-import { crearNegocio } from "../../../../store/slices/negocio/thuncks";
+import { crearNegocio } from "../../../../store/slices/negocio/negocioThuncks";
 
 export const NegocioPage = () => {
 
