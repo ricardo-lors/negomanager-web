@@ -3,8 +3,18 @@ import { Negocio } from "./Negocio.interface";
 import { Provedor } from "./Provedor.interface";
 
 
+export interface ProductoCorto {
+    id: string,
+    codigo: string,
+    nombre: string,
+    descripcion?: string,
+    stock: number,
+    costo: number,
+    precio: number,
+    categorias: string[]
+}
 
-export interface Producto {
+interface ProductoBasico {
     id?: string,
     codigo: string,
     activo?: boolean,
@@ -22,23 +32,20 @@ export interface Producto {
     registro?: string,
     provedores: string[],
     categorias: string[],
-    imagenes?: ProductoImagen[]
+}
+
+export interface Producto extends ProductoBasico {
+    imagenes?: ProductoImagen[],
     negocioid?: number
 }
 
-export interface ProductoCorto {
-    id: string,
-    codigo: string,
-    nombre: string,
-    descripcion?: string,
-    stock: number,
-    costo: number,
-    precio: number,
-    categorias: string[]
+export interface FormularioProducto extends ProductoBasico {
+    imagenes?: string[],
+    files?: FileList
 }
 
-export interface NuevoProducto extends Producto {
-    files?: FileList
+export interface NuevoActualizarProducto extends ProductoBasico {
+    imagenes?: string[]
 }
 
 export interface ProductoImagen {
@@ -47,7 +54,7 @@ export interface ProductoImagen {
 }
 
 export interface QueryParamsProducto {
-    
+
     codigo?: string;
 
     nombre?: string;

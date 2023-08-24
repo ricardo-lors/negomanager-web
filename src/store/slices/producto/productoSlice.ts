@@ -20,7 +20,8 @@ export const productoSlice = createSlice({
       state.cargando = true;
     },
     setProductos: (state, actions: PayloadAction<Array<Producto>>) => {
-      state.productos = [...state.productos, ...actions.payload]
+      // state.productos = [...state.productos, ...actions.payload]
+      state.productos = [...actions.payload.filter((producto) => !state.productos.includes(producto))] // [...state.productos, ...actions.payload]
     }
   },
 })

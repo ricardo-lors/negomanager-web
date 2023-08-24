@@ -1,15 +1,16 @@
 import { AxiosError } from "axios";
 import Swal from "sweetalert2";
-import { NuevoProducto, Producto, ProductoConvert, QueryParamsProducto } from "../../../interfaces";
+import { NuevoActualizarProducto, Producto, ProductoConvert, QueryParamsProducto } from "../../../interfaces";
 import { servicesApiToken, servicesApiTokenFile } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProductos, startGetProductos } from "./productoSlice";
 
-export const obtenerProductosNegocio = (queryParamsProducto: QueryParamsProducto) => {
+export const obtenerProductos = (queryParamsProducto: QueryParamsProducto) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         dispatch(startGetProductos());
         try {
-            const { data } = await servicesApiToken(`/productos`, {params: queryParamsProducto} );
+            const { data } = await servicesApiToken(`/productos`, { params: queryParamsProducto });
+            console.log(data);
             const productos = ProductoConvert.toProducToList(JSON.stringify(data));
             dispatch(setProductos(productos));
         } catch (e) {
@@ -19,14 +20,16 @@ export const obtenerProductosNegocio = (queryParamsProducto: QueryParamsProducto
     }
 }
 
-export const obtenerProducto = async (id: string) => {
+export const obtenerProducto = async (id: string): Promise<Producto | undefined> => {
     try {
         const { data } = await servicesApiToken(`/productos/${id}`, {});
         console.log(data);
         // const productos = ProductoConvert.toProducToList(JSON.stringify(data));
+        return data;
     } catch (e) {
         console.log(e);
         Swal.fire('Error',)
+        return undefined;
     }
 }
 
@@ -65,18 +68,31 @@ export const obtenerProducto = async (id: string) => {
 ////////////////////////
 ////////////////////////
 
-export const crearProducto = (producto: Producto) => {
+export const crearProducto = (producto: NuevoActualizarProducto) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         try {
-
-            // http://localhost:4000/api/files/productos/76a5fd58-d809-471a-bdcb-d1739c655ab6.jpeg
-
-            console.log(producto);
-            const { data } = await servicesApiToken(`/productos`, {method: 'POST', data: producto});
+            const { data } = await servicesApiToken(`/productos`, { method: 'POST', data: producto });
             dispatch(setProductos(data));
         } catch (e) {
             if (e instanceof AxiosError) {
                 // ✅ TypeScript knows err is Error   
+                Swal.fire('Error', `${e.response?.data.message}`, 'error');
+            } else {
+                console.log('Unexpected error', e);
+            }
+        }
+    }
+
+}
+
+export const actualizarProducto = (producto: NuevoActualizarProducto) => {
+    return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
+        try {
+            const { data } = await servicesApiToken(`/productos/${producto.id}`, { method: 'PATCH', data: producto });
+            dispatch(setProductos(data));
+        } catch (e) {
+            console.log(e);
+            if (e instanceof AxiosError) {
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
             } else {
                 console.log('Unexpected error', e);
@@ -116,17 +132,7 @@ export const obtenerProductosQuery = async (query: string, negocioid: string) =>
 
 export const agregarImagenes = async (file: File) => {
     try {
-
-        // http://localhost:4000/api/files/productos/76a5fd58-d809-471a-bdcb-d1739c655ab6.jpeg
-        // const formData: any = new FormData();
-
-        // Array(files).map((file) => formData.append("file", file));
-        // // formData.append('file', files);
-
-        // console.log(producto);
         const { data } = await servicesApiTokenFile(`/files/producto`, 'POST', { file });
-
-        console.log(data);
         return data;
     } catch (e) {
         console.log(e);

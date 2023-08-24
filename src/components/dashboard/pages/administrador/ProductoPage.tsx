@@ -1,36 +1,51 @@
 import { useFormik } from 'formik';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { NuevoProducto, Producto } from '../../../../interfaces';
+import { FormularioProducto } from '../../../../interfaces';
 import { useAppDispatch } from '../../../../hooks';
-import { agregarImagenes, crearProducto } from '../../../../store/slices/producto/productoThuncks';
+import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../store/slices/producto';
 import * as Yup from 'yup';
 import { MyCheckbox, MySelect, MyTextInput } from '../../../shared';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 
-
-
 export const NuevoProductoPage = () => {
 
     let { id } = useParams();
-    
+
+    const [producto, setProducto] = useState<FormularioProducto>();
 
     useEffect(() => {
-
-    //   return () => {
-    //     second
-    //   }
+        id && obtenerProducto(id).then((pd) => setProducto({
+            ...pd,
+            codigo: pd!.codigo,
+            nombre: pd!.nombre,
+            descripcion: pd?.descripcion,
+            stock: pd!.stock,
+            stock_minimo: pd?.stock_minimo,
+            costo: pd!.costo,
+            precio: pd!.precio,
+            mayoreo: pd?.mayoreo,
+            cantidad_mayoreo: pd?.cantidad_mayoreo,
+            precio_mayoreo: pd?.precio_mayoreo,
+            provedores: pd!.provedores,
+            categorias: pd!.categorias,
+            imagenes: pd?.imagenes?.map((img) => img.url),
+            files: undefined,
+        }));
+        //   return () => {
+        //     second
+        //   }
     }, [])
-    
+
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const { provedores } = useSelector((state: RootState) => state.provedor);
     const { categorias } = useSelector((state: RootState) => state.categoria);
 
-    const { handleSubmit, errors, touched, getFieldProps, values, handleChange, setFieldValue } = useFormik<NuevoProducto>({
-        initialValues: {
+    const { handleSubmit, errors, touched, getFieldProps, values, handleChange, setFieldValue, setValues, } = useFormik<FormularioProducto>({
+        initialValues: producto ? producto : {
             codigo: '',
             nombre: '',
             descripcion: '',
@@ -43,43 +58,82 @@ export const NuevoProductoPage = () => {
             precio_mayoreo: 0,
             provedores: [],
             categorias: [],
+            imagenes: [],
             files: undefined
         },
         onSubmit: async (values) => {
-            console.log(values)
-            const imagenes = [];
-            for (let i = 0; i < values.files!.length; i++) {
 
-                const url = await agregarImagenes(values.files![i]);
+            const imagenes: string[] = [...values.imagenes!]  //values.imagenes ? [...values.imagenes.map(img => img)] : [];
 
-                imagenes.push(url.secureUrl);
+            if (values.files?.length && values.files.length > 0) {
+                for (let i = 0; i < values.files!.length; i++) {
 
+                    const url = await agregarImagenes(values.files![i]);
+
+                    imagenes.push(url.secureUrl);
+
+                }
             }
-            // delete values.files;
-            await dispatch(crearProducto({
-                codigo: values.codigo,
-                nombre: values.nombre,
-                descripcion: values.descripcion,
-                stock: values.stock,
-                stock_minimo: values.stock_minimo,
-                costo: values.costo,
-                precio: values.precio,
-                mayoreo: values.mayoreo,
-                cantidad_mayoreo: values.cantidad_mayoreo,
-                precio_mayoreo: values.precio_mayoreo,
-                categorias: values.categorias,
-                provedores: values.provedores,
-                imagenes
-            }));
+
+            if (producto) {
+                console.log('actualizacion');
+                console.log({
+                    id: producto.id,
+                    codigo: values.codigo,
+                    nombre: values.nombre,
+                    descripcion: values.descripcion,
+                    stock: values.stock,
+                    stock_minimo: values.stock_minimo,
+                    costo: values.costo,
+                    precio: values.precio,
+                    mayoreo: values.mayoreo,
+                    cantidad_mayoreo: values.cantidad_mayoreo,
+                    precio_mayoreo: values.precio_mayoreo,
+                    categorias: values.categorias,
+                    provedores: values.provedores,
+                    imagenes
+                });
+                await dispatch(actualizarProducto({
+                    id: producto.id,
+                    codigo: values.codigo,
+                    nombre: values.nombre,
+                    descripcion: values.descripcion,
+                    stock: values.stock,
+                    stock_minimo: values.stock_minimo,
+                    costo: values.costo,
+                    precio: values.precio,
+                    mayoreo: values.mayoreo,
+                    cantidad_mayoreo: values.cantidad_mayoreo,
+                    precio_mayoreo: values.precio_mayoreo,
+                    categorias: values.categorias,
+                    provedores: values.provedores,
+                    imagenes
+                }));
+            } else {
+                await dispatch(crearProducto({
+                    codigo: values.codigo,
+                    nombre: values.nombre,
+                    descripcion: values.descripcion,
+                    stock: values.stock,
+                    stock_minimo: values.stock_minimo,
+                    costo: values.costo,
+                    precio: values.precio,
+                    mayoreo: values.mayoreo,
+                    cantidad_mayoreo: values.cantidad_mayoreo,
+                    precio_mayoreo: values.precio_mayoreo,
+                    categorias: values.categorias,
+                    provedores: values.provedores,
+                    imagenes
+                }));
+            }
 
             navigate('/dashboard/admin/inventario', { replace: true });
-            // dispatch(obtenerProductosNegocio(usuario?.negocio!.id!));
-            // setState({ openModal: false });
         },
         validationSchema: Yup.object({
             codigo: Yup.string().required('Requerido'),
             cantidad_mayoreo: Yup.number().when('mayoreo', { is: true, then: Yup.number().optional().min(1) })
-        })
+        }),
+        enableReinitialize: true
     });
 
     return (
@@ -204,10 +258,22 @@ export const NuevoProductoPage = () => {
                         </div>
 
                     </div>
-                    {/* {values.files && } */}
-                    {
-                        values.files && Array.from(values.files).map((file) => <img key={file.name} src={URL.createObjectURL(file)} height='100' width={150} alt="" />)
-                    }
+                    <ul className="list-group list-group-horizontal">
+                        {
+                            values.imagenes?.map((img, i) => <li key={i} className="list-group-item">
+                                <img src={img} height='100' width={150} alt="" />
+                            </li>)
+                        }
+                        {
+                            values.files &&
+                            Array.from(values.files).map((file) => <li key={file.name} className="list-group-item">
+                                <img src={URL.createObjectURL(file)} height='100' width={150} alt="" />
+                            </li>)
+                        }
+                        {/* <li className="list-group-item">An item</li>
+                        <li className="list-group-item">A second item</li>
+                        <li className="list-group-item">A third item</li> */}
+                    </ul>
                     <div className='mb-3'>
                         <label htmlFor="" className='form-label'>Imagenes</label>
                         <input className='form-control' type="file" multiple onChange={(event) => {

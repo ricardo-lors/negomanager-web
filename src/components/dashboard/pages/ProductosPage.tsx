@@ -6,7 +6,7 @@ import * as Yup from 'yup';
 import { useAppDispatch } from "../../../hooks";
 import { Producto } from "../../../interfaces";
 import { RootState } from "../../../store";
-import { crearProducto, obtenerProductosNegocio } from "../../../store/slices/producto/productoThuncks";
+import { crearProducto, obtenerProductos } from "../../../store/slices/producto";
 import { MySelect } from "../../shared/MySelect";
 import { MyTextInput } from "../../shared/MyTextInput";
 
