@@ -79,7 +79,7 @@ export const NegocioPage = () => {
                     {...getFieldProps('telefono')}
                 />
 
-                <button disabled={state.modificar} type="submit" className="btn btn-primary text-decoration-none w-100">Guardar</button>
+                <button disabled={usuario?.roles.includes('administrador') ? false : state.modificar} type="submit" className="btn btn-primary text-decoration-none w-100">Guardar</button>
             </form>
         </div>
     )

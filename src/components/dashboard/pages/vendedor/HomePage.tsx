@@ -73,7 +73,9 @@ export const HomePage = () => {
         // negocio: usuario!.negocio!.id,
         detalles: state.detalles
       }
-      console.log(nuevaVenta)
+
+      console.log(nuevaVenta);
+
       await crearVenta(nuevaVenta);
       handleImprimirTicket();
       setState({ detalles: [], total: 0.0 });

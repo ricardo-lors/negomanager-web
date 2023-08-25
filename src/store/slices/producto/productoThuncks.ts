@@ -89,7 +89,8 @@ export const actualizarProducto = (producto: NuevoActualizarProducto) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         try {
             const { data } = await servicesApiToken(`/productos/${producto.id}`, { method: 'PATCH', data: producto });
-            dispatch(setProductos(data));
+            console.log(data);
+            // dispatch(setProductos(data));
         } catch (e) {
             console.log(e);
             if (e instanceof AxiosError) {

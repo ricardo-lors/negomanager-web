@@ -251,7 +251,7 @@ export const NuevoProductoPage = () => {
                             >
                                 {
                                     provedores?.map(opt => (
-                                        <option key={opt.id} value={opt.id}>{opt.nombre}</option>
+                                        <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
                                     ))
                                 }
                             </MySelect>

@@ -55,8 +55,23 @@ export const InventarioPage = () => {
                 <h2 className="text-center">INVENTARIO</h2>
                 <div className="col">
                     {/* <button className="btn btn-primary" onClick={() => setState({ openModal: !openModal })}>Agregar</button>/admin/inventario/nuevo/producto */}
-                    <Link to='/dashboard/admin/inventario/producto' replace className="btn btn-primary">Agregar</Link>
-                    <button className="btn btn-primary" onClick={handleimprimirProductosList} >Imprimir Lista Productos</button>
+                    <Link
+                        to='/dashboard/admin/inventario/producto'
+                        className="btn btn-primary me-2"
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip"
+                        data-bs-title="This top tooltip is themed via CSS variables."
+                        replace
+                    >
+                        <i className="bi bi-plus-square" />
+                    </Link>
+                    <button
+                        className="btn btn-primary"
+                        onClick={handleimprimirProductosList}
+                        data-bs-toggle="tooltip" data-bs-placement="top"
+                        data-bs-custom-class="custom-tooltip"
+                        data-bs-title="This top tooltip is themed via CSS variables."
+                    ><i className="bi bi-printer"></i></button>
                 </div>
                 <div className="col">
                     <form onSubmit={handleSubmitSearch}>
@@ -85,7 +100,7 @@ export const InventarioPage = () => {
                                                 } */}
                                                 <p className="card-text" >{prod.descripcion}</p>
                                                 <p className="card-text" >Stock: {prod.stock} - Precio: {prod.precio}</p>
-                                                <Link to={`/dashboard/admin/inventario/producto/${prod.id}`} replace className="btn btn-primary">Modificar</Link>
+                                                <Link to={`/dashboard/admin/inventario/producto/${prod.id}`} replace className="btn btn-primary"><i className="bi bi-pencil-square"></i></Link>
                                             </div>
                                         </div>
                                     </div>

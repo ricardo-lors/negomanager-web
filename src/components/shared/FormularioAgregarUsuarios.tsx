@@ -36,7 +36,6 @@ export const FormularioAgregarUsuarios = ({ rol, submit }: AgregarUsuarioProps) 
 
     return (
         <div>
-            <h3>Nuevo Cliente</h3>
             <form className="container mt-4" noValidate onSubmit={handleSubmit}>
 
                 <MyTextInput
