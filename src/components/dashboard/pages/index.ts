@@ -1,5 +1,5 @@
 
-export { ClientesPage } from './ClientesPage';
+export { ClientesPage } from './vendedor/ClientesPage';
 export { ComprasPage } from './ComprasPage';
 export { NegocioPage } from './NegocioPage';
 export { ProductosPage } from './ProductosPage';

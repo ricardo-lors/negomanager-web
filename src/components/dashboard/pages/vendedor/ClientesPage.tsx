@@ -7,19 +7,19 @@ import { FormularioUsuario, Usuario } from "../../../../interfaces";
 import { crearUsuario, obtenerUsuarios } from "../../../../store/slices/usuario";
 import { UsuarioForm } from "../../../shared";
 
-interface VendedoresState {
+interface ClientesState {
     usuarios: Usuario[]
 }
 
-export const VendedoresPage = () => {
+export const ClientesPage = () => {
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
-    const [{ usuarios }, setState] = useState<VendedoresState>({
+    const [{ usuarios }, setState] = useState<ClientesState>({
         usuarios: []
     });
 
     useEffect(() => {
-        obtenerUsuarios(usuario!.negocio!.id, 'vendedor').then(listaUsuarios => {
+        obtenerUsuarios(usuario!.negocio!.id, 'cliente').then(listaUsuarios => {
             setState({ usuarios: listaUsuarios });
         });
     }, [usuario]);
@@ -39,9 +39,9 @@ export const VendedoresPage = () => {
         <div className="row">
             <div className="col-3 border-end vh-100">
                 <div className="text-center">
-                    <h2>Vendedores</h2>
+                    <h2>Clientes</h2>
                 </div>
-                <UsuarioForm rol={['vendedor']} onSubmit={onSubmit} />
+                <UsuarioForm rol={['cliente']} onSubmit={onSubmit} />
             </div>
             <div className="col-9">
                 <table className="table">
@@ -54,7 +54,7 @@ export const VendedoresPage = () => {
                     </thead>
                     <tbody>
                         {
-                            usuarios?.map(st => st.roles.includes('vendedor') && <tr key={st.id}>
+                            usuarios?.map(st => st.roles.includes('cliente') && <tr key={st.id}>
                                 <th>{st.nombre}</th>
                                 <th>{st.correo}</th>
                                 <th>{st.telefono}</th>

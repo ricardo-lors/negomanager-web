@@ -1,15 +1,13 @@
-import { useFormik } from "formik";
-import { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useAppDispatch } from "../../../../hooks";
-import { Producto, ProductoConvert } from "../../../../interfaces";
-import { AppDispatch, RootState } from "../../../../store";
-import { crearProducto, obtenerProductos, obtenerProductosQuery } from "../../../../store/slices/producto";
+import React, { useEffect, useRef, useState } from 'react'
+
+import { useDispatch, useSelector } from 'react-redux';
+import { useReactToPrint } from 'react-to-print';
+import { Link } from 'react-router-dom';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { Modal, MyCheckbox, MySelect, MyTextInput } from "../../../shared";
-import { Link } from "react-router-dom";
-import { useReactToPrint } from "react-to-print";
+import { AppDispatch, RootState } from '../../../../store';
+import { obtenerProductos, obtenerProductosQuery } from '../../../../store/slices/producto';
 
 export const InventarioPage = () => {
 
@@ -31,7 +29,8 @@ export const InventarioPage = () => {
     });
 
     useEffect(() => {
-        usuario && dispatch(obtenerProductos({ negocio: usuario?.negocio?.id!, take: 10 }))
+        // take: 10 
+        usuario && dispatch(obtenerProductos({ negocio: usuario?.negocio?.id!}))
     }, [dispatch]);
 
     const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch, } = useFormik({
@@ -56,7 +55,7 @@ export const InventarioPage = () => {
                 <div className="col">
                     {/* <button className="btn btn-primary" onClick={() => setState({ openModal: !openModal })}>Agregar</button>/admin/inventario/nuevo/producto */}
                     <Link
-                        to='/dashboard/admin/inventario/producto'
+                        to={`/dashboard/${usuario?.roles[0]}/inventario/producto`}
                         className="btn btn-primary me-2"
                         data-bs-toggle="tooltip" data-bs-placement="top"
                         data-bs-custom-class="custom-tooltip"
@@ -100,7 +99,7 @@ export const InventarioPage = () => {
                                                 } */}
                                                 <p className="card-text" >{prod.descripcion}</p>
                                                 <p className="card-text" >Stock: {prod.stock} - Precio: {prod.precio}</p>
-                                                <Link to={`/dashboard/admin/inventario/producto/${prod.id}`} replace className="btn btn-primary"><i className="bi bi-pencil-square"></i></Link>
+                                                <Link to={`/dashboard/${usuario?.roles[0]}/inventario/producto/${prod.id}`} replace className="btn btn-primary"><i className="bi bi-pencil-square"></i></Link>
                                             </div>
                                         </div>
                                     </div>

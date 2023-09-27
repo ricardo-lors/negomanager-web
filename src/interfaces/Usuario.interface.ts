@@ -1,23 +1,24 @@
 
 import { Negocio } from "./Negocio.interface";
 
-export interface UsuarioForm {
-    nombre?: string;
-    correo: string;
-    contrasena: string;
-    contrasenaRepeat?: string;
-    negocio?: Negocio;
-    roles?: string[];
-}
-
 export interface Usuario {
-    id: string;
+    id?: string;
     nombre: string;
     correo: string;
     telefono?: string;
-    activo: boolean;
+    activo?: boolean;
     roles: string[];
     negocio?: Negocio;
+}
+
+export interface FormularioUsuario extends Usuario {
+    contrasena: string;
+    contrasenaRepeat?: string;
+}
+
+export interface UsuarioLogin {
+    correo: string;
+    contrasena: string;
 }
 
 // Converts JSON strings to/from your types

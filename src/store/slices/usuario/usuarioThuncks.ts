@@ -1,11 +1,11 @@
-import { UsuarioConvert, UsuarioForm } from "../../../interfaces";
+import { UsuarioConvert, FormularioUsuario, UsuarioLogin, Usuario } from "../../../interfaces";
 import { servicesApi, servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setUsuario, endGetUsuario, removerUsuario } from "./usuarioSlice";
 import Swal from 'sweetalert2'
 import { AxiosError } from "axios";
 
-export const sesion = (credenciales: UsuarioForm) => {
+export const sesion = (credenciales: UsuarioLogin) => {
     return async (dispatch: AppDispatch) => {
         Swal.fire('Cargando');
         Swal.showLoading();
@@ -54,23 +54,25 @@ export const removerSesion = () => {
     }
 };
 
-export const crearUsuario = (usuario: UsuarioForm) => {
-    return async (dispatch: AppDispatch /*, getState: RootState*/) => {
-        try {
-            const { data } = await servicesApiToken(`/auth/registro`, { method: 'POST', data: usuario });
-
-            console.log(data);
-        } catch (e) {
-            console.log(e);
-            if (e instanceof AxiosError) {
-                // ✅ TypeScript knows err is Error
-                Swal.fire('Error', `${e.response?.data.message}`, 'error');
-            } else {
-                console.log('Unexpected error', e);
-            }
+export const crearUsuario = async (usuario: FormularioUsuario): Promise<Usuario[]> => {
+    try {
+        Swal.fire('Agregando el usuario nuevo');
+        Swal.showLoading();
+        const { data } = await servicesApiToken(`/auth/registro`, { method: 'POST', data: usuario });
+        Swal.close();
+        return data;
+    } catch (e) {
+        console.log(e);
+        if (e instanceof AxiosError) {
+            // ✅ TypeScript knows err is Error
+            Swal.fire('Error', `${e.response?.data.message}`, 'error');
+        } else {
+            console.log('Unexpected error', e);
         }
+        return [];
     }
-};
+
+}
 // http://localhost:4000/api/auth/usuarios?rol=vendedor&negocio=ad2824cc-622f-4796-a989-1a60e2cd00ba
 // export const obtenerUsuarios = (negocioid: string, rol: string) => {
 //     return async (dispatch: AppDispatch) => {
@@ -85,11 +87,12 @@ export const crearUsuario = (usuario: UsuarioForm) => {
 // };
 
 
-export const obtenerUsuarios = async (negocioid: string, rol: string) => {
+export const obtenerUsuarios = async (negocioid: string, rol: string): Promise<Usuario[]> => {
     try {
         const { data } = await servicesApiToken(`/auth/usuarios?rol=${rol}&negocio=${negocioid}`, {});
         return data;
     } catch (error) {
         Swal.fire('Error', `error: ${error}`, 'info');
+        return [];
     }
 }

@@ -1,3 +1,5 @@
+export { UsuarioForm } from "./UsuarioForm";
+
 export { Modal } from "./Modal";
 export { MyCheckbox } from "./MyCheckbox";
 export { MySelect } from "./MySelect";

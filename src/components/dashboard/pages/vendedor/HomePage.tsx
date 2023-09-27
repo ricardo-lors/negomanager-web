@@ -2,7 +2,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import { useAppDispatch } from "../../../../hooks";
-import { Cliente, DetallesVenta, NuevaVenta, Producto, UsuarioForm, VentaState } from "../../../../interfaces";
+import { Cliente, DetallesVenta, NuevaVenta, Producto, Usuario, VentaState } from "../../../../interfaces";
 import { RootState } from "../../../../store";
 import { obtenerProductoCodigo } from "../../../../store/slices/producto/productoThuncks";
 
@@ -12,7 +12,6 @@ import Swal from "sweetalert2";
 import { crearVenta } from "../../../../store/slices/venta";
 import { Modal, MySelect, Ticket } from "../../../shared";
 import { crearUsuario, obtenerUsuarios } from "../../../../store/slices/usuario";
-import { FormularioAgregarUsuarios } from "../../../shared/FormularioAgregarUsuarios";
 
 
 export const HomePage = () => {
@@ -34,16 +33,14 @@ export const HomePage = () => {
     total: 0.0
   });
 
-  const [clientes, setClientes] = useState<Cliente[]>([]);
+  const [clientes, setClientes] = useState<Usuario[]>([]);
 
   const [agregarCliente, setAgregarCliente] = useState<boolean>(false);
 
   useEffect(() => {
-    // negocio.id && dispatch(obtenerProductosNegocio(negocio.id))
-    // obtenerUsuarios(usuario!.negocio!.id, 'cliente').then(resp => {
-    //   console.log(resp)
-    //   setClientes(resp ? resp : []);
-    // });
+    obtenerUsuarios(usuario!.negocio!.id, 'cliente').then(resp => {
+      setClientes(resp ? resp : []);
+    });
   }, [usuario]);
 
   const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch } = useFormik({
@@ -74,7 +71,6 @@ export const HomePage = () => {
         detalles: state.detalles
       }
 
-      console.log(nuevaVenta);
 
       await crearVenta(nuevaVenta);
       handleImprimirTicket();
@@ -89,7 +85,6 @@ export const HomePage = () => {
   });
 
   const addProducto = (producto: Producto) => {
-    console.log(producto)
     const index = state.detalles.findIndex(prod => prod.producto.id === producto.id);
     if (index >= 0) {
       state.detalles[index].cantidad = state.detalles[index].cantidad + 1;
@@ -113,7 +108,6 @@ export const HomePage = () => {
       };
       const newDetallesList = [...state.detalles, detalles];
       const total = sumaTotal(newDetallesList);
-      console.log(total);
       setState({ detalles: newDetallesList, total });
     }
   }
@@ -142,16 +136,16 @@ export const HomePage = () => {
   const onFocus = (e: FormEvent<HTMLInputElement>) => e.currentTarget.select();
 
 
-  const onSubmit: (values: UsuarioForm, formikHelpers: FormikHelpers<UsuarioForm>) => void | Promise<any> = async (values) => {
-    console.log(values);
-    dispatch(crearUsuario({
-      nombre: values.nombre,
-      contrasena: values.contrasena,
-      correo: values.correo,
-      roles: values.roles,
-      negocio: values.negocio
-    }));
-  };
+  // const onSubmit: (values: UsuarioForm, formikHelpers: FormikHelpers<UsuarioForm>) => void | Promise<any> = async (values) => {
+  //   console.log(values);
+  //   dispatch(crearUsuario({
+  //     nombre: values.nombre,
+  //     contrasena: values.contrasena,
+  //     correo: values.correo,
+  //     roles: values.roles,
+  //     negocio: values.negocio
+  //   }));
+  // };
 
   return (
     <div className="container vh-100">
@@ -221,11 +215,11 @@ export const HomePage = () => {
         </div>
       </div>
       <Ticket ref={ticket} venta={state} />
-      <Modal
+      {/* <Modal
         isOpen={agregarCliente}
         children={<FormularioAgregarUsuarios rol={['cliente']} submit={onSubmit} />}
         onRequestClose={() => setAgregarCliente(false)}
-      />
+      /> */}
     </div>
   )
 }

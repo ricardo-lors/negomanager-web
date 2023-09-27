@@ -5,16 +5,16 @@ import { RootState } from "../../../../store";
 import * as Yup from 'yup';
 import { MyTextInput } from "../../../shared";
 import { useFormik } from "formik";
-import { UsuarioForm } from "../../../../interfaces";
 import { useAppDispatch } from "../../../../hooks";
 import { crearUsuario } from "../../../../store/slices/usuario";
+import { FormularioUsuario } from "../../../../interfaces";
 
 export const HomePage = () => {
 
     const dispatch = useAppDispatch();
 
     const { negocios } = useSelector((state: RootState) => state.negocio);
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<UsuarioForm>({
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<FormularioUsuario>({
         initialValues: {
             nombre: '',
             correo: '',
@@ -23,12 +23,12 @@ export const HomePage = () => {
             roles: ['administrador']
         },
         onSubmit: async (values) => {
-            dispatch(crearUsuario({
-                nombre: values.nombre,
-                contrasena: values.contrasena,
-                correo: values.correo,
-                roles: values.roles
-            }));
+            // dispatch(crearUsuario({
+            //     nombre: values.nombre,
+            //     contrasena: values.contrasena,
+            //     correo: values.correo,
+            //     roles: values.roles
+            // }));
         },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Nombre es nesesario'),
@@ -60,7 +60,7 @@ export const HomePage = () => {
                         type="password"
                         label="Contraseña"
                         className="form-control"
-                        errors={touched.contrasena && errors.contrasena && errors.contrasena || ''}
+                        errors={(touched.contrasena && errors.contrasena && errors.contrasena) || ''}
                         {...getFieldProps('contrasena')}
                     />
 
@@ -68,7 +68,7 @@ export const HomePage = () => {
                         type="password"
                         label="Repetir Contraseña"
                         className="form-control"
-                        errors={touched.contrasenaRepeat && errors.contrasenaRepeat && errors.contrasenaRepeat || ''}
+                        errors={(touched.contrasenaRepeat && errors.contrasenaRepeat && errors.contrasenaRepeat) || ''}
                         {...getFieldProps('contrasenaRepeat')}
                     />
                 </div>

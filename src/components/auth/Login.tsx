@@ -5,13 +5,13 @@ import * as Yup from 'yup';
 import { MyTextInput } from "../shared/MyTextInput";
 import { sesion } from "../../store/slices/usuario";
 import { useAppDispatch } from "../../hooks/index";
-import { UsuarioForm } from "../../interfaces";
+import { UsuarioLogin } from "../../interfaces";
 
 export const Login = () => {
 
     const dispatch = useAppDispatch();
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<UsuarioForm>({
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<UsuarioLogin>({
         initialValues: {
             correo: '',
             contrasena: ''
@@ -195,19 +195,19 @@ export const Login = () => {
 // ]
 
 
-                                        // else if (type === 'select') {
-                                        //     return (
-                                        //         <MySelect
-                                        //             key={name}
-                                        //             label={label}
-                                        //             name={name}
-                                        //         >
-                                        //             <option value="">Select an option</option>
-                                        //             {
-                                        //                 options?.map(({ id, label }) => (
-                                        //                     <option key={id} value={id}>{label}</option>
-                                        //                 ))
-                                        //             }
-                                        //         </MySelect>
-                                        //     )
-                                        // }
+// else if (type === 'select') {
+//     return (
+//         <MySelect
+//             key={name}
+//             label={label}
+//             name={name}
+//         >
+//             <option value="">Select an option</option>
+//             {
+//                 options?.map(({ id, label }) => (
+//                     <option key={id} value={id}>{label}</option>
+//                 ))
+//             }
+//         </MySelect>
+//     )
+// }

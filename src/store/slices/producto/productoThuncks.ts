@@ -4,6 +4,7 @@ import { NuevoActualizarProducto, Producto, ProductoConvert, QueryParamsProducto
 import { servicesApiToken, servicesApiTokenFile } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setProductos, startGetProductos } from "./productoSlice";
+import { NavigateFunction } from "react-router-dom";
 
 export const obtenerProductos = (queryParamsProducto: QueryParamsProducto) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
@@ -68,16 +69,17 @@ export const obtenerProducto = async (id: string): Promise<Producto | undefined>
 ////////////////////////
 ////////////////////////
 
-export const crearProducto = (producto: NuevoActualizarProducto) => {
+export const crearProducto = (producto: NuevoActualizarProducto, navigate: NavigateFunction, rol: String) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         try {
             const { data } = await servicesApiToken(`/productos`, { method: 'POST', data: producto });
-            dispatch(setProductos(data));
+            dispatch(setProductos([data]));
+            navigate(`/dashboard/${rol}/inventario`, { replace: true });
         } catch (e) {
             if (e instanceof AxiosError) {
-                // ✅ TypeScript knows err is Error   
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
-            } else {
+            } else if (e instanceof Error) {
+                Swal.fire('Error', `${e.message}`, 'error');
                 console.log('Unexpected error', e);
             }
         }
@@ -85,22 +87,21 @@ export const crearProducto = (producto: NuevoActualizarProducto) => {
 
 }
 
-export const actualizarProducto = (producto: NuevoActualizarProducto) => {
+export const actualizarProducto = (producto: NuevoActualizarProducto, navigate: NavigateFunction, rol: String) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
         try {
             const { data } = await servicesApiToken(`/productos/${producto.id}`, { method: 'PATCH', data: producto });
-            console.log(data);
-            // dispatch(setProductos(data));
+            dispatch(setProductos([data]));
+            navigate(`/dashboard/${rol}/inventario`, { replace: true });
         } catch (e) {
-            console.log(e);
             if (e instanceof AxiosError) {
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
-            } else {
+            } else if (e instanceof Error) {
+                Swal.fire('Error', `${e.message}`, 'error');
                 console.log('Unexpected error', e);
             }
         }
     }
-
 }
 
 export const obtenerProductoCodigo = async (codigo: string, negocioid: string) => {
@@ -136,13 +137,12 @@ export const agregarImagenes = async (file: File) => {
         const { data } = await servicesApiTokenFile(`/files/producto`, 'POST', { file });
         return data;
     } catch (e) {
-        console.log(e);
         if (e instanceof AxiosError) {
-            // ✅ TypeScript knows err is Error   
             Swal.fire('Error', `${e.response?.data.message}`, 'error');
         } else {
             console.log('Unexpected error', e);
         }
+        console.log(e);
     }
 
 }

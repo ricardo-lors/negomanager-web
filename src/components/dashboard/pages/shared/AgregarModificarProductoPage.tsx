@@ -1,17 +1,27 @@
-import { useFormik } from 'formik';
-import React, { useEffect, useState } from 'react'
-import { Link, useNavigate, useParams } from 'react-router-dom'
-import { FormularioProducto } from '../../../../interfaces';
-import { useAppDispatch } from '../../../../hooks';
-import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../store/slices/producto';
-import * as Yup from 'yup';
-import { MyCheckbox, MySelect, MyTextInput } from '../../../shared';
+import { useEffect, useState } from 'react';
+
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+
+
+import { FormularioProducto } from '../../../../interfaces';
+import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../store/slices/producto';
+import { useAppDispatch } from '../../../../hooks';
 import { RootState } from '../../../../store';
+import { MyCheckbox, MySelect, MyTextInput } from '../../../shared';
 
-export const NuevoProductoPage = () => {
+export const AgregarModificarProductoPage = () => {
 
+    const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     let { id } = useParams();
+
+    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { provedores } = useSelector((state: RootState) => state.provedor);
+    const { categorias } = useSelector((state: RootState) => state.categoria);
+
 
     const [producto, setProducto] = useState<FormularioProducto>();
 
@@ -37,12 +47,6 @@ export const NuevoProductoPage = () => {
         //     second
         //   }
     }, [])
-
-
-    const dispatch = useAppDispatch();
-    const navigate = useNavigate();
-    const { provedores } = useSelector((state: RootState) => state.provedor);
-    const { categorias } = useSelector((state: RootState) => state.categoria);
 
     const { handleSubmit, errors, touched, getFieldProps, values, handleChange, setFieldValue, setValues, } = useFormik<FormularioProducto>({
         initialValues: producto ? producto : {
@@ -75,10 +79,9 @@ export const NuevoProductoPage = () => {
                 }
             }
 
-            if (producto) {
-                console.log('actualizacion');
-                console.log({
-                    id: producto.id,
+            if (!producto) {
+                console.log('Hice esta accion');
+                await dispatch(crearProducto({
                     codigo: values.codigo,
                     nombre: values.nombre,
                     descripcion: values.descripcion,
@@ -92,7 +95,9 @@ export const NuevoProductoPage = () => {
                     categorias: values.categorias,
                     provedores: values.provedores,
                     imagenes
-                });
+                }, navigate, usuario!.roles[0]));
+            } else {
+                console.log('Hice esta accion actualizar');
                 await dispatch(actualizarProducto({
                     id: producto.id,
                     codigo: values.codigo,
@@ -108,26 +113,10 @@ export const NuevoProductoPage = () => {
                     categorias: values.categorias,
                     provedores: values.provedores,
                     imagenes
-                }));
-            } else {
-                await dispatch(crearProducto({
-                    codigo: values.codigo,
-                    nombre: values.nombre,
-                    descripcion: values.descripcion,
-                    stock: values.stock,
-                    stock_minimo: values.stock_minimo,
-                    costo: values.costo,
-                    precio: values.precio,
-                    mayoreo: values.mayoreo,
-                    cantidad_mayoreo: values.cantidad_mayoreo,
-                    precio_mayoreo: values.precio_mayoreo,
-                    categorias: values.categorias,
-                    provedores: values.provedores,
-                    imagenes
-                }));
+                }, navigate, usuario!.roles[0]));
             }
 
-            navigate('/dashboard/admin/inventario', { replace: true });
+            // navigate(`/dashboard/${usuario!.roles[0]}/inventario`, { replace: true });
         },
         validationSchema: Yup.object({
             codigo: Yup.string().required('Requerido'),
@@ -139,7 +128,7 @@ export const NuevoProductoPage = () => {
     return (
         <div>
             NuevoProductoPage
-            <Link to='/dashboard/admin/inventario' replace className='btn btn-primary' >Cancelar</Link>
+            <Link to={`/dashboard/${usuario?.roles[0]}/inventario`} replace className='btn btn-primary' >Cancelar</Link>
 
             <div className="row">
                 <form className="container mt-4" noValidate onSubmit={handleSubmit}>

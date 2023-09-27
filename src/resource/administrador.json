@@ -8,42 +8,42 @@
     },
     {
         "id": 2,
-        "ruta": "/dashboard/admin/inventario",
+        "ruta": "/dashboard/administrador/inventario",
         "nombre": "Inventario",
         "replace": true,
         "icono": "bi-clipboard"
     },
     {
         "id": 3,
-        "ruta": "/dashboard/admin/vendedores",
+        "ruta": "/dashboard/administrador/vendedores",
         "nombre": "Vendedores",
         "replace": true,
         "icono": "bi-person"
     },
     {
         "id": 4,
-        "ruta": "/dashboard/clientes",
+        "ruta": "/dashboard/administrador/clientes",
         "nombre": "Clientes",
         "replace": true,
         "icono": "bi-file-earmark-person"
     },
     {
         "id": 5,
-        "ruta": "/dashboard/admin/provedores",
+        "ruta": "/dashboard/administrador/provedores",
         "nombre": "Provedores",
         "replace": true,
         "icono": "bi-bag-plus"
     },
     {
         "id": 6,
-        "ruta": "/dashboard/admin/categorias",
+        "ruta": "/dashboard/administrador/categorias",
         "nombre": "Categorias",
         "replace": true,
         "icono": "bi-bag-plus"
     },
     {
         "id": 7,
-        "ruta": "/dashboard/admin/negocio",
+        "ruta": "/dashboard/administrador/negocio",
         "nombre": "Negocio",
         "replace": true,
         "icono": "bi bi-shop"
