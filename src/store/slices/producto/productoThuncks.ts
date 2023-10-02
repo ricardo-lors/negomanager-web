@@ -5,6 +5,7 @@ import { servicesApiToken, servicesApiTokenFile } from "../../../services/servic
 import { AppDispatch } from "../../store";
 import { setProductos, startGetProductos } from "./productoSlice";
 import { NavigateFunction } from "react-router-dom";
+import { getMeesageError } from "../../errors/errors";
 
 export const obtenerProductos = (queryParamsProducto: QueryParamsProducto) => {
     return async (dispatch: AppDispatch /*,getState: () => RootState*/) => {
@@ -107,12 +108,10 @@ export const actualizarProducto = (producto: NuevoActualizarProducto, navigate: 
 export const obtenerProductoCodigo = async (codigo: string, negocioid: string) => {
     try {
         const { data } = await servicesApiToken(`/productos/${codigo}/${negocioid}`, {});
-        // console.log(data);
-        // const producto = ProductoConvert.toProducto(data);
         return data;
     } catch (e) {
-        console.log(e);
-        Swal.fire('Error',)
+        const message = getMeesageError(e);
+        Swal.fire('Error', message, 'error');
     }
 }
 

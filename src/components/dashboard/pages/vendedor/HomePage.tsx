@@ -2,14 +2,14 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import { useAppDispatch } from "../../../../hooks";
-import { Cliente, DetallesVenta, NuevaVenta, Producto, Usuario, VentaState } from "../../../../interfaces";
+import { Cliente, DetallesVenta, NuevaVenta, Usuario, VentaState } from "../../../../interfaces";
 import { RootState } from "../../../../store";
 import { obtenerProductoCodigo } from "../../../../store/slices/producto/productoThuncks";
 
 import * as Yup from 'yup';
 import { FormikHelpers, useFormik } from "formik";
 import Swal from "sweetalert2";
-import { crearVenta } from "../../../../store/slices/venta";
+import { agregarProducto, cambiarCantidad, crearVenta, resetear } from "../../../../store/slices/venta";
 import { Modal, MySelect, Ticket } from "../../../shared";
 import { crearUsuario, obtenerUsuarios } from "../../../../store/slices/usuario";
 
@@ -20,17 +20,11 @@ export const HomePage = () => {
 
   const ticket = useRef<HTMLDivElement>(null);
 
-  // const { negocio } = useSelector((state: RootState) => state.negocio);
   const { usuario } = useSelector((state: RootState) => state.usuario);
-  // const { clientes } = useSelector((state: RootState) => state.cliente);
+  const { detalles, total } = useSelector((state: RootState) => state.venta);
 
   const handleImprimirTicket = useReactToPrint({
     content: () => ticket.current!
-  });
-
-  const [state, setState] = useState<VentaState>({
-    detalles: [],
-    total: 0.0
   });
 
   const [clientes, setClientes] = useState<Usuario[]>([]);
@@ -47,7 +41,7 @@ export const HomePage = () => {
     initialValues: { codigo: '' },
     onSubmit: async (values) => {
       const producto = await obtenerProductoCodigo(values.codigo, usuario?.negocio!.id!);
-      if (producto) addProducto(producto);
+      if (producto) dispatch(agregarProducto(producto));
       resetFormSearch();
     },
     validationSchema: Yup.object({
@@ -59,22 +53,19 @@ export const HomePage = () => {
     initialValues: { pago: 0, clienteid: '' },
     onSubmit: async (values) => {
 
-      if (state.total > values.pago) return Swal.fire('Pago Insuficiente', 'El Pago no cubre el total de la venta', 'warning');
-
       const nuevaVenta: NuevaVenta = {
-        total: state.total,
+        total: total,
         pago: +values.pago,
-        cambio: values.pago - state.total,
-        // vendedor: usuario!.id,
+        cambio: values.pago - total,
         comprador: values.clienteid,
-        // negocio: usuario!.negocio!.id,
-        detalles: state.detalles
+        detalles: detalles
       }
 
-
-      await crearVenta(nuevaVenta);
-      handleImprimirTicket();
-      setState({ detalles: [], total: 0.0 });
+      const creado = await crearVenta(nuevaVenta);
+      if (creado) {
+        handleImprimirTicket();
+        dispatch(resetear());
+      }
     },
     validationSchema: Yup.object({
       pago: Yup.string().required('EL dato es requerido'),
@@ -84,33 +75,6 @@ export const HomePage = () => {
     })
   });
 
-  const addProducto = (producto: Producto) => {
-    const index = state.detalles.findIndex(prod => prod.producto.id === producto.id);
-    if (index >= 0) {
-      state.detalles[index].cantidad = state.detalles[index].cantidad + 1;
-      state.detalles[index].total = state.detalles[index].producto.precio * state.detalles[index].cantidad;
-      const total = sumaTotal(state.detalles);
-      setState(prev => ({ detalles: [...state.detalles], total }));
-    } else {
-      const detalles: DetallesVenta = {
-        cantidad: 1,
-        total: producto.precio,
-        producto: {
-          id: producto.id!,
-          nombre: producto.nombre,
-          descripcion: producto.descripcion,
-          stock: producto.stock,
-          codigo: producto.codigo,
-          precio: producto.precio,
-          costo: producto.costo,
-          categorias: producto.categorias
-        }
-      };
-      const newDetallesList = [...state.detalles, detalles];
-      const total = sumaTotal(newDetallesList);
-      setState({ detalles: newDetallesList, total });
-    }
-  }
 
   const sumaTotal = (detalles: DetallesVenta[]): number => {
     let total: number = 0;
@@ -123,14 +87,11 @@ export const HomePage = () => {
   const agregarPorTabla = (e: FormEvent<HTMLInputElement>, i: number) => {
     const cantidad = +e.currentTarget.value;
     if (cantidad < 1) return;
-    if (cantidad > state.detalles[i].producto.stock) {
+    if (cantidad > detalles[i].producto.stock) {
       Swal.fire('Sin Stock', '', 'warning');
       return;
     }
-    state.detalles[i].cantidad = cantidad;
-    state.detalles[i].total = state.detalles[i].producto.precio * cantidad;
-    const total = sumaTotal(state.detalles);
-    setState({ detalles: [...state.detalles], total });
+    dispatch(cambiarCantidad({ cantidad, index: i }));
   }
 
   const onFocus = (e: FormEvent<HTMLInputElement>) => e.currentTarget.select();
@@ -148,14 +109,23 @@ export const HomePage = () => {
   // };
 
   return (
-    <div className="container vh-100">
+    <div className="container vh-100 pt-3">
       {/* <div className="text-center mt-3">
               <h2>Punto de venta</h2>
           </div> */}
-      <form className="pt-3" noValidate onSubmit={handleSubmitSearch}>
+      {/* <div className="d-grid gap-2 d-md-block">
+        <button className="btn btn-primary" type="button"><i className="bi bi-bag-plus-fill"></i> Agregar varios</button>
+        <button className="btn btn-primary" type="button">Button</button>
+      </div> */}
+      <div className="btn-group mb-2" role="group" aria-label="Basic example">
+        {/* <button type="button" className="btn btn-primary"><i className="bi bi-bag-plus-fill"></i> Agregar varios</button> */}
+        <button type="button" className="btn btn-primary"><i className="bi bi-bag-plus-fill"></i> Agregar P. no Registrado</button>
+        <button type="button" className="btn btn-primary"><i className="bi bi-search"></i> Buscar</button>
+      </div>
+      <form className=" " noValidate onSubmit={handleSubmitSearch}>
         <div className="input-group">
           <input type="text" className="form-control" placeholder="Codigo" {...getFieldPropsSearch('codigo')} />
-          <button type="submit" className="btn btn-primary" >Buscar</button>
+          <button type="submit" className="btn btn-primary" >Agregar</button>
         </div>
         {touchedSearch.codigo && errorsSearch.codigo && <span className="text-danger">{errorsSearch.codigo}</span>}
       </form>
@@ -164,6 +134,7 @@ export const HomePage = () => {
           {/* style={{height: 300}} */}
           <thead>
             <tr>
+              <th scope="col">Codigo</th>
               <th scope="col">Nombre</th>
               <th scope="col">Descripcion</th>
               <th scope="col">Precio</th>
@@ -173,7 +144,8 @@ export const HomePage = () => {
           </thead>
           <tbody>
             {
-              state.detalles.map((st, i) => <tr key={st.producto.id}>
+              detalles.map((st, i) => <tr key={st.producto.id}>
+                <th>{st.producto.codigo}</th>
                 <th>{st.producto.nombre}</th>
                 <th>{st.producto.descripcion}</th>
                 <th>{st.producto.precio}</th>
@@ -186,7 +158,7 @@ export const HomePage = () => {
       </div>
       <div className="row mt-2">
         <div className="col">
-          <h2>Total: {state.total}</h2>
+          <h2>Total: {total}</h2>
           <form noValidate onSubmit={handleSubmitConfirm}>
             <div className="input-group mb-3">
               <MySelect
@@ -203,7 +175,7 @@ export const HomePage = () => {
                   ))
                 }
               </MySelect>
-              <button type="submit" className="btn btn-primary" onClick={() => setAgregarCliente(true)}>Agregar Cliente</button>
+              {/* <button className="btn btn-primary" onClick={() => setAgregarCliente(true)}>Agregar Cliente</button> */}
             </div>
             <span className="text-danger">{touchedConfirm.clienteid && errorsConfirm.clienteid ? errorsConfirm.clienteid : undefined}</span>
             <div className="input-group mb-3">
@@ -214,7 +186,7 @@ export const HomePage = () => {
           </form>
         </div>
       </div>
-      <Ticket ref={ticket} venta={state} />
+      <Ticket ref={ticket} venta={{ detalles, total }} />
       {/* <Modal
         isOpen={agregarCliente}
         children={<FormularioAgregarUsuarios rol={['cliente']} submit={onSubmit} />}

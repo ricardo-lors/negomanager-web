@@ -11,7 +11,7 @@ export const VentasPage = () => {
 
 
     const { negocio } = useSelector((state: RootState) => state.negocio);
-    const { ventas } = useSelector((state: RootState) => state.venta);
+    // const { ventas } = useSelector((state: RootState) => state.venta);
 
     useEffect(() => {
         dispatch(obtenerVentaNegocio(negocio!.id));
@@ -32,13 +32,13 @@ export const VentasPage = () => {
                 </thead>
                 <tbody>
                     {
-                        ventas.map(vt => <tr key={vt.id}>
-                            <th>{vt.vendedor.nombre}</th>
-                            <th>{vt.comprador.nombre}</th>
-                            <th>{vt.fecha.toString()}</th>
-                            <th>{vt.pago}</th>
-                            <th>{vt.total}</th>
-                        </tr>)
+                        // ventas.map(vt => <tr key={vt.id}>
+                        //     <th>{vt.vendedor.nombre}</th>
+                        //     <th>{vt.comprador.nombre}</th>
+                        //     <th>{vt.fecha.toString()}</th>
+                        //     <th>{vt.pago}</th>
+                        //     <th>{vt.total}</th>
+                        // </tr>)
                     }
                 </tbody>
             </table>
