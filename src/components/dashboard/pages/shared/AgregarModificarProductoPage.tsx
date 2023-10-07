@@ -29,8 +29,7 @@ export const AgregarModificarProductoPage = () => {
         id && obtenerProducto(id).then((pd) => setProducto({
             ...pd,
             codigo: pd!.codigo,
-            nombre: pd!.nombre,
-            descripcion: pd?.descripcion,
+            descripcion: pd!.descripcion!,
             stock: pd!.stock,
             stock_minimo: pd?.stock_minimo,
             costo: pd!.costo,
@@ -51,7 +50,6 @@ export const AgregarModificarProductoPage = () => {
     const { handleSubmit, errors, touched, getFieldProps, values, handleChange, setFieldValue, setValues, } = useFormik<FormularioProducto>({
         initialValues: producto ? producto : {
             codigo: '',
-            nombre: '',
             descripcion: '',
             stock: 0,
             stock_minimo: 0,
@@ -83,7 +81,6 @@ export const AgregarModificarProductoPage = () => {
                 console.log('Hice esta accion');
                 await dispatch(crearProducto({
                     codigo: values.codigo,
-                    nombre: values.nombre,
                     descripcion: values.descripcion,
                     stock: values.stock,
                     stock_minimo: values.stock_minimo,
@@ -101,7 +98,6 @@ export const AgregarModificarProductoPage = () => {
                 await dispatch(actualizarProducto({
                     id: producto.id,
                     codigo: values.codigo,
-                    nombre: values.nombre,
                     descripcion: values.descripcion,
                     stock: values.stock,
                     stock_minimo: values.stock_minimo,

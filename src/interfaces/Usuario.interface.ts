@@ -35,3 +35,12 @@ export class UsuarioConvert {
         return JSON.parse(value);
     }
 }
+
+export interface QueryParamsUsuario {
+    correo?: string;
+    nombre?: string;
+    telefono?: string;
+    activo?: boolean;
+    roles?: string[]
+    negocio?: Negocio
+}

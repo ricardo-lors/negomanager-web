@@ -45,7 +45,6 @@ export const ProductosPage = () => {
                     <tbody>
                         {
                             productos.map(st => <tr key={st.id}>
-                                <th>{st.nombre}</th>
                                 <th>{st.descripcion}</th>
                                 <th>{st.stock}</th>
                                 <th>{st.precio}</th>

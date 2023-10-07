@@ -1,17 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { DetallesVenta, Producto, ProductoCorto, Venta, VentaState } from '../../../interfaces'
+import { DetallesVenta, Producto, ProductoVenta, Usuario, VentaState } from '../../../interfaces'
 
 const initialState: VentaState = {
+    cliente: undefined,
+    detalles: [],
     total: 0.0,
-    detalles: []
 }
 
 export const ventaSlice = createSlice({
     name: 'venta',
     initialState,
     reducers: {
-        agregarProducto: (state, actions: PayloadAction<Producto | ProductoCorto>) => {
+        agregarProducto: (state, actions: PayloadAction<ProductoVenta>) => {
             const producto = actions.payload;
             const index = state.detalles.findIndex(prod => prod.producto.id === producto.id);
             if (index >= 0) {
@@ -24,13 +25,9 @@ export const ventaSlice = createSlice({
                     total: producto.precio,
                     producto: {
                         id: producto.id!,
-                        nombre: producto.nombre,
                         descripcion: producto.descripcion,
-                        stock: producto.stock,
                         codigo: producto.codigo,
                         precio: producto.precio,
-                        costo: producto.costo,
-                        categorias: producto.categorias
                     }
                 };
                 const newDetallesList = [...state.detalles, detalles];
@@ -38,18 +35,26 @@ export const ventaSlice = createSlice({
                 state.total = sumaTotal(newDetallesList);
             }
         },
+        agregarProductoNoRegistrado: (state, actions: PayloadAction<DetallesVenta>) => {
+            const newDetallesList = [...state.detalles, actions.payload];
+            state.detalles = newDetallesList;
+            state.total = sumaTotal(newDetallesList);
+        },
         cambiarCantidad: (state, action: PayloadAction<{ index: number, cantidad: number }>) => {
             const { index, cantidad } = action.payload;
             state.detalles[index].cantidad = cantidad;
             state.detalles[index].total = state.detalles[index].producto.precio * cantidad;
             state.total = sumaTotal(state.detalles);
         },
+        asignarCliente: (state, actions: PayloadAction<Usuario>) => {
+            state.cliente = actions.payload;
+        },
         resetear: (state) => state = initialState,
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { agregarProducto, cambiarCantidad, resetear } = ventaSlice.actions
+export const { agregarProducto, cambiarCantidad, agregarProductoNoRegistrado, asignarCliente, resetear } = ventaSlice.actions
 
 // export default usuarioSlice.reducer
 const sumaTotal = (detalles: DetallesVenta[]): number => {

@@ -1,22 +1,28 @@
 import { Negocio } from "./Negocio.interface";
-import { Producto, ProductoCorto } from "./Producto.interface";
+import { Producto, ProductoVenta } from "./Producto.interface";
 import { Usuario } from "./Usuario.interface";
 
 export interface Venta {
     id: string;
     fecha: Date;
     vendedor: Usuario;
-    comprador: Usuario;
+    cliente: Usuario;
     negocio: Negocio;
     total: number;
     pago: number;
     detalles: DetallesVenta
 }
 
+export interface VentaState {
+    detalles: DetallesVenta[];
+    cliente?: Usuario;
+    total: number;
+}
+
 export interface DetallesVenta {
     cantidad: number,
     total: number,
-    producto: ProductoCorto,
+    producto: ProductoVenta,
 }
 
 /* Interfaces de Nuevas Ventas */
@@ -24,9 +30,7 @@ export interface NuevaVenta {
     total: number;
     pago: number;
     cambio: number;
-    // vendedor: string;
-    comprador: string;
-    // negocio: string;
+    comprador?: string;
     detalles: DetallesVenta[]
 }
 
@@ -42,11 +46,5 @@ export class VentaConvert {
     public static toVentaList(json: string): Venta[] {
         return JSON.parse(json);
     }
-}
-
-
-export interface VentaState {
-    detalles: DetallesVenta[];
-    total: number;
 }
 

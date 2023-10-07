@@ -30,7 +30,7 @@ export const InventarioPage = () => {
 
     useEffect(() => {
         // take: 10 
-        usuario && dispatch(obtenerProductos({ negocio: usuario?.negocio?.id!}))
+        usuario && dispatch(obtenerProductos({ negocio: usuario?.negocio?.id! }))
     }, [dispatch]);
 
     const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch, } = useFormik({
@@ -93,7 +93,7 @@ export const InventarioPage = () => {
                                         <div className="card shadow-sm">
                                             {prod.imagenes![0] && <img className="card-img-top" src={prod.imagenes![0].url} alt="" />}
                                             <div className="card-body">
-                                                <h5 className="card-title">{prod.nombre} - {prod.codigo}</h5>
+                                                <h5 className="card-title">{prod.descripcion} - {prod.codigo}</h5>
                                                 {/* {
                                                     prod.imagenes!.length > 0 && prod.imagenes!.map((imagen) => <img key={imagen.id} src={imagen.url} height='100' width={150} alt="" />)
                                                 } */}

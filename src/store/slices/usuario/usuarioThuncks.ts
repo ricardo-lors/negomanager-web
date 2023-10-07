@@ -1,4 +1,4 @@
-import { UsuarioConvert, FormularioUsuario, UsuarioLogin, Usuario } from "../../../interfaces";
+import { UsuarioConvert, FormularioUsuario, UsuarioLogin, Usuario, QueryParamsUsuario } from "../../../interfaces";
 import { servicesApi, servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setUsuario, endGetUsuario, removerUsuario } from "./usuarioSlice";
@@ -93,6 +93,18 @@ export const obtenerUsuarios = async (negocioid: string, rol: string): Promise<U
         return data;
     } catch (error) {
         Swal.fire('Error', `error: ${error}`, 'info');
+        return [];
+    }
+}
+
+export const buscarUsuarios = async (queryParamsUsuario: QueryParamsUsuario): Promise<Usuario[]> => {
+    try {
+        const { data } = await servicesApiToken(`/auth/usuarios/search`, { params: queryParamsUsuario });
+        console.log(data);
+        return data;
+    } catch (e) {
+        console.log(e);
+        Swal.fire('Error');
         return [];
     }
 }

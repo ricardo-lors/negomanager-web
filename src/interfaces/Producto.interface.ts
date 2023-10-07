@@ -3,15 +3,11 @@ import { Negocio } from "./Negocio.interface";
 import { Provedor } from "./Provedor.interface";
 
 
-export interface ProductoCorto {
+export interface ProductoVenta {
     id: string,
-    codigo: string,
-    nombre: string,
-    descripcion?: string,
-    stock: number,
-    costo: number,
+    codigo?: string,
+    descripcion: string,
     precio: number,
-    categorias: string[]
 }
 
 interface ProductoBasico {
@@ -20,7 +16,6 @@ interface ProductoBasico {
     activo?: boolean,
     attributos?: object,
     actualizado?: string,
-    nombre: string,
     descripcion?: string,
     stock: number,
     stock_minimo?: number;
