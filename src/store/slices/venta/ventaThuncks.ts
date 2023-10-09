@@ -41,6 +41,7 @@ export const crearVenta = async (venta: NuevaVenta): Promise<Boolean> => {
         //     Swal.fire('Error', data.mensaje, 'info');
         // }
     } catch (error) {
+        console.log(error);
         Swal.fire('Error', `${error}`, 'error');
         return false;
     }

@@ -30,7 +30,7 @@ export interface NuevaVenta {
     total: number;
     pago: number;
     cambio: number;
-    comprador?: string;
+    cliente?: string;
     detalles: DetallesVenta[]
 }
 

@@ -1,18 +1,18 @@
-import { FormEvent, useEffect, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import { useAppDispatch } from "../../../../hooks";
-import { NuevaVenta, Usuario } from "../../../../interfaces";
+import { NuevaVenta } from "../../../../interfaces";
 import { RootState } from "../../../../store";
 import { obtenerProductoCodigo } from "../../../../store/slices/producto/productoThuncks";
 
 import * as Yup from 'yup';
 import { useFormik } from "formik";
-import { agregarProducto, cambiarCantidad, crearVenta, resetear } from "../../../../store/slices/venta";
-import { Modal, MySelect, Ticket } from "../../../shared";
-import { obtenerUsuarios } from "../../../../store/slices/usuario";
+import { agregarProducto, cambiarCantidad, crearVenta, desasignarCliente, resetear } from "../../../../store/slices/venta";
+import { Modal, Ticket } from "../../../shared";
 import { ModalAgregarProductoNoRegistrado } from "./modals/ModalAgregarProductoNoRegistradoProps";
 import { ModalAsignarCliente } from "./modals/ModalAsignarCliente";
+import { Tooltip } from 'react-tooltip'
 
 export const HomePage = () => {
 
@@ -53,13 +53,13 @@ export const HomePage = () => {
   });
 
   const { handleSubmit: handleSubmitConfirm, errors: errorsConfirm, touched: touchedConfirm, getFieldProps: getFieldPropsConfirm, resetForm: resetFormConfirm } = useFormik({
-    initialValues: { pago: 0, clienteid: '' },
+    initialValues: { pago: 0 },
     onSubmit: async (values) => {
       const nuevaVenta: NuevaVenta = {
         total: total,
         pago: +values.pago,
         cambio: values.pago - total,
-        comprador: values.clienteid,
+        cliente: cliente?.id,
         detalles: detalles
       }
 
@@ -71,9 +71,9 @@ export const HomePage = () => {
     },
     validationSchema: Yup.object({
       pago: Yup.string().required('EL dato es requerido'),
-      clienteid: Yup.string()
-        // .notOneOf(['0'], 'Esta opcion no esta permitida')
-        .required('Requerido'),
+      // clienteid: Yup.string()
+      // .notOneOf(['0'], 'Esta opcion no esta permitida')
+      // .required('Requerido'),
     })
   });
 
@@ -119,7 +119,7 @@ export const HomePage = () => {
           <input type="text" className="form-control" placeholder="Codigo" {...getFieldPropsSearch('codigo')} />
           <button type="submit" className="btn btn-primary" >Agregar</button>
         </div>
-        {touchedSearch.codigo && errorsSearch.codigo && <span className="text-danger">{errorsSearch.codigo}</span>}
+        {/* {touchedSearch.codigo && errorsSearch.codigo && <span className="text-danger">{errorsSearch.codigo}</span>} */}
       </form>
       <div className="container border h-50 overflow-auto mt-2">
         <table className="table">
@@ -148,37 +148,33 @@ export const HomePage = () => {
       </div>
       <div className="row mt-2">
         <div className="col">
-          <h2>Total: {total}</h2>
-          <div className="">
+          <div className="d-flex">
             <h5>Cliente: {cliente ? cliente.nombre : 'Publico General'}</h5>
-            <button className="btn btn-primary" onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarCliente: true }))} >Asignar Cliente</button>
+            <button
+              className="btn btn-primary"
+              data-tooltip-id="my-tooltip"
+              data-tooltip-content="Asignar Cliente"
+              data-tooltip-place="top"
+              onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarCliente: true }))} >
+              <i className="bi bi-person-lines-fill"></i>
+            </button>
+            <Tooltip id="my-tooltip" />
+            <button className="btn btn-primary" onClick={() => dispatch(desasignarCliente())} >Desasignar cliente</button>
           </div>
-          <form noValidate onSubmit={handleSubmitConfirm}>
-            {/* <div className="input-group mb-3">
-              <MySelect
-                label="Cliente"
-                className="form-select"
-                simple={true}
-                {...getFieldPropsConfirm('clienteid')}
-              // errors={touchedConfirm.clienteid && errorsConfirm.clienteid ? errorsConfirm.clienteid : undefined}
-              >
-                {/* <option value={0}>Seleccione una opcion</option>
-                {
-                  clientes?.map(opt => (
-                    <option key={opt.id} value={opt.id}>{opt.nombre}</option>
-                  ))
-                }
-              </MySelect>
-              {/* <button className="btn btn-primary" onClick={() => setAgregarCliente(true)}>Agregar Cliente</button> 
-            </div> */}
-            <span className="text-danger">{touchedConfirm.clienteid && errorsConfirm.clienteid ? errorsConfirm.clienteid : undefined}</span>
+        </div>
+        <div className="col-2"><h2 className="text-end" >Total: {total}</h2></div>
+        {/* <div className="col"> */}
+        {/* <h5>Cliente: {cliente ? cliente.nombre : 'Publico General'}</h5> */}
+        {/* <button className="btn btn-primary" onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarCliente: true }))} >Asignar Cliente</button> */}
+        {/* <h2 className="text-end" >Total: {total}</h2> */}
+        {/* <form noValidate onSubmit={handleSubmitConfirm}>
             <div className="input-group mb-3">
               <input type="text" className="form-control" placeholder="Pago" {...getFieldPropsConfirm('pago')} />
               <button type="submit" className="btn btn-primary" >Generar Compra</button>
             </div>
             {touchedConfirm.pago && errorsConfirm.pago && <span className="text-danger">{errorsConfirm.pago}</span>}
-          </form>
-        </div>
+          </form> */}
+        {/* </div> */}
       </div>
       <Ticket ref={ticket} venta={{ detalles, total }} />
       <Modal

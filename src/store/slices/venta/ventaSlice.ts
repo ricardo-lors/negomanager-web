@@ -49,12 +49,22 @@ export const ventaSlice = createSlice({
         asignarCliente: (state, actions: PayloadAction<Usuario>) => {
             state.cliente = actions.payload;
         },
+        desasignarCliente: (state) => {
+            state.cliente = undefined;
+        },
         resetear: (state) => state = initialState,
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { agregarProducto, cambiarCantidad, agregarProductoNoRegistrado, asignarCliente, resetear } = ventaSlice.actions
+export const {
+    agregarProducto,
+    cambiarCantidad,
+    agregarProductoNoRegistrado,
+    asignarCliente,
+    desasignarCliente,
+    resetear
+} = ventaSlice.actions
 
 // export default usuarioSlice.reducer
 const sumaTotal = (detalles: DetallesVenta[]): number => {
