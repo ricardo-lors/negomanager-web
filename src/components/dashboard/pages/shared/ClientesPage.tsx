@@ -35,15 +35,16 @@ export const ClientesPage = () => {
         });
         setState({ usuarios: listaUsuarios });
     }
+
     return (
         <div className="row">
-            <div className="col-3 border-end vh-100">
+            <div className="col-md-3 border-end h-100 mb-3">
                 <div className="text-center">
                     <h2>Clientes</h2>
                 </div>
                 <UsuarioForm rol={['cliente']} onSubmit={onSubmit} />
             </div>
-            <div className="col-9">
+            <div className="col" style={{ overflow: 'auto' }}>
                 <table className="table">
                     <thead>
                         <tr>
@@ -66,3 +67,32 @@ export const ClientesPage = () => {
         </div>
     )
 }
+
+{/* <div className="row m-0 p-0">
+<div className="col-md-5 border-end h-100">
+    <h3></h3>
+</div>
+<div className="col">
+    <div >
+        <table className="table">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Correo</th>
+                    <th scope="col">Telefono</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                    usuarios?.map(st => st.roles.includes('cliente') && <tr key={st.id}>
+                        <th>{st.nombre}</th>
+                        <th>{st.correo}</th>
+                        <th>{st.telefono}</th>
+                    </tr>)
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+</div> */}
+

@@ -31,8 +31,8 @@ export const crearVenta = async (venta: NuevaVenta): Promise<Boolean> => {
             return false;
         }
 
-        const { status } = await servicesApiToken(`/ventas`, { method: 'POST', data: venta });
-
+        const { status, data } = await servicesApiToken(`/ventas`, { method: 'POST', data: venta });
+        console.log(data);
         if (status === 201) return true;
         return false;
         // if (data.ok) {

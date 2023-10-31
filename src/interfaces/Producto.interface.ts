@@ -8,6 +8,7 @@ export interface ProductoVenta {
     codigo?: string,
     descripcion: string,
     precio: number,
+    inventario: boolean;
 }
 
 interface ProductoBasico {
@@ -20,6 +21,7 @@ interface ProductoBasico {
     stock: number,
     stock_minimo?: number;
     costo: number,
+    ganancia: number,
     precio: number,
     mayoreo?: boolean,
     precio_mayoreo?: number,

@@ -34,6 +34,7 @@ export const AgregarModificarProductoPage = () => {
             stock_minimo: pd?.stock_minimo,
             costo: pd!.costo,
             precio: pd!.precio,
+            ganancia: pd!.ganancia,
             mayoreo: pd?.mayoreo,
             cantidad_mayoreo: pd?.cantidad_mayoreo,
             precio_mayoreo: pd?.precio_mayoreo,
@@ -54,6 +55,7 @@ export const AgregarModificarProductoPage = () => {
             stock: 0,
             stock_minimo: 0,
             costo: 0.0,
+            ganancia: 20,
             precio: 0.0,
             mayoreo: false,
             cantidad_mayoreo: 0,
@@ -85,6 +87,7 @@ export const AgregarModificarProductoPage = () => {
                     stock: values.stock,
                     stock_minimo: values.stock_minimo,
                     costo: values.costo,
+                    ganancia: values.ganancia,
                     precio: values.precio,
                     mayoreo: values.mayoreo,
                     cantidad_mayoreo: values.cantidad_mayoreo,
@@ -95,21 +98,21 @@ export const AgregarModificarProductoPage = () => {
                 }, navigate, usuario!.roles[0]));
             } else {
                 console.log('Hice esta accion actualizar');
-                await dispatch(actualizarProducto({
-                    id: producto.id,
-                    codigo: values.codigo,
-                    descripcion: values.descripcion,
-                    stock: values.stock,
-                    stock_minimo: values.stock_minimo,
-                    costo: values.costo,
-                    precio: values.precio,
-                    mayoreo: values.mayoreo,
-                    cantidad_mayoreo: values.cantidad_mayoreo,
-                    precio_mayoreo: values.precio_mayoreo,
-                    categorias: values.categorias,
-                    provedores: values.provedores,
-                    imagenes
-                }, navigate, usuario!.roles[0]));
+                // await dispatch(actualizarProducto({
+                //     id: producto.id,
+                //     codigo: values.codigo,
+                //     descripcion: values.descripcion,
+                //     stock: values.stock,
+                //     stock_minimo: values.stock_minimo,
+                //     costo: values.costo,
+                //     precio: values.precio,
+                //     mayoreo: values.mayoreo,
+                //     cantidad_mayoreo: values.cantidad_mayoreo,
+                //     precio_mayoreo: values.precio_mayoreo,
+                //     categorias: values.categorias,
+                //     provedores: values.provedores,
+                //     imagenes
+                // }, navigate, usuario!.roles[0]));
             }
 
             // navigate(`/dashboard/${usuario!.roles[0]}/inventario`, { replace: true });
@@ -129,19 +132,12 @@ export const AgregarModificarProductoPage = () => {
             <div className="row">
                 <form className="container mt-4" noValidate onSubmit={handleSubmit}>
                     <div className="row">
-                        <div className="col-6">
+                        <div className="col">
                             <MyTextInput
                                 label="Codigo"
                                 className="form-control"
                                 {...getFieldProps('codigo')}
                                 errors={errors.codigo}
-                            />
-                        </div>
-                        <div className="col-6">
-                            <MyTextInput
-                                label="Nombre"
-                                className="form-control"
-                                {...getFieldProps('nombre')}
                             />
                         </div>
                     </div>
@@ -150,6 +146,48 @@ export const AgregarModificarProductoPage = () => {
                         className="form-control"
                         {...getFieldProps('descripcion')}
                     />
+                    <div className="row">
+                        <div className="col-4">
+                            <MyTextInput
+                                name="costo"
+                                type="number"
+                                label="Costo (Compra)"
+                                placeholder='$0.00'
+                                className="form-control"
+                                value={values.costo === 0 ? '' : values.costo}
+                                onChange={getFieldProps('costo').onChange}
+                                errors={(touched.costo && errors.costo) || ''}
+                            // {...getFieldProps('costo')}
+                            />
+                        </div>
+                        <div className="col-4">
+                            <MyTextInput
+                                name="ganancia"
+                                type="number"
+                                label="Porcentaje de ganancia"
+                                placeholder='$0.00'
+                                className="form-control"
+                                value={values.ganancia === 0 ? '' : values.ganancia}
+                                onChange={getFieldProps('ganancia').onChange}
+                                errors={(touched.ganancia && errors.ganancia) || ''}
+                            // {...getFieldProps('costo')}
+                            />
+                        </div>
+                        <div className="col-4">
+                            <MyTextInput
+                                name="precio"
+                                type="number"
+                                label="Precio (Venta)"
+                                placeholder='$0.00'
+                                className="form-control"
+                                value={values.precio === 0 ? '' : values.precio}
+                                onChange={getFieldProps('precio').onChange}
+                                errors={(touched.precio && errors.precio) || ''}
+                            // {...getFieldProps('precio')}
+                            />
+                        </div>
+                    </div>
+
                     <div className="row">
                         <div className="col-6">
                             <MyTextInput
@@ -165,24 +203,6 @@ export const AgregarModificarProductoPage = () => {
                                 type="number"
                                 className="form-control"
                                 {...getFieldProps('stock_minimo')}
-                            />
-                        </div>
-                    </div>
-                    <div className="row">
-                        <div className="col-6">
-                            <MyTextInput
-                                label="Costo (Compra)"
-                                type="number"
-                                className="form-control"
-                                {...getFieldProps('costo')}
-                            />
-                        </div>
-                        <div className="col-6">
-                            <MyTextInput
-                                label="Precio (Venta)"
-                                type="number"
-                                className="form-control"
-                                {...getFieldProps('precio')}
                             />
                         </div>
                     </div>

@@ -28,6 +28,7 @@ export const ventaSlice = createSlice({
                         descripcion: producto.descripcion,
                         codigo: producto.codigo,
                         precio: producto.precio,
+                        inventario: producto.inventario
                     }
                 };
                 const newDetallesList = [...state.detalles, detalles];

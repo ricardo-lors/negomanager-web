@@ -23,6 +23,7 @@ export const NegocioPage = () => {
 
     const { handleSubmit, errors, touched, getFieldProps } = useFormik<NuevoNegocio>({
         initialValues: {
+            // TODO: Verificar esta linea da error al valorizar null value
             nombre: negocio !== null ? negocio!.nombre : '',
             descripcion: negocio !== null ? negocio!.descripcion : '',
             correo: negocio !== null ? negocio!.correo : '',

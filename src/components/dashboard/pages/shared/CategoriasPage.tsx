@@ -35,29 +35,24 @@ export const CategoriasPage = () => {
 
     return (
         <div className="row">
-            <div className="text-center mt-3">
-                <h2>Categorias</h2>
+
+
+
+            <div className="col-md-3 border-end h-100 mb-3">
+
+                <form className="container mt-4" noValidate onSubmit={handleSubmit}>
+
+                    <MyTextInput
+                        label="Nombre"
+                        className='form-control'
+                        {...getFieldProps('nombre')}
+                    />
+
+                    <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
+
+                </form>
             </div>
-
-            <form className="container mt-4" noValidate onSubmit={handleSubmit}>
-
-                <MyTextInput
-                    label="Nombre"
-                    className='form-control'
-                    {...getFieldProps('nombre')}
-                />
-
-                {/* <div className="mb-3">
-                    <label className="form-label">Color</label>
-                    <input type="color" className="form-control form-control-color w-100" {...getFieldProps('color')} title="Choose your color" />
-                    {/* value="#563d7c"  
-                </div> */}
-
-                <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
-
-            </form>
-
-            <div className="">
+            <div className="col">
                 <table className="table">
                     <thead>
                         <tr>
@@ -73,6 +68,9 @@ export const CategoriasPage = () => {
                     </tbody>
                 </table>
             </div>
+            {/* <div className="text-center mt-3">
+                <h2>Categorias</h2>
+            </div> */}
         </div >
     )
 }

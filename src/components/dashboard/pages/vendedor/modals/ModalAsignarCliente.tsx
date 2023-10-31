@@ -44,10 +44,15 @@ export const ModalAsignarCliente = () => {
                     </thead>
                     <tbody>
                         {
-                            clientes.map((cl, i) => <tr onClick={() => { dispatch(asignarCliente(clientes[i])); }} key={cl.id}>
-                                <th>{cl.nombre}</th>
-                                <th>{cl.correo}</th>
-                            </tr>)
+                            clientes.length > 0
+                                ?
+                                clientes.map((cl, i) => <tr onClick={() => { dispatch(asignarCliente(clientes[i])); }} key={cl.id}>
+                                    <th>{cl.nombre}</th>
+                                    <th>{cl.correo}</th>
+                                </tr>)
+                                : <tr>
+                                    <th>Escriba el nombre del usuario</th>
+                                </tr>
                         }
                     </tbody>
                 </table>

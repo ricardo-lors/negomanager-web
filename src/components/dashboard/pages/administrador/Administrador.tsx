@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom"
-import { NegocioPage } from "./NegocioPage"
+import { NegocioPage } from "../shared/NegocioPage"
 import { HomePage } from "./HomePage"
 import { VendedoresPage } from "./VendedoresPage"
-import { ProvedoresPage } from "./ProvedoresPage"
-import { CategoriasPage } from "./CategoriasPage"
+import { ProvedoresPage } from "../shared/ProvedoresPage"
+import { CategoriasPage } from "../shared/CategoriasPage"
 import { InventarioPage, AgregarModificarProductoPage } from "../shared"
-import { ClientesPage } from "../vendedor/ClientesPage"
+import { ClientesPage } from "../shared/ClientesPage"
 
 export const Administrador = () => {
     return (

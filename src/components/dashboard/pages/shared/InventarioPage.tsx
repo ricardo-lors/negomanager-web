@@ -91,7 +91,7 @@ export const InventarioPage = () => {
                                 productos.map(prod =>
                                     <div key={prod.id} className="col">
                                         <div className="card shadow-sm">
-                                            {prod.imagenes![0] && <img className="card-img-top" src={prod.imagenes![0].url} alt="" />}
+                                            {prod.imagenes![0] && <img className="card-img-top" src={prod.imagenes![0].url} alt="" height={150} />}
                                             <div className="card-body">
                                                 <h5 className="card-title">{prod.descripcion} - {prod.codigo}</h5>
                                                 {/* {

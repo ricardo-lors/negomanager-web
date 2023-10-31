@@ -24,7 +24,8 @@ export const ModalAgregarProductoNoRegistrado = ({ cerrarModal }: AgregarProduct
                     id: (detalles.length + 1).toString(),
                     codigo: (detalles.length + 1).toString(),
                     descripcion: values.descripcion,
-                    precio: values.precio
+                    precio: values.precio,
+                    inventario: false
                 },
                 total: values.cantidad * values.precio
             }));

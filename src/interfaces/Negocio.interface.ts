@@ -13,6 +13,7 @@ export interface Negocio {
     descripcion: string;
     correo: string;
     telefono: string;
+    caja: number;
 }
 
 // Converts JSON strings to/from your types

@@ -1,10 +1,7 @@
 
-import { Route, Routes } from 'react-router-dom'
-import { CategoriasPage } from '../administrador/CategoriasPage'
-import { ProvedoresPage } from '../administrador/ProvedoresPage'
+import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './HomePage'
-import { ClientesPage } from '../';
-import { InventarioPage, AgregarModificarProductoPage } from '../shared';
+import { InventarioPage, AgregarModificarProductoPage, ClientesPage, ProvedoresPage, CategoriasPage, VentasPage } from '../shared';
 
 export const Vendedor = () => {
     return (
@@ -16,6 +13,7 @@ export const Vendedor = () => {
             <Route path='/vendedor/provedores' element={<ProvedoresPage />} />
             <Route path='/vendedor/categorias' element={<CategoriasPage />} />
             <Route path='/vendedor/clientes' element={<ClientesPage />} />
+            <Route path='/vendedor/ventas' element={<VentasPage />} />
         </Routes>
     )
 }

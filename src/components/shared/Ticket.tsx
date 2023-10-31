@@ -6,6 +6,7 @@ interface TicketProps {
 }
 
 export const Ticket = forwardRef((props: TicketProps, ref: LegacyRef<HTMLDivElement> | undefined) => {
+
     return (
         <div
             ref={ref}
@@ -19,6 +20,7 @@ export const Ticket = forwardRef((props: TicketProps, ref: LegacyRef<HTMLDivElem
                 <br />Venta de papeleria
                 <br />Papeleria Lopez
                 <br />14/11/2022
+                <br />Cliente: {props.venta?.cliente ? props.venta?.cliente.nombre : 'Publico General'}
             </p>
             <table className='centrado'>
                 <thead>

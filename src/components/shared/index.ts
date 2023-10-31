@@ -7,3 +7,5 @@ export { MyTextInput } from "./MyTextInput";
 export { Navbar } from "./Navbar";
 export { Sidebar } from "./Sidebar";
 export { Ticket } from "./Ticket";
+
+export { MyButtonTooltip } from "./MyButtonTooltip";

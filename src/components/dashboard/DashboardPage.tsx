@@ -14,6 +14,10 @@ import { Sidebar } from "../shared/Sidebar"
 import { Administrador } from "./pages/administrador/Administrador"
 import { SuperAdministrador } from "./pages/superadministrador/SuperAdministrador"
 import { Vendedor } from "./pages/vendedor/Vendedor"
+import { useFormik } from "formik"
+import { Turno } from "../../interfaces"
+import { MyTextInput } from "../shared"
+import { crearTurno } from "../../store/slices/usuario"
 // import { DashboardRoutes } from "./routes/DashboardRoutes"
 
 export const DashboardPage = () => {
@@ -33,6 +37,44 @@ export const DashboardPage = () => {
     const { cargando: cargandoCategoria } = useSelector((state: RootState) => state.categoria);
     const { cargando: cargandoProvedor } = useSelector((state: RootState) => state.provedor);
     const { cargando: cargandoClientes } = useSelector((state: RootState) => state.cliente);
+
+
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<Turno>({
+        initialValues: {
+            caja: 0
+        },
+        onSubmit: (values) => {
+            dispatch(crearTurno({
+                caja: +values.caja
+            }));
+        },
+        // validationSchema: Yup.object({
+        //     nombre: Yup.string().required('Requerido'),
+        //     correo: Yup.string().required('Requerido'),
+        //     contrasena: Yup.string().required('Requerido'), 
+        //     contrasenaRepeat: Yup.string().required('Requerido'),
+        //     // TODO: Validar que ambas contraseñas sean iguales
+        // })
+    });
+
+    if (usuario?.turno === null) {
+        return (
+            <>
+                <h2>Formulario Abrir turno</h2>
+                <form className="container mt-4" noValidate onSubmit={handleSubmit}>
+
+                    <MyTextInput
+                        label="Caja"
+                        placeholder='Cantidad que tiene en caja'
+                        className="form-control"
+                        {...getFieldProps('caja')}
+                    />
+                    <button type="submit" className="btn btn-primary text-decoration-none w-100">Crear</button>
+
+                </form>
+            </>
+        );
+    }
 
     return (
         <>

@@ -1,5 +1,5 @@
-import { UsuarioConvert, FormularioUsuario, UsuarioLogin, Usuario, QueryParamsUsuario } from "../../../interfaces";
-import { servicesApi, servicesApiToken } from "../../../services/services.api";
+import { UsuarioConvert, FormularioUsuario, UsuarioLogin, Usuario, QueryParamsUsuario, Turno } from "../../../interfaces";
+import { servicesApi, servicesApiToken, servicesApiTokenFile } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setUsuario, endGetUsuario, removerUsuario } from "./usuarioSlice";
 import Swal from 'sweetalert2'
@@ -71,7 +71,6 @@ export const crearUsuario = async (usuario: FormularioUsuario): Promise<Usuario[
         }
         return [];
     }
-
 }
 // http://localhost:4000/api/auth/usuarios?rol=vendedor&negocio=ad2824cc-622f-4796-a989-1a60e2cd00ba
 // export const obtenerUsuarios = (negocioid: string, rol: string) => {
@@ -106,5 +105,30 @@ export const buscarUsuarios = async (queryParamsUsuario: QueryParamsUsuario): Pr
         console.log(e);
         Swal.fire('Error');
         return [];
+    }
+}
+
+export const crearTurno = (turno: Turno) => {
+    return async (dispatch: AppDispatch) => {
+        Swal.fire('Cargando');
+        Swal.showLoading();
+        try {
+            const { data } = await servicesApiToken(`/turnos`, { method: 'POST', data: turno });
+            localStorage.setItem('x-token', data.token);
+            const usuario = UsuarioConvert.toUsuario(JSON.stringify(data));
+            dispatch(setUsuario(usuario));
+            Swal.close();
+        } catch (e) {
+            dispatch(endGetUsuario());
+            console.log(e)
+            if (e instanceof AxiosError) {
+                // ✅ TypeScript knows err is Error
+                if (e.code === "ERR_NETWORK") return Swal.fire('Error', `Error de red, Verifique su conexion`, 'error');
+
+                Swal.fire('Error', `${e.response?.data.message}`, 'error');
+            } else {
+                console.log('Unexpected error', e);
+            }
+        }
     }
 }

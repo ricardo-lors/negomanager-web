@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useRef, useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import { useAppDispatch } from "../../../../hooks";
@@ -9,7 +9,7 @@ import { obtenerProductoCodigo } from "../../../../store/slices/producto/product
 import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { agregarProducto, cambiarCantidad, crearVenta, desasignarCliente, resetear } from "../../../../store/slices/venta";
-import { Modal, Ticket } from "../../../shared";
+import { Modal, MyButtonTooltip, Ticket } from "../../../shared";
 import { ModalAgregarProductoNoRegistrado } from "./modals/ModalAgregarProductoNoRegistradoProps";
 import { ModalAsignarCliente } from "./modals/ModalAsignarCliente";
 import { Tooltip } from 'react-tooltip'
@@ -32,13 +32,12 @@ export const HomePage = () => {
     content: () => ticket.current!
   });
 
-  // const [clientes, setClientes] = useState<Usuario[]>([]);
+  useEffect(() => {
+    if (cliente) setOpenModals(prev => ({ ...prev, modalAgregarCliente: false }));
+    // return () => {
+    // }
+  }, [cliente])
 
-  // useEffect(() => {
-  //   obtenerUsuarios(usuario!.negocio!.id, 'cliente').then(resp => {
-  //     setClientes(resp ? resp : []);
-  //   });
-  // }, [usuario]);
 
   const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch } = useFormik({
     initialValues: { codigo: '' },
@@ -102,24 +101,40 @@ export const HomePage = () => {
 
   return (
     <div className="container vh-100 pt-3">
-      {/* <div className="text-center mt-3">
-              <h2>Punto de venta</h2>
-          </div> */}
-      {/* <div className="d-grid gap-2 d-md-block">
-        <button className="btn btn-primary" type="button"><i className="bi bi-bag-plus-fill"></i> Agregar varios</button>
-        <button className="btn btn-primary" type="button">Button</button>
-      </div> */}
-      <div className="btn-group mb-2" role="group" aria-label="Basic example">
-        {/* <button type="button" className="btn btn-primary"><i className="bi bi-bag-plus-fill"></i> Agregar varios</button> */}
-        <button type="button" className="btn btn-primary" onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarProductoNoRegistrado: true }))} ><i className="bi bi-bag-plus-fill"></i> Agregar P. No Registrado</button>
-        <button type="button" className="btn btn-primary"><i className="bi bi-search"></i> Buscar</button>
+      <div className="row mb-2">
+        <div className="col-md-6">
+          <button
+            className="btn btn-primary me-1"
+            data-tooltip-id="btn-agnore-tooltip"
+            data-tooltip-content="Agregar producto no registrado"
+            data-tooltip-place="right-end"
+            onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarProductoNoRegistrado: true }))} >
+            <i className="bi bi-bag-plus-fill"></i> Agregar
+          </button>
+          <Tooltip id="btn-agnore-tooltip" />
+          <button
+            className="btn btn-primary"
+            data-tooltip-id="btn-search-tooltip"
+            data-tooltip-content="Buscar Producto"
+            data-tooltip-place="right-end"
+            onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarProductoNoRegistrado: true }))} >
+            <i className="bi bi-search"></i> Buscar
+          </button>
+          <Tooltip id="btn-search-tooltip" />
+          {/*  */}
+          {/* <p className="btn">{usuario?.attributos?.caja}</p> */}
+        </div>
+        <div className="col text-end">
+          <h3>${usuario?.attributos?.caja}</h3>
+        </div>
       </div>
+
+
       <form className="" noValidate onSubmit={handleSubmitSearch}>
         <div className="input-group">
           <input type="text" className="form-control" placeholder="Codigo" {...getFieldPropsSearch('codigo')} />
           <button type="submit" className="btn btn-primary" >Agregar</button>
         </div>
-        {/* {touchedSearch.codigo && errorsSearch.codigo && <span className="text-danger">{errorsSearch.codigo}</span>} */}
       </form>
       <div className="container border h-50 overflow-auto mt-2">
         <table className="table">
@@ -146,37 +161,43 @@ export const HomePage = () => {
           </tbody>
         </table>
       </div>
-      <div className="row mt-2">
-        <div className="col">
-          <div className="d-flex">
-            <h5>Cliente: {cliente ? cliente.nombre : 'Publico General'}</h5>
-            <button
-              className="btn btn-primary"
-              data-tooltip-id="my-tooltip"
-              data-tooltip-content="Asignar Cliente"
-              data-tooltip-place="top"
-              onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarCliente: true }))} >
-              <i className="bi bi-person-lines-fill"></i>
-            </button>
-            <Tooltip id="my-tooltip" />
-            <button className="btn btn-primary" onClick={() => dispatch(desasignarCliente())} >Desasignar cliente</button>
+      <div className="row text-end">
+        <h2 className="text-end" >Total: {total}</h2>
+      </div>
+      <div className="row">
+        <div className="col-md-6">
+          <div className="d-flex align-items-center">
+            {
+              cliente ?
+                <MyButtonTooltip
+                  id='btn-asignar-cliente-tooltip'
+                  content="Desasignar cliente de la venta "
+                  place="top"
+                  onClick={() => dispatch(desasignarCliente())}
+                  children={<><i className="bi bi-person-lines-fill"></i> Desasignar</>}
+                />
+                : <MyButtonTooltip
+                  id='btn-asign-tooltip'
+                  content="Asignar cliente a la venta"
+                  place="top"
+                  onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarCliente: true }))}
+                  children={<><i className="bi bi-person-lines-fill"></i> Asignar</>}
+                />
+            }
+            <h5 className="m-0 ms-2">Cliente: {cliente ? cliente.nombre : 'Publico General'}</h5>
           </div>
         </div>
-        <div className="col-2"><h2 className="text-end" >Total: {total}</h2></div>
-        {/* <div className="col"> */}
-        {/* <h5>Cliente: {cliente ? cliente.nombre : 'Publico General'}</h5> */}
-        {/* <button className="btn btn-primary" onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarCliente: true }))} >Asignar Cliente</button> */}
-        {/* <h2 className="text-end" >Total: {total}</h2> */}
-        {/* <form noValidate onSubmit={handleSubmitConfirm}>
+        <div className="col">
+          <form noValidate onSubmit={handleSubmitConfirm}>
             <div className="input-group mb-3">
               <input type="text" className="form-control" placeholder="Pago" {...getFieldPropsConfirm('pago')} />
               <button type="submit" className="btn btn-primary" >Generar Compra</button>
             </div>
             {touchedConfirm.pago && errorsConfirm.pago && <span className="text-danger">{errorsConfirm.pago}</span>}
-          </form> */}
-        {/* </div> */}
+          </form>
+        </div>
       </div>
-      <Ticket ref={ticket} venta={{ detalles, total }} />
+      <Ticket ref={ticket} venta={{ cliente, detalles, total }} />
       <Modal
         isOpen={openModals.modalAgregarProductoNoRegistrado}
         children={<ModalAgregarProductoNoRegistrado cerrarModal={() => { setOpenModals(prev => ({ ...prev, modalAgregarProductoNoRegistrado: false })) }} />}

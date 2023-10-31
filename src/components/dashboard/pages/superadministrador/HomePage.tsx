@@ -23,12 +23,12 @@ export const HomePage = () => {
             roles: ['administrador']
         },
         onSubmit: async (values) => {
-            // dispatch(crearUsuario({
-            //     nombre: values.nombre,
-            //     contrasena: values.contrasena,
-            //     correo: values.correo,
-            //     roles: values.roles
-            // }));
+            crearUsuario({
+                nombre: values.nombre,
+                contrasena: values.contrasena,
+                correo: values.correo,
+                roles: values.roles
+            });
         },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Nombre es nesesario'),

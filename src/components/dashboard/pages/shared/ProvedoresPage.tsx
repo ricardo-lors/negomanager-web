@@ -34,40 +34,36 @@ export const ProvedoresPage = () => {
 
   return (
     <div className="row">
-      <div className="text-center mt-3">
-        <h2>Provedores</h2>
+
+      <div className="col-md-3 border-end h-100">
+        <div className="text-center">
+          <h2>Provedores</h2>
+        </div>
+        <form className="container mt-4" noValidate onSubmit={handleSubmit}>
+          <MyTextInput
+            label="Nombre"
+            className='form-control'
+            {...getFieldProps('nombre')}
+          />
+          <MyTextInput
+            label='Descripcion'
+            className='form-control'
+            {...getFieldProps('descripcion')}
+          />
+          <MyTextInput
+            label='Correo'
+            className='form-control'
+            {...getFieldProps('correo')}
+          />
+          <MyTextInput
+            label='Telefono'
+            className='form-control'
+            {...getFieldProps('telefono')}
+          />
+          <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
+        </form>
       </div>
-
-      <form className="container mt-4" noValidate onSubmit={handleSubmit}>
-
-        <MyTextInput
-          label="Nombre"
-          className='form-control'
-          {...getFieldProps('nombre')}
-        />
-
-        <MyTextInput
-          label="Descripcion"
-          className='form-control'
-          {...getFieldProps('descripcion')}
-        />
-        <MyTextInput
-          label="Correo"
-          className='form-control'
-          {...getFieldProps('correo')}
-        />
-
-        <MyTextInput
-          label="Telefono"
-          className='form-control'
-          {...getFieldProps('telefono')}
-        />
-
-        <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
-
-      </form>
-
-      <div className="">
+      <div className="col" style={{ overflow: 'auto' }}>
         <table className="table">
           <thead>
             <tr>
