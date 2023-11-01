@@ -2,33 +2,48 @@ import { Categoria } from "./Categoria.interface";
 import { Negocio } from "./Negocio.interface";
 import { Provedor } from "./Provedor.interface";
 
-
-export interface ProductoVenta {
-    id: string,
-    codigo?: string,
-    descripcion: string,
-    precio: number,
-    inventario: boolean;
-}
+// id:               string;
+// codigo:           string;
+// descripcion:      string;
+// costo:            number;
+// ganancia:         number;
+// precio:           number;
+// mayoreo:          boolean;
+// precio_mayoreo:   number;
+// cantidad_mayoreo: number;
+// inventario:       boolean;
+// stock:            number;
+// stock_minimo:     number;
+// stock_maximo:     number;
+// activo:           boolean;
+// provedores:       any[];
+// categorias:       string[];
+// attributos:       Attributos;
+// creado:           Date;
+// actualizado:      Date;
+// imagenes:         Imagene[];
+// negocio:          Negocio;
 
 interface ProductoBasico {
     id?: string,
     codigo: string,
-    activo?: boolean,
-    attributos?: object,
-    actualizado?: string,
-    descripcion?: string,
-    stock: number,
-    stock_minimo?: number;
+    descripcion: string,
     costo: number,
     ganancia: number,
     precio: number,
-    mayoreo?: boolean,
+    mayoreo: boolean,
     precio_mayoreo?: number,
     cantidad_mayoreo?: number,
-    registro?: string,
+    inventario: boolean;
+    stock?: number,
+    stock_minimo?: number;
+    stock_maximo?: number;
+    activo: boolean,
     provedores: string[],
     categorias: string[],
+    attributos?: object,
+    creado?: string; //Date
+    actualizado?: string,
 }
 
 export interface Producto extends ProductoBasico {
@@ -48,6 +63,14 @@ export interface NuevoActualizarProducto extends ProductoBasico {
 export interface ProductoImagen {
     id: number;
     url: string;
+}
+
+export interface ProductoVenta {
+    id: string,
+    codigo?: string,
+    descripcion: string,
+    precio: number,
+    inventario: boolean;
 }
 
 export interface QueryParamsProducto {
