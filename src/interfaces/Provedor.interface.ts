@@ -8,7 +8,7 @@ import { Negocio } from "./Negocio.interface";
 // }
 
 export interface Provedor {
-    id?: number,
+    id?: string,
     nombre: string,
     descripcion?: string,
     correo?: string,

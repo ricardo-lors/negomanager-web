@@ -1,26 +1,55 @@
-import { FormularioUsuario } from '../../interfaces';
+import { FormularioUsuario, Sucursal, Usuario } from '../../interfaces';
 import { FormikHelpers, useFormik } from 'formik';
 import { MyTextInput } from './MyTextInput';
 
 import * as Yup from 'yup';
+import { useEffect, useState } from 'react';
+import { MySelect } from './MySelect';
+import { obtenerSucursales } from '../../store/slices/sucursal';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 interface UsuarioFormProps {
     rol: string[];
+    usuarioSelected?: Usuario;
     onSubmit: (values: FormularioUsuario, formikHelpers: FormikHelpers<FormularioUsuario>) => void | Promise<any>
 }
 
-export const UsuarioForm = ({ rol, onSubmit }: UsuarioFormProps) => {
+export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps) => {
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<FormularioUsuario>({
-        initialValues: {
+    const { usuario } = useSelector((state: RootState) => state.usuario);
+
+    const [sucursales, setSucursales] = useState<Sucursal[]>();
+
+    useEffect(() => {
+
+        obtenerSucursales({}).then(sc => setSucursales(sc));
+
+    }, [])
+
+
+    const { handleSubmit, errors, touched, getFieldProps, resetForm } = useFormik<FormularioUsuario>({
+        initialValues: usuarioSelected ? {
+            nombre: usuarioSelected.nombre,
+            correo: usuarioSelected.correo,
+            telefono: usuarioSelected.telefono,
+            contrasena: '',
+            contrasenaRepeat: '',
+            sucursal: usuarioSelected.sucursal?.id,
+            roles: [...rol]
+        } : {
             nombre: '',
             correo: '',
             telefono: '',
             contrasena: '',
             contrasenaRepeat: '',
+            sucursal: '',
             roles: [...rol]
         },
-        onSubmit: onSubmit,
+        onSubmit: (values, elper) => {
+            onSubmit(values, elper);
+            resetForm();
+        },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Requerido'),
             correo: Yup.string().required('Requerido'),
@@ -32,7 +61,7 @@ export const UsuarioForm = ({ rol, onSubmit }: UsuarioFormProps) => {
 
     return (
         <div>
-            <form className="container mt-4" noValidate onSubmit={handleSubmit}>
+            <form className="container mt-2" noValidate onSubmit={handleSubmit}>
 
                 <MyTextInput
                     label="Nombre"
@@ -54,7 +83,21 @@ export const UsuarioForm = ({ rol, onSubmit }: UsuarioFormProps) => {
                     className="form-control"
                     {...getFieldProps('telefono')}
                 />
-
+                {
+                    usuario?.roles.includes('administrador') &&
+                    < MySelect
+                        label="Sucursal"
+                        className="form-control"
+                        // multiple={true}
+                        {...getFieldProps('sucursal')}
+                    >
+                        {
+                            sucursales?.map(opt => (
+                                <option key={opt.id} value={opt.id}>{opt.nombre}</option>
+                            ))
+                        }
+                    </MySelect>
+                }
                 <MyTextInput
                     label="Contraseña"
                     placeholder='Ingrese una contraseña'
@@ -73,7 +116,7 @@ export const UsuarioForm = ({ rol, onSubmit }: UsuarioFormProps) => {
                 <button type="submit" className="btn btn-primary text-decoration-none w-100">Agregar</button>
 
             </form>
-        </div>
+        </div >
     )
 
 }

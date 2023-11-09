@@ -5,7 +5,7 @@ import { VendedoresPage } from "./VendedoresPage"
 import { ProvedoresPage } from "../shared/ProvedoresPage"
 import { CategoriasPage } from "../shared/CategoriasPage"
 import { InventarioPage, AgregarModificarProductoPage } from "../shared"
-import { ClientesPage } from "../shared/ClientesPage"
+import { SucursalPage } from "./SucursalPage"
 
 export const Administrador = () => {
     return (
@@ -17,11 +17,13 @@ export const Administrador = () => {
             <Route path='/administrador/inventario/producto' element={<AgregarModificarProductoPage />} />
 
             <Route path='/administrador/vendedores' element={<VendedoresPage />} />
-            <Route path='/administrador/clientes' element={<ClientesPage />} />
 
             <Route path='/administrador/provedores' element={<ProvedoresPage />} />
             <Route path='/administrador/categorias' element={<CategoriasPage />} />
+
             <Route path='/administrador/negocio' element={<NegocioPage />} />
+            <Route path='/administrador/sucursal' element={<SucursalPage />} />
+
         </Routes>
     )
 }

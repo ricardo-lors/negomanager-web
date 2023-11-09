@@ -26,27 +26,30 @@ export const AgregarModificarProductoPage = () => {
     const [producto, setProducto] = useState<FormularioProducto>();
 
     useEffect(() => {
-        id && obtenerProducto(id).then((pd) => setProducto({
-            ...pd,
-            codigo: pd!.codigo,
-            descripcion: pd!.descripcion!,
-            costo: pd!.costo,
-            ganancia: pd!.ganancia,
-            precio: pd!.precio,
-            mayoreo: pd!.mayoreo,
-            precio_mayoreo: pd?.precio_mayoreo,
-            cantidad_mayoreo: pd?.cantidad_mayoreo,
-            inventario: pd!.inventario,
-            stock: pd?.stock,
-            stock_minimo: pd?.stock_minimo,
-            stock_maximo: pd?.stock_maximo,
-            activo: pd!.activo,
-            provedores: pd!.provedores,
-            categorias: pd!.categorias,
-            attributos: pd?.attributos,
-            imagenes: pd?.imagenes?.map((img) => img.url),
-            files: undefined,
-        }));
+        id && obtenerProducto(id).then((pd) => {
+            console.log(pd)
+            setProducto({
+                ...pd,
+                codigo: pd!.codigo,
+                descripcion: pd!.descripcion!,
+                costo: pd!.costo,
+                ganancia: pd!.ganancia,
+                precio: pd!.precio,
+                mayoreo: pd!.mayoreo,
+                precio_mayoreo: pd?.precio_mayoreo,
+                cantidad_mayoreo: pd?.cantidad_mayoreo,
+                inventario: pd!.inventario,
+                stock: pd?.stock,
+                stock_minimo: pd?.stock_minimo,
+                stock_maximo: pd?.stock_maximo,
+                activo: pd!.activo,
+                provedor: pd?.provedor ? pd!.provedor.id! : "",
+                categorias: pd!.categorias,
+                attributos: pd?.attributos,
+                imagenes: pd?.imagenes?.map((img) => img.url),
+                files: undefined,
+            })
+        });
         //   return () => {
         //     second
         //   }
@@ -67,12 +70,13 @@ export const AgregarModificarProductoPage = () => {
             stock_minimo: undefined,
             stock_maximo: undefined,
             activo: true,
-            provedores: [],
+            provedor: '',
             categorias: [],
             imagenes: [],
             files: undefined
         },
         onSubmit: async (values) => {
+            console.log(values)
             const imagenes: string[] = [...values.imagenes!];  //values.imagenes ? [...values.imagenes.map(img => img)] : [];
 
             if (values.files?.length && values.files.length > 0) {
@@ -99,7 +103,7 @@ export const AgregarModificarProductoPage = () => {
                     stock_maximo: values.stock_maximo,
                     activo: values.activo,
                     categorias: values.categorias,
-                    provedores: values.provedores,
+                    provedor: values.provedor,
                     imagenes
                 }, navigate, usuario!.roles[0]));
             } else {
@@ -312,6 +316,7 @@ export const AgregarModificarProductoPage = () => {
                                 // disabled={!values.inventario}
                                 {...getFieldProps('categorias')}
                             >
+                                <option value="" >Sin categorias</option>
                                 {
                                     categorias?.map(opt => (
                                         <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
@@ -323,12 +328,14 @@ export const AgregarModificarProductoPage = () => {
                             <MySelect
                                 label="Provedor"
                                 className="form-control"
-                                multiple={true}
-                                {...getFieldProps('provedores')}
+                                // multiple={true}
+                                style={{ height: '50' }}
+                                {...getFieldProps('provedor')}
                             >
+                                <option value="" >Sin Provedor</option>
                                 {
                                     provedores?.map(opt => (
-                                        <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
+                                        <option key={opt.id} value={opt.id}>{opt.nombre}</option>
                                     ))
                                 }
                             </MySelect>

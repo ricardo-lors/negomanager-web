@@ -1,4 +1,4 @@
-import { UsuarioConvert, FormularioUsuario, UsuarioLogin, Usuario, QueryParamsUsuario, Turno } from "../../../interfaces";
+import { UsuarioConvert, FormularioUsuario, UsuarioLogin, Usuario, QueryParamsUsuario } from "../../../interfaces";
 import { servicesApi, servicesApiToken, servicesApiTokenFile } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setUsuario, endGetUsuario, removerUsuario } from "./usuarioSlice";
@@ -54,7 +54,7 @@ export const removerSesion = () => {
     }
 };
 
-export const crearUsuario = async (usuario: FormularioUsuario): Promise<Usuario[]> => {
+export const crearUsuario = async (usuario: FormularioUsuario): Promise<Usuario | undefined> => {
     try {
         Swal.fire('Agregando el usuario nuevo');
         Swal.showLoading();
@@ -69,7 +69,27 @@ export const crearUsuario = async (usuario: FormularioUsuario): Promise<Usuario[
         } else {
             console.log('Unexpected error', e);
         }
-        return [];
+        return undefined;
+    }
+}
+
+
+export const actualizarUsuario = async (id: string, usuario: FormularioUsuario): Promise<Usuario | undefined> => {
+    try {
+        Swal.fire('Guardando cambios');
+        Swal.showLoading();
+        const { data } = await servicesApiToken(`/auth/usuarios/${id}`, { method: 'PATCH', data: usuario });
+        Swal.close();
+        return data;
+    } catch (e) {
+        console.log(e);
+        if (e instanceof AxiosError) {
+            // ✅ TypeScript knows err is Error
+            Swal.fire('Error', `${e.response?.data.message}`, 'error');
+        } else {
+            console.log('Unexpected error', e);
+        }
+        return undefined;
     }
 }
 // http://localhost:4000/api/auth/usuarios?rol=vendedor&negocio=ad2824cc-622f-4796-a989-1a60e2cd00ba
@@ -86,20 +106,19 @@ export const crearUsuario = async (usuario: FormularioUsuario): Promise<Usuario[
 // };
 
 
-export const obtenerUsuarios = async (negocioid: string, rol: string): Promise<Usuario[]> => {
-    try {
-        const { data } = await servicesApiToken(`/auth/usuarios?rol=${rol}&negocio=${negocioid}`, {});
-        return data;
-    } catch (error) {
-        Swal.fire('Error', `error: ${error}`, 'info');
-        return [];
-    }
-}
+// export const obtenerUsuarios = async (negocioid: string, rol: string): Promise<Usuario[]> => {
+//     try {
+//         const { data } = await servicesApiToken(`/auth/usuarios?rol=${rol}&negocio=${negocioid}`, {});
+//         return data;
+//     } catch (error) {
+//         Swal.fire('Error', `error: ${error}`, 'info');
+//         return [];
+//     }
+// }
 
 export const buscarUsuarios = async (queryParamsUsuario: QueryParamsUsuario): Promise<Usuario[]> => {
     try {
         const { data } = await servicesApiToken(`/auth/usuarios/search`, { params: queryParamsUsuario });
-        console.log(data);
         return data;
     } catch (e) {
         console.log(e);
@@ -108,27 +127,27 @@ export const buscarUsuarios = async (queryParamsUsuario: QueryParamsUsuario): Pr
     }
 }
 
-export const crearTurno = (turno: Turno) => {
-    return async (dispatch: AppDispatch) => {
-        Swal.fire('Cargando');
-        Swal.showLoading();
-        try {
-            const { data } = await servicesApiToken(`/turnos`, { method: 'POST', data: turno });
-            localStorage.setItem('x-token', data.token);
-            const usuario = UsuarioConvert.toUsuario(JSON.stringify(data));
-            dispatch(setUsuario(usuario));
-            Swal.close();
-        } catch (e) {
-            dispatch(endGetUsuario());
-            console.log(e)
-            if (e instanceof AxiosError) {
-                // ✅ TypeScript knows err is Error
-                if (e.code === "ERR_NETWORK") return Swal.fire('Error', `Error de red, Verifique su conexion`, 'error');
+// export const crearTurno = (turno: Turno) => {
+//     return async (dispatch: AppDispatch) => {
+//         Swal.fire('Cargando');
+//         Swal.showLoading();
+//         try {
+//             const { data } = await servicesApiToken(`/turnos`, { method: 'POST', data: turno });
+//             localStorage.setItem('x-token', data.token);
+//             const usuario = UsuarioConvert.toUsuario(JSON.stringify(data));
+//             dispatch(setUsuario(usuario));
+//             Swal.close();
+//         } catch (e) {
+//             dispatch(endGetUsuario());
+//             console.log(e)
+//             if (e instanceof AxiosError) {
+//                 // ✅ TypeScript knows err is Error
+//                 if (e.code === "ERR_NETWORK") return Swal.fire('Error', `Error de red, Verifique su conexion`, 'error');
 
-                Swal.fire('Error', `${e.response?.data.message}`, 'error');
-            } else {
-                console.log('Unexpected error', e);
-            }
-        }
-    }
-}
+//                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
+//             } else {
+//                 console.log('Unexpected error', e);
+//             }
+//         }
+//     }
+// }

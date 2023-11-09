@@ -39,24 +39,27 @@ interface ProductoBasico {
     stock_minimo?: number;
     stock_maximo?: number;
     activo: boolean,
-    provedores: string[],
     categorias: string[],
     attributos?: object,
     creado?: string; //Date
     actualizado?: string,
+    sucursal?: string;
 }
 
 export interface Producto extends ProductoBasico {
+    provedor: Provedor,
     imagenes?: ProductoImagen[],
     negocioid?: number
 }
 
 export interface FormularioProducto extends ProductoBasico {
+    provedor: string,
     imagenes?: string[],
     files?: FileList
 }
 
 export interface NuevoActualizarProducto extends ProductoBasico {
+    provedor: string,
     imagenes?: string[]
 }
 

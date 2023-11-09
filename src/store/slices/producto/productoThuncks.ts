@@ -25,8 +25,6 @@ export const obtenerProductos = (queryParamsProducto: QueryParamsProducto) => {
 export const obtenerProducto = async (id: string): Promise<Producto | undefined> => {
     try {
         const { data } = await servicesApiToken(`/productos/${id}`, {});
-        console.log(data);
-        // const productos = ProductoConvert.toProducToList(JSON.stringify(data));
         return data;
     } catch (e) {
         console.log(e);

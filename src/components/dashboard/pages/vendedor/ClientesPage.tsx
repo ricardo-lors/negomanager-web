@@ -10,7 +10,7 @@ import { Tabla } from "../../../shared/Tabla";
 import { RootState } from "../../../../store";
 import { ColumnDef } from "@tanstack/react-table";
 
-export const VendedoresPage = () => {
+export const ClientesPage = () => {
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
 
@@ -22,7 +22,7 @@ export const VendedoresPage = () => {
 
     useEffect(() => {
         buscarUsuarios({
-            roles: ['{vendedor}']
+            roles: ['{cliente}']
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
@@ -37,7 +37,7 @@ export const VendedoresPage = () => {
             contrasena: '',
             contrasenaRepeat: '',
             sucursal: '',
-            roles: ['vendedor']
+            roles: ['cliente']
         },
         onSubmit: async (values) => {
             // onSubmit(values, elper);
@@ -104,7 +104,7 @@ export const VendedoresPage = () => {
         <div className="row">
             <div className="col-3 border-end vh-100">
                 <div className="text-center">
-                    <h2>Vendedores</h2>
+                    <h2>Clientes</h2>
                 </div>
                 <form className="container mt-2" noValidate onSubmit={handleSubmit}>
 
@@ -128,21 +128,7 @@ export const VendedoresPage = () => {
                         className="form-control"
                         {...getFieldProps('telefono')}
                     />
-                    {
-                        usuario?.roles.includes('administrador') &&
-                        < MySelect
-                            label="Sucursal"
-                            className="form-control"
-                            {...getFieldProps('sucursal')}
-                        >
-                            <option value="">Seleccione una Sucursal</option>
-                            {
-                                sucursales?.map(opt => (
-                                    <option key={opt.id} value={opt.id}>{opt.nombre}</option>
-                                ))
-                            }
-                        </MySelect>
-                    }
+
                     <MyTextInput
                         label="Contraseña"
                         placeholder='Ingrese una contraseña'
@@ -178,7 +164,7 @@ export const VendedoresPage = () => {
                                     contrasena: '',
                                     contrasenaRepeat: '',
                                     sucursal: us.sucursal ? us.sucursal.id : '',
-                                    roles: ['vendedor']
+                                    roles: ['cliente']
                                 });
                             } else {
                                 setUsuarioSeleccionado(undefined);
@@ -189,7 +175,7 @@ export const VendedoresPage = () => {
                                     contrasena: '',
                                     contrasenaRepeat: '',
                                     sucursal: '',
-                                    roles: ['vendedor']
+                                    roles: ['cliente']
                                 });
                             }
                         }
