@@ -4,13 +4,14 @@ import { Usuario } from "./Usuario.interface";
 
 export interface Venta {
     id: string;
+    folio: number;
     fecha: Date;
     vendedor: Usuario;
-    cliente: Usuario;
+    cliente?: Usuario;
     negocio: Negocio;
     total: number;
     pago: number;
-    detalles: DetallesVenta
+    detalles: DetallesVenta[]
 }
 
 export interface VentaState {

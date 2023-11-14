@@ -42,7 +42,7 @@ export const HomePage = () => {
   const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch } = useFormik({
     initialValues: { codigo: '' },
     onSubmit: async (values) => {
-      const producto = await obtenerProductoCodigo(values.codigo, usuario?.negocio!.id!);
+      const producto = await obtenerProductoCodigo(values.codigo, usuario?.sucursal!.id!, usuario?.negocio!.id!);
       if (producto) dispatch(agregarProducto(producto));
       resetFormSearch();
     },
@@ -75,7 +75,7 @@ export const HomePage = () => {
       // .required('Requerido'),
     })
   });
-
+  
   const agregarPorTabla = (e: FormEvent<HTMLInputElement>, i: number) => {
     const cantidad = +e.currentTarget.value;
     if (cantidad < 1) return;

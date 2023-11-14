@@ -2,6 +2,7 @@ import Swal from "sweetalert2";
 import { NuevaVenta, Venta, VentaConvert } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
+import { getMeesageError } from "../../errors/errors";
 // import { setVentas, startGetVentas } from "./ventaSlice";
 
 export const obtenerVentaNegocio = (negocioid: string) => {
@@ -15,6 +16,16 @@ export const obtenerVentaNegocio = (negocioid: string) => {
         // } else {
         //     Swal.fire('Error', data.data, 'info');
         // }
+    }
+}
+
+export const obtenerVentaId = async (id: string) => {
+    try {
+        const { data } = await servicesApiToken(`/ventas/${id}`, {});
+        return data;
+    } catch (e) {
+        const message = getMeesageError(e);
+        Swal.fire('Error', message, 'error');
     }
 }
 

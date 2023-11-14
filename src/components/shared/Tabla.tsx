@@ -52,10 +52,10 @@ export const Tabla = ({ data, columns, seleccionado, onClickFila, verFooter = fa
                     </tr>
                 ))}
             </tbody>
-            {/* {
+            {
                 verFooter &&
                 <tfoot>
-                    {table.getFooterGroups().map(footerGroup => (
+                    {tabla.getFooterGroups().map(footerGroup => (
                         <tr key={footerGroup.id}>
                             {footerGroup.headers.map(header => (
                                 <th key={header.id}>
@@ -70,7 +70,7 @@ export const Tabla = ({ data, columns, seleccionado, onClickFila, verFooter = fa
                         </tr>
                     ))}
                 </tfoot>
-            } */}
+            }
         </table>
     )
 }

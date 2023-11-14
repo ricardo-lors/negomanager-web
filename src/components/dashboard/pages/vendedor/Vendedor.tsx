@@ -1,7 +1,8 @@
 
 import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './HomePage'
-import { InventarioPage, AgregarModificarProductoPage, ClientesPage, ProvedoresPage, CategoriasPage, VentasPage } from '../shared';
+import { InventarioPage, AgregarModificarProductoPage, ClientesPage, ProvedoresPage, CategoriasPage, } from '../shared';
+import { Caja } from './caja/Caja';
 
 export const Vendedor = () => {
     return (
@@ -13,7 +14,9 @@ export const Vendedor = () => {
             <Route path='/vendedor/provedores' element={<ProvedoresPage />} />
             <Route path='/vendedor/categorias' element={<CategoriasPage />} />
             <Route path='/vendedor/clientes' element={<ClientesPage />} />
-            <Route path='/vendedor/ventas' element={<VentasPage />} />
+
+            <Route path='/vendedor/caja/*' element={<Caja />} />
+
         </Routes>
     )
 }

@@ -40,5 +40,12 @@
         "nombre": "Negocio",
         "replace": true,
         "icono": "bi bi-shop"
+    },
+    {
+        "id": 8,
+        "ruta": "/dashboard/administrador/caja",
+        "nombre": "Negocio",
+        "replace": true,
+        "icono": "bi bi-shop"
     }
 ]

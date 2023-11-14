@@ -103,9 +103,9 @@ export const actualizarProducto = (producto: NuevoActualizarProducto, navigate: 
     }
 }
 
-export const obtenerProductoCodigo = async (codigo: string, negocioid: string) => {
+export const obtenerProductoCodigo = async (codigo: string, sucursalid: string, negocioid: string) => {
     try {
-        const { data } = await servicesApiToken(`/productos/${codigo}/${negocioid}`, {});
+        const { data } = await servicesApiToken(`/productos/${codigo}/${sucursalid}/${negocioid}`, {});
         return data;
     } catch (e) {
         const message = getMeesageError(e);

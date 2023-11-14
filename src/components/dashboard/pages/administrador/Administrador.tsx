@@ -4,7 +4,7 @@ import { HomePage } from "./HomePage"
 import { VendedoresPage } from "./VendedoresPage"
 import { ProvedoresPage } from "../shared/ProvedoresPage"
 import { CategoriasPage } from "../shared/CategoriasPage"
-import { InventarioPage, AgregarModificarProductoPage } from "../shared"
+import { InventarioPage, AgregarModificarProductoPage, VentasPage } from "../shared"
 import { SucursalPage } from "./SucursalPage"
 
 export const Administrador = () => {
@@ -23,6 +23,8 @@ export const Administrador = () => {
 
             <Route path='/administrador/negocio' element={<NegocioPage />} />
             <Route path='/administrador/sucursal' element={<SucursalPage />} />
+
+            <Route path='/administrador/ventas' element={<VentasPage />} />
 
         </Routes>
     )

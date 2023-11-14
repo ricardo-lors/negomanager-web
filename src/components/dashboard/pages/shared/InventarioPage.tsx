@@ -30,7 +30,10 @@ export const InventarioPage = () => {
 
     useEffect(() => {
         // take: 10 
-        usuario && dispatch(obtenerProductos({ negocio: usuario?.negocio?.id! }))
+        usuario && dispatch(obtenerProductos({
+            // sucursal: usuario.sucursal ? usuario.sucursal.id : undefined,
+            negocio: usuario?.negocio?.id!
+        }))
     }, [dispatch]);
 
     const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch, } = useFormik({
@@ -85,8 +88,7 @@ export const InventarioPage = () => {
             {
                 productos.length !== 0
                     ? <div ref={productosList} className="album py-2">
-                        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                            {/* <h5>Inventario</h5> album py-2 */}
+                        <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
                             {
                                 productos.map(prod =>
                                     <div key={prod.id} className="col">

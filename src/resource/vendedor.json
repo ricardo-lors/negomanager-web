@@ -36,7 +36,7 @@
     },
     {
         "id": 7,
-        "ruta": "/dashboard/vendedor/ventas",
+        "ruta": "/dashboard/vendedor/caja",
         "nombre": "Ventas",
         "replace": true,
         "icono": "bi-bag-plus"

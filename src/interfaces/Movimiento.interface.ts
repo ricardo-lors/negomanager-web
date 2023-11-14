@@ -5,8 +5,11 @@
 //
 //   const movimiento = Convert.toMovimiento(json);
 
+import { Usuario } from "./Usuario.interface";
+
 export interface Movimiento {
     id: string;
+    folio: number;
     tipo: string;
     fecha: Date;
     descuento: boolean;
@@ -34,6 +37,8 @@ export interface MovimientoParams {
 
 interface Venta {
     id: string;
+    total: number;
+    cliente: Usuario
 }
 
 // Converts JSON strings to/from your types

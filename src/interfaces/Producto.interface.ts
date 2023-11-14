@@ -107,6 +107,8 @@ export interface QueryParamsProducto {
 
     categorias?: string[];
 
+    sucursal?: string;
+
     negocio?: string;
 
     take?: number;
