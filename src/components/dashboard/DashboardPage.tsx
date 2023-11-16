@@ -6,7 +6,7 @@ import { obtenerCategorias } from "../../store/slices/categoria/categoriaThuncks
 import { obtenerProvedoresNegocio } from "../../store/slices/provedor";
 import { Navbar } from "../shared/Navbar";
 import { Sidebar } from "../shared/Sidebar";
-import { Administrador } from "./pages/administrador/Administrador";
+import { AdministradorRouter } from "./pages/administrador/AdministradorRouter";
 import { SuperAdministrador } from "./pages/superadministrador/SuperAdministrador";
 import { Vendedor } from "./pages/vendedor/Vendedor";
 
@@ -45,7 +45,7 @@ export const DashboardPage = () => {
                                 usuario?.roles.includes('super-administrador')
                                     ? <SuperAdministrador />
                                     : usuario?.roles.includes('administrador')
-                                        ? <Administrador />
+                                        ? <AdministradorRouter />
                                         : <Vendedor />
                             }
                         </div>

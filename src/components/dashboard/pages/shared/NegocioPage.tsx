@@ -11,6 +11,7 @@ import { crearNegocio } from "../../../../store/slices/negocio/negocioThuncks";
 import { actualizarSucursal, crearSucursal, obtenerSucursales } from "../../../../store/slices/sucursal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Tabla } from "../../../shared/Tabla";
+import { revalidarSesion } from "../../../../store/slices/usuario";
 
 export const NegocioPage = () => {
 
@@ -68,6 +69,8 @@ export const NegocioPage = () => {
                 });
                 if (sucursalActualizada) setSucursales([sucursalActualizada, ...sucursales.filter(sc => sc.id !== sucursalActualizada?.id)]);
             }
+
+            dispatch(revalidarSesion());
             resetFormSucursales();
         },
         validationSchema: Yup.object({
@@ -112,7 +115,7 @@ export const NegocioPage = () => {
 
     return (
         <div className="row">
-            {usuario!.negocio === null && <div className="alert alert-danger" role="alert">
+            {!usuario?.negocio && <div className="alert alert-danger" role="alert">
                 Debe dar de alta su negocio
             </div>
             }
@@ -159,7 +162,10 @@ export const NegocioPage = () => {
             <div>
                 <h2>Sucursales</h2>
             </div>
-
+            {!usuario?.sucursal && <div className="alert alert-danger" role="alert">
+                Debe registrar al menos una sucursal
+            </div>
+            }
             <div className="row mb-4">
                 <div className="col-md-4 border-end">
                     <form className="" noValidate onSubmit={handleSubmitSucursales}>
@@ -191,9 +197,9 @@ export const NegocioPage = () => {
                     </form>
                 </div>
                 <div className="col">
-                    <Tabla 
-                    data={sucursales} 
-                    columns={columnasSucursales}
+                    <Tabla
+                        data={sucursales}
+                        columns={columnasSucursales}
                         seleccionado={sucursal?.id}
                         onClickFila={(sc) => {
                             if (sc.id !== sucursal?.id) {

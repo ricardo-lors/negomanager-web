@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom"
+import { Navigate, Route, Routes } from "react-router-dom"
 import { NegocioPage } from "../shared/NegocioPage"
 import { HomePage } from "./HomePage"
 import { VendedoresPage } from "./VendedoresPage"
@@ -6,11 +6,28 @@ import { ProvedoresPage } from "../shared/ProvedoresPage"
 import { CategoriasPage } from "../shared/CategoriasPage"
 import { InventarioPage, AgregarModificarProductoPage, VentasPage } from "../shared"
 import { SucursalPage } from "./SucursalPage"
+import { useSelector } from "react-redux"
+import { RootState } from "../../../../store"
 
-export const Administrador = () => {
+export const AdministradorRouter = () => {
+
+    const { usuario } = useSelector((state: RootState) => state.usuario);
+
+    if (!usuario?.negocio || !usuario?.sucursal) {
+        return (
+            <Routes>
+                <Route path='/administrador/negocio' element={<NegocioPage />} />
+                <Route path='/*' element={<Navigate to="/dashboard/administrador/negocio" replace={true} />} />
+            </Routes>
+        );
+    }
+
     return (
         <Routes>
-            <Route path='/' element={<HomePage />} />
+            {/* {
+                (usuario) && <Navigate to='/dashboard/administrador/negocio' replace={true} />
+            } */}
+            <Route path='/administrador' element={<HomePage />} />
             {/* Ritas del Inventario */}
             <Route path='/administrador/inventario' element={<InventarioPage />} />
             <Route path='/administrador/inventario/producto/:id' element={<AgregarModificarProductoPage />} />
@@ -26,6 +43,7 @@ export const Administrador = () => {
 
             <Route path='/administrador/ventas' element={<VentasPage />} />
 
+            <Route path='/*' element={<Navigate to="/dashboard/administrador" replace={true} />} />
         </Routes>
     )
 }

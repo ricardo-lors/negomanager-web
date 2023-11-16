@@ -4,6 +4,7 @@ import { NegocioConvert, NuevoNegocio } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setNegocio, setNegocios, startGetNegocio } from "./negocioSlice";
+import { revalidarSesion } from "../usuario";
 
 
 export const crearNegocio = (negocio: NuevoNegocio) => {
@@ -12,6 +13,7 @@ export const crearNegocio = (negocio: NuevoNegocio) => {
             const { data, status } = await servicesApiToken(`/negocios`, { method: 'POST', data: negocio });
             console.log(data);
             console.log(status);
+            dispatch(revalidarSesion());
         } catch (e) {
 
             if (e instanceof AxiosError) {
