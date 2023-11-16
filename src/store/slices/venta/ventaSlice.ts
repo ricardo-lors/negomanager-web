@@ -25,7 +25,8 @@ export const ventaSlice = createSlice({
                     total: producto.precio,
                     producto: {
                         id: producto.id!,
-                        descripcion: producto.descripcion,
+                        titulo: producto.titulo,
+                        // descripcion: producto.descripcion,
                         codigo: producto.codigo,
                         precio: producto.precio,
                         inventario: producto.inventario

@@ -31,6 +31,7 @@ export const AgregarModificarProductoPage = () => {
             console.log(pd)
             setProducto({
                 ...pd,
+                titulo: pd!.titulo,
                 codigo: pd!.codigo,
                 descripcion: pd!.descripcion!,
                 costo: pd!.costo,
@@ -59,6 +60,7 @@ export const AgregarModificarProductoPage = () => {
     const { handleSubmit, errors, touched, getFieldProps, values, handleChange, setFieldValue, setValues } = useFormik<FormularioProducto>({
         initialValues: producto ? producto : {
             codigo: '',
+            titulo: '',
             descripcion: '',
             costo: 0,
             ganancia: 20,
@@ -90,6 +92,7 @@ export const AgregarModificarProductoPage = () => {
             if (!producto) {
                 console.log('Hice esta accion');
                 await dispatch(crearProducto({
+                    titulo: values.titulo,
                     codigo: values.codigo,
                     descripcion: values.descripcion,
                     costo: values.costo,
@@ -130,6 +133,7 @@ export const AgregarModificarProductoPage = () => {
                 await dispatch(actualizarProducto({
                     id: producto.id,
                     codigo: values.codigo,
+                    titulo: values.titulo,
                     descripcion: values.descripcion,
                     costo: values.costo,
                     ganancia: values.ganancia,
@@ -210,10 +214,27 @@ export const AgregarModificarProductoPage = () => {
                             </div>
                         </div>
                         <MyTextInput
-                            label="Descripcion"
+                            label="Titulo (Descripción breve del producto – aparece en el ticket)"
+                            className="form-control"
+                            {...getFieldProps('titulo')}
+                        />
+                        {/* <MyTextInput
+                            label="Descripción detallada"
                             className="form-control"
                             {...getFieldProps('descripcion')}
-                        />
+                        /> */}
+                        <div className="mb-2">
+                            <label className='form-label' htmlFor=''>Descripción detallada</label>
+                            <textarea
+                                className="form-control"
+                                // value={values.descripcion}
+                                cols={10}
+                                rows={4}
+                                {...getFieldProps('descripcion')} />
+                            {/* <span className="text-danger">{errors}</span> */}
+                        </div>
+
+
                         <div className="row">
                             <div className="col-4">
                                 <MyTextInput

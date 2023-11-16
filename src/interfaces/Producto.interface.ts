@@ -27,6 +27,7 @@ import { Provedor } from "./Provedor.interface";
 interface ProductoBasico {
     id?: string,
     codigo: string,
+    titulo: string;
     descripcion: string,
     costo: number,
     ganancia: number,
@@ -71,7 +72,7 @@ export interface ProductoImagen {
 export interface ProductoVenta {
     id: string,
     codigo?: string,
-    descripcion: string,
+    titulo: string,
     precio: number,
     inventario: boolean;
 }

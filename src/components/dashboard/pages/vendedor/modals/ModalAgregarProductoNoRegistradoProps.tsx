@@ -15,15 +15,15 @@ export const ModalAgregarProductoNoRegistrado = ({ cerrarModal }: AgregarProduct
 
     const { detalles } = useSelector((state: RootState) => state.venta);
 
-    const { handleSubmit, errors, touched, getFieldProps, values } = useFormik<{ descripcion: string, cantidad: number, precio: number }>({
-        initialValues: { descripcion: '', cantidad: 0.0, precio: 0.0 },
+    const { handleSubmit, errors, touched, getFieldProps, values } = useFormik<{ titulo: string, cantidad: number, precio: number }>({
+        initialValues: { titulo: '', cantidad: 0.0, precio: 0.0 },
         onSubmit: (values) => {
             dispatch(agregarProductoNoRegistrado({
                 cantidad: values.cantidad,
                 producto: {
                     id: (detalles.length + 1).toString(),
                     codigo: (detalles.length + 1).toString(),
-                    descripcion: values.descripcion,
+                    titulo: values.titulo,
                     precio: values.precio,
                     inventario: false
                 },
@@ -46,8 +46,8 @@ export const ModalAgregarProductoNoRegistrado = ({ cerrarModal }: AgregarProduct
                 label="Descripción"
                 placeholder="Describa el producto"
                 className="form-control"
-                {...getFieldProps('descripcion')}
-                errors={(touched.descripcion && errors.descripcion) || ''}
+                {...getFieldProps('titulo')}
+                errors={(touched.titulo && errors.titulo) || ''}
             />
             <MyTextInput
                 type="number"

@@ -26,8 +26,8 @@ export const VentaPage = () => {
         },
         {
             accessorKey: 'producto',
-            header: () => <span>Descripcion</span>,
-            cell: info => info.row.original.producto.descripcion,
+            header: () => <span>Titulo</span>,
+            cell: info => info.row.original.producto.titulo,
         }, {
             accessorKey: 'total',
 

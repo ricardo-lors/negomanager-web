@@ -34,7 +34,7 @@ export const Ticket = forwardRef((props: TicketProps, ref: LegacyRef<HTMLDivElem
                     {
                         props.venta?.detalles.map(det =>
                             <tr key={det.producto.id}>
-                                <td className='producto' >{det.producto.descripcion}</td>
+                                <td className='producto' >{det.producto.titulo}</td>
                                 <td className='cantidad' >{det.cantidad}</td>
                                 <td className='precio'>{det.total}</td>
                             </tr>

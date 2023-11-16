@@ -92,16 +92,21 @@ export const InventarioPage = () => {
                             {
                                 productos.map(prod =>
                                     <div key={prod.id} className="col">
-                                        <div className="card shadow-sm">
-                                            {prod.imagenes![0] && <img className="card-img-top" src={prod.imagenes![0].url} alt="" height={150} />}
-                                            <div className="card-body">
-                                                <h5 className="card-title">{prod.descripcion} - {prod.codigo}</h5>
-                                                {/* {
-                                                    prod.imagenes!.length > 0 && prod.imagenes!.map((imagen) => <img key={imagen.id} src={imagen.url} height='100' width={150} alt="" />)
-                                                } */}
-                                                <p className="card-text" >{prod.descripcion}</p>
-                                                <p className="card-text" >Stock: {prod.stock} - Precio: {prod.precio}</p>
-                                                <Link to={`/dashboard/${usuario?.roles[0]}/inventario/producto/${prod.id}`} replace className="btn btn-primary"><i className="bi bi-pencil-square"></i></Link>
+                                        <div className="card shadow-sm mb-2" style={{ height: 350 }}>
+                                            {prod.imagenes![0] && <img className="card-img-top" src={prod.imagenes![0].url} alt="" style={{ minHeight: '150px', maxHeight: '150px' }} />}
+                                            <div className="card-header">
+                                                CD: {prod.codigo}
+                                            </div>
+                                            <div className="card-body p-1 position-relative">{/* overflow-auto */}
+                                                <p className="card-text" >{prod.titulo}</p>
+                                                <p className="card-text position-absolute bottom-0 end-0 m-1" >${prod.precio}  -  Stock: {prod.stock} </p>
+                                            </div>
+                                            <div className="card-footer p-1">
+                                                <Link
+                                                    to={`/dashboard/${usuario?.roles[0]}/inventario/producto/${prod.id}`}
+                                                    className="btn btn-primary "
+                                                    replace
+                                                ><i className="bi bi-pencil-square"></i></Link>
                                             </div>
                                         </div>
                                     </div>

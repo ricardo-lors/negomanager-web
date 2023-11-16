@@ -152,7 +152,7 @@ export const HomePage = () => {
             {
               detalles.map((st, i) => <tr key={st.producto.id}>
                 <th>{st.producto.codigo}</th>
-                <th>{st.producto.descripcion}</th>
+                <th>{st.producto.titulo}</th>
                 <th>{st.producto.precio}</th>
                 <th><input className="form-control" onFocus={onFocus} onChange={(e) => agregarPorTabla(e, i)} type="number" value={st.cantidad} /></th>
                 <th>{st.total}</th>
