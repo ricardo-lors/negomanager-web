@@ -1,5 +1,5 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { obtenerVentaId } from '../../../../../store/slices/venta';
 import { DetallesVenta, Venta } from '../../../../../interfaces';
 import { Tabla } from '../../../../shared/Tabla';
@@ -8,6 +8,7 @@ import { ColumnDef } from '@tanstack/react-table';
 
 export const VentaPage = () => {
 
+    const navigate = useNavigate();
     const { id } = useParams();
 
     const [venta, setVenta] = useState<Venta>();
@@ -52,10 +53,15 @@ export const VentaPage = () => {
 
     return (
         <>
-            <h2 className='text-center'>Detalles de venta</h2>
+            <div className='d-flex justify-content-between mb-1 mt-1'>
+                <button className='btn btn-outline-secondary' onClick={() => navigate(-1)}><i className="bi bi-arrow-left"></i></button>
+                <h2 className='text-center m-0'>Detalles de venta</h2>
+                <div></div>
+            </div>
+
             {
                 venta ?
-                    <div className='card p-4' aria-hidden="true">
+                    <div className='card p-3' aria-hidden="true">
 
                         <div className="card-body">
                             <h3>Folio: {venta?.folio}</h3>

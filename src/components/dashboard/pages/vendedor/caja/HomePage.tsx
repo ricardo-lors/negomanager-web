@@ -87,6 +87,9 @@ export const HomePage = () => {
                         <div className='card-header'>
                             <h2 className='text-center'>${usuario?.attributos?.caja}</h2>
                         </div>
+                        <div className='card-body'>
+
+                        </div>
                     </div>
                 </div>
                 <div className='col'>
