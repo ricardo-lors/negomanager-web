@@ -8,8 +8,8 @@
     },
     {
         "id": 2,
-        "ruta": "/dashboard/administrador/inventario",
-        "nombre": "Inventario",
+        "ruta": "/dashboard/administrador/producto",
+        "nombre": "Productos",
         "replace": true,
         "icono": "bi-clipboard"
     },

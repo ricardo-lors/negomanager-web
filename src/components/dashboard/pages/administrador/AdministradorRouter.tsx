@@ -8,12 +8,14 @@ import { InventarioPage, AgregarModificarProductoPage, VentasPage } from "../sha
 import { SucursalPage } from "./SucursalPage"
 import { useSelector } from "react-redux"
 import { RootState } from "../../../../store"
+import { ProductoRouter } from "../shared/producto/ProductoRouter"
 
 export const AdministradorRouter = () => {
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { sucursales } = useSelector((state: RootState) => state.sucursal);
 
-    if (!usuario?.negocio || !usuario?.sucursal) {
+    if (!usuario?.negocio || sucursales.length === 0) {
         return (
             <Routes>
                 <Route path='/administrador/negocio' element={<NegocioPage />} />
@@ -29,6 +31,9 @@ export const AdministradorRouter = () => {
             } */}
             <Route path='/administrador' element={<HomePage />} />
             {/* Ritas del Inventario */}
+            <Route path='/administrador/producto/*' element={<ProductoRouter />} />
+
+
             <Route path='/administrador/inventario' element={<InventarioPage />} />
             <Route path='/administrador/inventario/producto/:id' element={<AgregarModificarProductoPage />} />
             <Route path='/administrador/inventario/producto' element={<AgregarModificarProductoPage />} />

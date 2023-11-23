@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import { useAppDispatch } from "../../../../hooks";
 import { NuevaVenta } from "../../../../interfaces";
-import { RootState } from "../../../../store";
+import { RootState, redondearNumero } from "../../../../store";
 import { obtenerProductoCodigo } from "../../../../store/slices/producto/productoThuncks";
 
 import * as Yup from 'yup';
@@ -75,7 +75,7 @@ export const HomePage = () => {
       // .required('Requerido'),
     })
   });
-  
+
   const agregarPorTabla = (e: FormEvent<HTMLInputElement>, i: number) => {
     const cantidad = +e.currentTarget.value;
     if (cantidad < 1) return;
@@ -125,10 +125,9 @@ export const HomePage = () => {
           {/* <p className="btn">{usuario?.attributos?.caja}</p> */}
         </div>
         <div className="col text-end">
-          <h3>${usuario?.attributos?.caja}</h3>
+          <h3>${usuario?.attributos?.caja ? redondearNumero(usuario?.attributos?.caja) : '0.0'}</h3>
         </div>
       </div>
-
 
       <form className="" noValidate onSubmit={handleSubmitSearch}>
         <div className="input-group">
@@ -163,6 +162,7 @@ export const HomePage = () => {
       </div>
       <div className="row text-end">
         <h2 className="text-end" >Total: {total}</h2>
+        <h2 className="text-end" >Total: {redondearNumero(total)}</h2>
       </div>
       <div className="row">
         <div className="col-md-6">

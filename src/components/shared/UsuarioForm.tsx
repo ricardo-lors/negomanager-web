@@ -8,6 +8,7 @@ import { MySelect } from './MySelect';
 import { obtenerSucursales } from '../../store/slices/sucursal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { useAppDispatch } from '../../hooks';
 
 interface UsuarioFormProps {
     rol: string[];
@@ -17,14 +18,13 @@ interface UsuarioFormProps {
 
 export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps) => {
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const dispatch = useAppDispatch();
 
-    const [sucursales, setSucursales] = useState<Sucursal[]>();
+    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { sucursales } = useSelector((state: RootState) => state.sucursal);
 
     useEffect(() => {
-
-        obtenerSucursales({}).then(sc => setSucursales(sc));
-
+        dispatch(obtenerSucursales({}));
     }, [])
 
 

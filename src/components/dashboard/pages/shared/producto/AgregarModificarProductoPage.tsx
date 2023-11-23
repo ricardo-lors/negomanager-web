@@ -6,11 +6,11 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 
-import { FormularioProducto } from '../../../../interfaces';
-import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../store/slices/producto';
-import { useAppDispatch } from '../../../../hooks';
-import { RootState } from '../../../../store';
-import { MyCheckbox, MySelect, MyTextInput } from '../../../shared';
+import { FormularioProducto } from '../../../../../interfaces';
+import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../../store/slices/producto';
+import { useAppDispatch } from '../../../../../hooks';
+import { RootState } from '../../../../../store';
+import { MyCheckbox, MySelect, MyTextInput } from '../../../../shared';
 import { Tooltip } from 'react-tooltip';
 
 export const AgregarModificarProductoPage = () => {
@@ -27,6 +27,12 @@ export const AgregarModificarProductoPage = () => {
     const [producto, setProducto] = useState<FormularioProducto>();
 
     useEffect(() => {
+
+        if (usuario?.roles.includes('vendedor')) {
+            if (!usuario.permisos?.includes('crear_producto') || !usuario.permisos?.includes('editar_producto'))
+                return navigate(`/dashboard/${usuario.roles[0]}/producto`, { replace: true });
+        }
+
         id && obtenerProducto(id).then((pd) => {
             console.log(pd)
             setProducto({
@@ -55,9 +61,9 @@ export const AgregarModificarProductoPage = () => {
         //   return () => {
         //     second
         //   }
-    }, []);
+    }, [id, navigate, usuario?.permisos, usuario?.roles]);
 
-    const { handleSubmit, errors, touched, getFieldProps, values, handleChange, setFieldValue, setValues } = useFormik<FormularioProducto>({
+    const { handleSubmit, errors, touched, getFieldProps, values, setFieldValue } = useFormik<FormularioProducto>({
         initialValues: producto ? producto : {
             codigo: '',
             titulo: '',
@@ -165,7 +171,7 @@ export const AgregarModificarProductoPage = () => {
         const porcentaje = Number(values.ganancia / 100);
         const precio = values.costo + porcentaje * values.costo;
         setFieldValue('precio', precio);
-    }, [values.ganancia, values.costo]);
+    }, [values.ganancia, values.costo, setFieldValue]);
 
     useEffect(() => {
         // if (values.costo === 0) return;
@@ -190,7 +196,7 @@ export const AgregarModificarProductoPage = () => {
                         data-tooltip-id='btn-cancel-tooltip'
                         data-tooltip-content='Cancelar'
                         data-tooltip-place="right-end"
-                        to={`/dashboard/${usuario?.roles[0]}/inventario`}
+                        to={`/dashboard/${usuario?.roles[0]}/producto`}
                         className='btn btn-outline-secondary' replace ><i className="bi bi-arrow-left"></i></Link>
                     <Tooltip id="btn-cancel-tooltip" />
                 </div>
@@ -320,61 +326,63 @@ export const AgregarModificarProductoPage = () => {
                                 />
                             </div>
                         </div>
-                        <div className="row">
-                            <div>
-                                <MyCheckbox
-                                    checked={values.inventario!}
-                                    label="Inventario"
-                                    // onChange={(e) => { }}
-                                    {...getFieldProps('inventario')}
-                                />
+                        {
+                            (usuario?.permisos?.includes('modificar_inventario') || usuario?.roles.includes('administrador')) && <div className="row">
+                                <div>
+                                    <MyCheckbox
+                                        checked={values.inventario!}
+                                        label="Inventario"
+                                        // onChange={(e) => { }}
+                                        {...getFieldProps('inventario')}
+                                    />
+                                </div>
+                                <div className="col-4">
+                                    <MyTextInput
+                                        min='0'
+                                        name='stock'
+                                        type="number"
+                                        label="Stock"
+                                        placeholder='0'
+                                        className="form-control"
+                                        disabled={!values.inventario}
+                                        value={values.stock !== undefined ? values.stock : ''}
+                                        onChange={getFieldProps('stock').onChange}
+                                        errors={(touched.stock && errors.stock) || ''}
+                                    // {...getFieldProps('stock')}
+                                    />
+                                </div>
+                                <div className="col-4">
+                                    <MyTextInput
+                                        min='0'
+                                        name='stock_minimo'
+                                        type='number'
+                                        label='Stock Minimo'
+                                        placeholder='0'
+                                        className="form-control"
+                                        disabled={!values.inventario}
+                                        value={values.stock_minimo !== undefined ? values.stock_minimo : ''}
+                                        onChange={getFieldProps('stock_minimo').onChange}
+                                        errors={(touched.stock_minimo && errors.stock_minimo) || ''}
+                                    // {...getFieldProps('stock_minimo')}
+                                    />
+                                </div>
+                                <div className="col-4">
+                                    <MyTextInput
+                                        min='0'
+                                        name='stock_maximo'
+                                        type="number"
+                                        label="Stock Maximo"
+                                        placeholder='0'
+                                        className="form-control"
+                                        disabled={!values.inventario}
+                                        value={values.stock_maximo !== undefined ? values.stock_maximo : ''}
+                                        onChange={getFieldProps('stock_maximo').onChange}
+                                        errors={(touched.stock_maximo && errors.stock_maximo) || ''}
+                                    // {...getFieldProps('stock_minimo')}
+                                    />
+                                </div>
                             </div>
-                            <div className="col-4">
-                                <MyTextInput
-                                    min='0'
-                                    name='stock'
-                                    type="number"
-                                    label="Stock"
-                                    placeholder='0'
-                                    className="form-control"
-                                    disabled={!values.inventario}
-                                    value={values.stock !== undefined ? values.stock : ''}
-                                    onChange={getFieldProps('stock').onChange}
-                                    errors={(touched.stock && errors.stock) || ''}
-                                // {...getFieldProps('stock')}
-                                />
-                            </div>
-                            <div className="col-4">
-                                <MyTextInput
-                                    min='0'
-                                    name='stock_minimo'
-                                    type='number'
-                                    label='Stock Minimo'
-                                    placeholder='0'
-                                    className="form-control"
-                                    disabled={!values.inventario}
-                                    value={values.stock_minimo !== undefined ? values.stock_minimo : ''}
-                                    onChange={getFieldProps('stock_minimo').onChange}
-                                    errors={(touched.stock_minimo && errors.stock_minimo) || ''}
-                                // {...getFieldProps('stock_minimo')}
-                                />
-                            </div>
-                            <div className="col-4">
-                                <MyTextInput
-                                    min='0'
-                                    name='stock_maximo'
-                                    type="number"
-                                    label="Stock Maximo"
-                                    placeholder='0'
-                                    className="form-control"
-                                    disabled={!values.inventario}
-                                    value={values.stock_maximo !== undefined ? values.stock_maximo : ''}
-                                    onChange={getFieldProps('stock_maximo').onChange}
-                                    errors={(touched.stock_maximo && errors.stock_maximo) || ''}
-                                // {...getFieldProps('stock_minimo')}
-                                />
-                            </div>
-                        </div>
+                        }
                         <div className="row">
                             <div className="col-6">
                                 <MySelect

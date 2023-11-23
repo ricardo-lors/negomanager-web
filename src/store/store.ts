@@ -10,12 +10,14 @@ import { provedorSlice } from './slices/provedor';
 import { uiSlice } from './slices/ui';
 import { usuarioSlice } from './slices/usuario';
 import { ventaSlice } from './slices/venta';
+import { sucursalSlice } from './slices/sucursal/sucursalSlice';
 
 export const store = configureStore({
     reducer: {
         counter: counterSlice.reducer,
-        negocio: negocioSlice.reducer,
         usuario: usuarioSlice.reducer,
+        negocio: negocioSlice.reducer,
+        sucursal: sucursalSlice.reducer,
         categoria: categoriaSlice.reducer,
         cliente: clienteSlice.reducer,
         producto: productoSlice.reducer,

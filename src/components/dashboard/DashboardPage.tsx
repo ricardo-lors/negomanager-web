@@ -9,6 +9,7 @@ import { Sidebar } from "../shared/Sidebar";
 import { AdministradorRouter } from "./pages/administrador/AdministradorRouter";
 import { SuperAdministrador } from "./pages/superadministrador/SuperAdministrador";
 import { Vendedor } from "./pages/vendedor/Vendedor";
+import { obtenerSucursales } from "../../store/slices/sucursal";
 
 export const DashboardPage = () => {
 
@@ -17,6 +18,7 @@ export const DashboardPage = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
+        (usuario?.roles.includes('administrador') || usuario?.roles.includes('vendedor')) && dispatch(obtenerSucursales({}));
         usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerCategorias(usuario?.negocio!.id));
         usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id));
         // usuario?.negocio && dispatch(obtenerClientes(usuario?.negocio!.id));
@@ -27,11 +29,12 @@ export const DashboardPage = () => {
     const { cargando: cargandoCategoria } = useSelector((state: RootState) => state.categoria);
     const { cargando: cargandoProvedor } = useSelector((state: RootState) => state.provedor);
     const { cargando: cargandoClientes } = useSelector((state: RootState) => state.cliente);
+    const { cargando: cargandoSucursales, sucursales } = useSelector((state: RootState) => state.sucursal);
 
     return (
         <>
             {
-                cargandoNegocio || cargandoCategoria || cargandoProvedor || cargandoClientes
+                cargandoNegocio || cargandoCategoria || cargandoProvedor || cargandoClientes || (cargandoSucursales)
                     ? <div className='d-flex justify-content-center align-items-center vh-100'>
                         <div className="spinner-border" role="status">
                             <span className="visually-hidden">Loading...</span>

@@ -8,7 +8,7 @@ import { MyTextInput } from "../../../shared/MyTextInput";
 import { NuevaSucursal, NuevoNegocio, Sucursal } from "../../../../interfaces";
 import { useAppDispatch } from "../../../../hooks";
 import { crearNegocio } from "../../../../store/slices/negocio/negocioThuncks";
-import { actualizarSucursal, crearSucursal, obtenerSucursales } from "../../../../store/slices/sucursal";
+import { actualizarSucursal, agregarSucursal, crearSucursal, obtenerSucursales } from "../../../../store/slices/sucursal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Tabla } from "../../../shared/Tabla";
 import { revalidarSesion } from "../../../../store/slices/usuario";
@@ -18,9 +18,9 @@ export const NegocioPage = () => {
     const dispatch = useAppDispatch();
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
-    const { negocio } = usuario!;
+    const { sucursales } = useSelector((state: RootState) => state.sucursal);
 
-    const [sucursales, setSucursales] = useState<Sucursal[]>([]);
+    const { negocio } = usuario!;
 
     const [sucursal, setSucursal] = useState<Sucursal>();
 
@@ -57,7 +57,8 @@ export const NegocioPage = () => {
         onSubmit: async (values) => {
             if (!sucursal) {
                 const nuevaSucursal = await crearSucursal({ ...values });
-                if (nuevaSucursal) setSucursales([nuevaSucursal, ...sucursales]);
+                if (nuevaSucursal) dispatch(agregarSucursal(nuevaSucursal));
+                // if (nuevaSucursal) setSucursales([nuevaSucursal, ...sucursales]);
 
             } else {
                 const sucursalActualizada = await actualizarSucursal(sucursal.id!, {
@@ -67,7 +68,8 @@ export const NegocioPage = () => {
                     telefono: values.telefono,
                     caja: sucursal.caja
                 });
-                if (sucursalActualizada) setSucursales([sucursalActualizada, ...sucursales.filter(sc => sc.id !== sucursalActualizada?.id)]);
+                if (sucursalActualizada) dispatch(agregarSucursal(sucursalActualizada));
+                // if (sucursalActualizada) setSucursales([sucursalActualizada, ...sucursales.filter(sc => sc.id !== sucursalActualizada?.id)]);
             }
 
             dispatch(revalidarSesion());
@@ -80,10 +82,7 @@ export const NegocioPage = () => {
     });
 
     useEffect(() => {
-        obtenerSucursales({
-
-        }).then(dt => setSucursales(dt));
-
+        dispatch(obtenerSucursales({}));
     }, []);
 
     const columnasSucursales = useMemo<ColumnDef<Sucursal>[]>(
@@ -162,7 +161,8 @@ export const NegocioPage = () => {
             <div>
                 <h2>Sucursales</h2>
             </div>
-            {!usuario?.sucursal && <div className="alert alert-danger" role="alert">
+            {sucursales.length === 0 && <div className="alert alert-danger" role="alert">
+                {!usuario?.negocio && <>Debe registrar primero su negocio<hr /></>}
                 Debe registrar al menos una sucursal
             </div>
             }
@@ -173,27 +173,31 @@ export const NegocioPage = () => {
                             label="Nombre de la sucursal"
                             placeholder="Nombre"
                             className="form-control"
+                            disabled={!usuario?.negocio}
                             {...getFieldPropsSucursales('nombre')}
                         />
                         <MyTextInput
                             label="Direccion"
                             placeholder=""
                             className="form-control"
+                            disabled={!usuario?.negocio}
                             {...getFieldPropsSucursales('direccion')}
                         />
                         <MyTextInput
                             label="Correo"
                             placeholder="correo@ejemplo.com"
                             className="form-control"
+                            disabled={!usuario?.negocio}
                             {...getFieldPropsSucursales('correo')}
                         />
                         <MyTextInput
                             label="Telefono"
                             placeholder=""
                             className="form-control"
+                            disabled={!usuario?.negocio}
                             {...getFieldPropsSucursales('telefono')}
                         />
-                        <button type="submit" className="btn btn-primary text-decoration-none">Guardar</button>
+                        <button type="submit" className="btn btn-primary text-decoration-none" disabled={!usuario?.negocio}>Guardar</button>
                     </form>
                 </div>
                 <div className="col">

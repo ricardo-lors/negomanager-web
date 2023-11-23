@@ -5,7 +5,7 @@ export { NegocioPage } from "./NegocioPage";
 export { ProvedoresPage } from "./ProvedoresPage";
 export { VentasPage } from "../vendedor/caja/VentasPage";
 
-export { AgregarModificarProductoPage } from "./AgregarModificarProductoPage";
+export { AgregarModificarProductoPage } from "./producto/AgregarModificarProductoPage";
 export { InventarioPage } from "./InventarioPage";
 
 

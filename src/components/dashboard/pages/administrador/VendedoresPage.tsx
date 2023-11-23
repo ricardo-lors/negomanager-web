@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { FormularioUsuario, Sucursal, Usuario } from "../../../../interfaces";
+import { FormularioUsuario, Usuario } from "../../../../interfaces";
 import * as Yup from 'yup';
 import { actualizarUsuario, buscarUsuarios, crearUsuario } from "../../../../store/slices/usuario";
 import { useFormik } from "formik";
@@ -9,16 +9,20 @@ import { obtenerSucursales } from "../../../../store/slices/sucursal";
 import { Tabla } from "../../../shared/Tabla";
 import { RootState } from "../../../../store";
 import { ColumnDef } from "@tanstack/react-table";
+import { useAppDispatch } from "../../../../hooks";
+
+import permisos from "../../../../resource/permisos.json";
 
 export const VendedoresPage = () => {
 
+    const dispatch = useAppDispatch();
+
     const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { sucursales } = useSelector((state: RootState) => state.sucursal);
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario>();
-
-    const [sucursales, setSucursales] = useState<Sucursal[]>();
 
     useEffect(() => {
         buscarUsuarios({
@@ -26,10 +30,10 @@ export const VendedoresPage = () => {
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
-        obtenerSucursales({}).then(sc => setSucursales(sc));
-    }, [usuario]);
+        dispatch(obtenerSucursales({}));
+    }, [dispatch, usuario]);
 
-    const { handleSubmit, values, errors, touched, getFieldProps, resetForm, setValues } = useFormik<FormularioUsuario>({
+    const { handleSubmit, getFieldProps, resetForm, setValues } = useFormik<FormularioUsuario>({
         initialValues: {
             nombre: '',
             correo: '',
@@ -37,6 +41,7 @@ export const VendedoresPage = () => {
             contrasena: '',
             contrasenaRepeat: '',
             sucursal: '',
+            permisos: [],
             roles: ['vendedor']
         },
         onSubmit: async (values) => {
@@ -49,6 +54,7 @@ export const VendedoresPage = () => {
                     telefono: values.telefono,
                     contrasena: values.contrasena,
                     sucursal: values.sucursal,
+                    permisos: values.permisos,
                     roles: values.roles
                 });
                 nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
@@ -59,6 +65,7 @@ export const VendedoresPage = () => {
                     telefono: values.telefono,
                     contrasena: values.contrasena,
                     sucursal: values.sucursal,
+                    permisos: values.permisos,
                     roles: values.roles
                 });
                 usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
@@ -95,7 +102,7 @@ export const VendedoresPage = () => {
             }, {
                 id: 'sucursal',
                 cell: info => info.row.original.sucursal?.nombre,
-                header: () => <span>Telefono</span>,
+                header: () => <span>Sucursal</span>,
             },
         ], [usuarios]
     );
@@ -142,6 +149,21 @@ export const VendedoresPage = () => {
                                 ))
                             }
                         </MySelect>
+
+                    }
+                    {
+                        usuario?.roles.includes('administrador') && <MySelect
+                            label="Permisos"
+                            className="form-control"
+                            multiple={true}
+                            {...getFieldProps('permisos')}
+                        >
+                            {
+                                permisos?.map(opt => (
+                                    <option key={opt} value={opt}>{opt}</option>
+                                ))
+                            }
+                        </MySelect>
                     }
                     <MyTextInput
                         label="Contraseña"
@@ -171,6 +193,7 @@ export const VendedoresPage = () => {
                         (us: Usuario) => {
                             if (us.id !== usuarioSeleccionado?.id) {
                                 setUsuarioSeleccionado(us);
+                                console.log(us)
                                 setValues({
                                     nombre: us.nombre,
                                     correo: us.correo,
@@ -178,6 +201,7 @@ export const VendedoresPage = () => {
                                     contrasena: '',
                                     contrasenaRepeat: '',
                                     sucursal: us.sucursal ? us.sucursal.id : '',
+                                    permisos: us.permisos,
                                     roles: ['vendedor']
                                 });
                             } else {
@@ -189,6 +213,7 @@ export const VendedoresPage = () => {
                                     contrasena: '',
                                     contrasenaRepeat: '',
                                     sucursal: '',
+                                    permisos: [],
                                     roles: ['vendedor']
                                 });
                             }

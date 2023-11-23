@@ -10,6 +10,7 @@ interface UsuarioBasico {
     telefono?: string;
     activo?: boolean;
     roles: string[];
+    permisos?: string[];
     attributos?: Attributos;
     creado?: Date;
     actualizado?: Date;

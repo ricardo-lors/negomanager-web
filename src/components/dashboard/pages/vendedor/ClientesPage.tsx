@@ -9,8 +9,11 @@ import { obtenerSucursales } from "../../../../store/slices/sucursal";
 import { Tabla } from "../../../shared/Tabla";
 import { RootState } from "../../../../store";
 import { ColumnDef } from "@tanstack/react-table";
+import { useAppDispatch } from "../../../../hooks";
 
 export const ClientesPage = () => {
+
+    const dispatch = useAppDispatch();
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
 
@@ -18,15 +21,13 @@ export const ClientesPage = () => {
 
     const [usuarioSeleccionado, setUsuarioSeleccionado] = useState<Usuario>();
 
-    const [sucursales, setSucursales] = useState<Sucursal[]>();
-
     useEffect(() => {
         buscarUsuarios({
             roles: ['{cliente}']
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
-        obtenerSucursales({}).then(sc => setSucursales(sc));
+        dispatch(obtenerSucursales({}));
     }, [usuario]);
 
     const { handleSubmit, values, errors, touched, getFieldProps, resetForm, setValues } = useFormik<FormularioUsuario>({

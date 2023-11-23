@@ -8,10 +8,10 @@
     },
     {
         "id": 2,
-        "ruta": "/dashboard/vendedor/inventario",
-        "nombre": "Inventario",
+        "ruta": "/dashboard/vendedor/producto",
+        "nombre": "Productos",
         "replace": true,
-        "icono": "bi-clipboard"
+        "icono": "bi-upc-scan"
     },
     {
         "id": 4,

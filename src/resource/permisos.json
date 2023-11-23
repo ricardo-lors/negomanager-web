@@ -1,0 +1,9 @@
+[
+    "crear_producto",
+    "editar_producto",
+    "editar_precios",
+    "modificar_mayoreo",
+    "modificar_inventario",
+    "cancelar_ventas",
+    "crear_promociones"
+]
