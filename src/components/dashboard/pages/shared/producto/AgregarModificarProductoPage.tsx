@@ -5,7 +5,6 @@ import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-
 import { FormularioProducto } from '../../../../../interfaces';
 import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../../store/slices/producto';
 import { useAppDispatch } from '../../../../../hooks';
@@ -29,12 +28,16 @@ export const AgregarModificarProductoPage = () => {
     useEffect(() => {
 
         if (usuario?.roles.includes('vendedor')) {
-            if (!usuario.permisos?.includes('crear_producto') || !usuario.permisos?.includes('editar_producto'))
-                return navigate(`/dashboard/${usuario.roles[0]}/producto`, { replace: true });
+            if (id) {
+                if (!usuario.permisos?.includes('editar_producto'))
+                    return navigate(`/dashboard/${usuario.roles[0]}/producto`, { replace: true });
+            } else {
+                if (!usuario.permisos?.includes('crear_producto'))
+                    return navigate(`/dashboard/${usuario.roles[0]}/producto`, { replace: true });
+            }
         }
 
         id && obtenerProducto(id).then((pd) => {
-            console.log(pd)
             setProducto({
                 ...pd,
                 titulo: pd!.titulo,
@@ -44,12 +47,12 @@ export const AgregarModificarProductoPage = () => {
                 ganancia: pd!.ganancia,
                 precio: pd!.precio,
                 mayoreo: pd!.mayoreo,
-                precio_mayoreo: pd?.precio_mayoreo,
-                cantidad_mayoreo: pd?.cantidad_mayoreo,
+                precio_mayoreo: pd?.precio_mayoreo ? pd.precio_mayoreo : undefined,
+                cantidad_mayoreo: pd?.cantidad_mayoreo ? pd.cantidad_mayoreo : undefined,
                 inventario: pd!.inventario,
-                stock: pd?.stock,
-                stock_minimo: pd?.stock_minimo,
-                stock_maximo: pd?.stock_maximo,
+                stock: pd?.stock ? pd.stock : undefined,
+                stock_minimo: pd?.stock_minimo ? pd.stock_minimo : undefined,
+                stock_maximo: pd?.stock_maximo ? pd.stock_maximo : undefined,
                 activo: pd!.activo,
                 provedor: pd?.provedor ? pd!.provedor.id! : "",
                 categorias: pd!.categorias,
@@ -96,7 +99,6 @@ export const AgregarModificarProductoPage = () => {
             }
 
             if (!producto) {
-                console.log('Hice esta accion');
                 await dispatch(crearProducto({
                     titulo: values.titulo,
                     codigo: values.codigo,
@@ -117,25 +119,6 @@ export const AgregarModificarProductoPage = () => {
                     imagenes
                 }, navigate, usuario!.roles[0]));
             } else {
-                console.log({
-                    id: producto.id,
-                    codigo: values.codigo,
-                    descripcion: values.descripcion,
-                    costo: values.costo,
-                    ganancia: values.ganancia,
-                    precio: values.precio,
-                    mayoreo: values.mayoreo,
-                    precio_mayoreo: values.precio_mayoreo,
-                    cantidad_mayoreo: values.cantidad_mayoreo,
-                    inventario: values.inventario,
-                    stock: values.stock,
-                    stock_minimo: values.stock_minimo,
-                    stock_maximo: values.stock_maximo,
-                    activo: values.activo,
-                    categorias: values.categorias,
-                    provedor: values.provedor,
-                    imagenes
-                })
                 await dispatch(actualizarProducto({
                     id: producto.id,
                     codigo: values.codigo,
@@ -181,15 +164,6 @@ export const AgregarModificarProductoPage = () => {
 
     return (
         <div>
-            {/* <button
-                className="btn btn-primary me-1"
-                data-tooltip-id="btn-agnore-tooltip"
-                data-tooltip-content="Agregar producto no registrado"
-                data-tooltip-place="right-end"
-                onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarProductoNoRegistrado: true }))} >
-                <i className="bi bi-bag-plus-fill"></i> Agregar
-            </button>
-            <Tooltip id="btn-agnore-tooltip" /> */}
             <div className='d-flex justify-content-between mb-1 mt-1'>
                 <div>
                     <Link
@@ -204,84 +178,75 @@ export const AgregarModificarProductoPage = () => {
                 <div></div>
             </div>
 
-
             <div className='card p-3 mb-2'>
-
                 <div className="row">
                     <form className="container mt-2" noValidate onSubmit={handleSubmit}>
                         <div className="row">
                             <div className="col">
                                 <MyTextInput
+                                    {...getFieldProps('codigo')}
+                                    value={values.codigo !== undefined ? values.codigo : ''}
                                     label="Codigo"
                                     className="form-control"
-                                    {...getFieldProps('codigo')}
                                     errors={errors.codigo}
                                 />
                             </div>
                         </div>
                         <MyTextInput
+                            {...getFieldProps('titulo')}
                             label="Titulo (Descripción breve del producto – aparece en el ticket)"
                             className="form-control"
-                            {...getFieldProps('titulo')}
+                            value={values.titulo !== undefined ? values.titulo : ''}
                         />
-                        {/* <MyTextInput
-                            label="Descripción detallada"
-                            className="form-control"
-                            {...getFieldProps('descripcion')}
-                        /> */}
                         <div className="mb-2">
                             <label className='form-label' htmlFor=''>Descripción detallada</label>
                             <textarea
+                                {...getFieldProps('descripcion')}
                                 className="form-control"
-                                // value={values.descripcion}
+                                value={values.descripcion !== undefined ? values.descripcion : ''}
                                 cols={10}
                                 rows={4}
-                                {...getFieldProps('descripcion')} />
+                            />
                             {/* <span className="text-danger">{errors}</span> */}
                         </div>
-
 
                         <div className="row">
                             <div className="col-4">
                                 <MyTextInput
+                                    {...getFieldProps('costo')}
                                     min='0'
-                                    name="costo"
                                     type="number"
                                     label="Costo (Compra)"
                                     placeholder='$0.00'
                                     className="form-control"
-                                    value={values.costo === 0 ? '' : values.costo}
-                                    onChange={getFieldProps('costo').onChange}
+                                    value={(values.costo !== 0 || values.costo !== undefined) ? values.costo : ''}
                                     errors={(touched.costo && errors.costo) || ''}
-                                // {...getFieldProps('costo')}
+
                                 />
                             </div>
                             <div className="col-4">
                                 <MyTextInput
+                                    {...getFieldProps('ganancia')}
                                     min='0'
-                                    name="ganancia"
                                     type="number"
                                     label="Porcentaje %"
                                     placeholder='$0.00'
                                     className="form-control"
-                                    value={values.ganancia === 0 ? '' : values.ganancia}
-                                    onChange={getFieldProps('ganancia').onChange}
+                                    value={(values.ganancia !== 0 || values.ganancia !== undefined) ? values.ganancia : ''}
                                     errors={(touched.ganancia && errors.ganancia) || ''}
-                                // {...getFieldProps('costo')}
                                 />
                             </div>
                             <div className="col-4">
                                 <MyTextInput
+                                    {...getFieldProps('precio')}
                                     min='0'
-                                    name="precio"
                                     type="number"
                                     label="Precio (Venta)"
                                     placeholder='$0.00'
                                     className="form-control"
-                                    value={values.precio === 0 ? '' : values.precio}
-                                    onChange={getFieldProps('precio').onChange}
+                                    value={(values.precio !== 0 || values.precio !== undefined) ? values.precio : ''}
                                     errors={(touched.precio && errors.precio) || ''}
-                                // {...getFieldProps('precio')}
+                                // 
                                 />
                             </div>
                         </div>
@@ -291,38 +256,33 @@ export const AgregarModificarProductoPage = () => {
                                 <MyCheckbox
                                     checked={values.mayoreo!}
                                     label="Mayoreo"
-                                    // onChange={(e) => { }}
                                     {...getFieldProps('mayoreo')}
                                 />
                             </div>
                             <div className="col-6">
                                 <MyTextInput
+                                    {...getFieldProps('cantidad_mayoreo')}
                                     min='0'
-                                    name='cantidad_mayoreo'
                                     type='number'
                                     label='Cantidad'
                                     placeholder='0'
                                     className="form-control"
                                     disabled={!values.mayoreo}
-                                    value={values.cantidad_mayoreo === undefined ? '' : values.cantidad_mayoreo}
-                                    onChange={getFieldProps('cantidad_mayoreo').onChange}
+                                    value={values.cantidad_mayoreo}
                                     errors={(touched.cantidad_mayoreo && errors.cantidad_mayoreo) || ''}
-                                // {...getFieldProps('cantidad_mayoreo')}
                                 />
                             </div>
                             <div className="col-6">
                                 <MyTextInput
+                                    {...getFieldProps('precio_mayoreo')}
                                     min='0'
-                                    name='precio_mayoreo'
                                     type="number"
                                     label="Precio (Venta Mayoreo)"
                                     placeholder='0'
                                     className="form-control"
                                     disabled={!values.mayoreo}
-                                    value={values.precio_mayoreo === undefined ? '' : values.precio_mayoreo}
-                                    onChange={getFieldProps('precio_mayoreo').onChange}
+                                    value={(values.precio_mayoreo !== null || values.precio_mayoreo !== undefined) ? values.precio_mayoreo : ''}
                                     errors={(touched.precio_mayoreo && errors.precio_mayoreo) || ''}
-                                // {...getFieldProps('pr ecio_mayoreo')}
                                 />
                             </div>
                         </div>
@@ -332,53 +292,46 @@ export const AgregarModificarProductoPage = () => {
                                     <MyCheckbox
                                         checked={values.inventario!}
                                         label="Inventario"
-                                        // onChange={(e) => { }}
                                         {...getFieldProps('inventario')}
                                     />
                                 </div>
                                 <div className="col-4">
                                     <MyTextInput
+                                        {...getFieldProps('stock')}
                                         min='0'
-                                        name='stock'
                                         type="number"
                                         label="Stock"
                                         placeholder='0'
                                         className="form-control"
                                         disabled={!values.inventario}
                                         value={values.stock !== undefined ? values.stock : ''}
-                                        onChange={getFieldProps('stock').onChange}
                                         errors={(touched.stock && errors.stock) || ''}
-                                    // {...getFieldProps('stock')}
                                     />
                                 </div>
                                 <div className="col-4">
                                     <MyTextInput
+                                        {...getFieldProps('stock_minimo')}
                                         min='0'
-                                        name='stock_minimo'
                                         type='number'
                                         label='Stock Minimo'
                                         placeholder='0'
                                         className="form-control"
                                         disabled={!values.inventario}
                                         value={values.stock_minimo !== undefined ? values.stock_minimo : ''}
-                                        onChange={getFieldProps('stock_minimo').onChange}
                                         errors={(touched.stock_minimo && errors.stock_minimo) || ''}
-                                    // {...getFieldProps('stock_minimo')}
                                     />
                                 </div>
                                 <div className="col-4">
                                     <MyTextInput
+                                        {...getFieldProps('stock_maximo')}
                                         min='0'
-                                        name='stock_maximo'
                                         type="number"
                                         label="Stock Maximo"
                                         placeholder='0'
                                         className="form-control"
                                         disabled={!values.inventario}
                                         value={values.stock_maximo !== undefined ? values.stock_maximo : ''}
-                                        onChange={getFieldProps('stock_maximo').onChange}
                                         errors={(touched.stock_maximo && errors.stock_maximo) || ''}
-                                    // {...getFieldProps('stock_minimo')}
                                     />
                                 </div>
                             </div>

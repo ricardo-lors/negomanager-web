@@ -37,6 +37,10 @@ export const ventaSlice = createSlice({
                 state.total = sumaTotal(newDetallesList);
             }
         },
+        quitarProducto: (state, actions: PayloadAction<string>) => {
+            state.detalles = state.detalles.filter(dt => dt.producto.id !== actions.payload);
+            state.total = sumaTotal(state.detalles);
+        },
         agregarProductoNoRegistrado: (state, actions: PayloadAction<DetallesVenta>) => {
             const newDetallesList = [...state.detalles, actions.payload];
             state.detalles = newDetallesList;
@@ -61,6 +65,7 @@ export const ventaSlice = createSlice({
 // Action creators are generated for each case reducer function
 export const {
     agregarProducto,
+    quitarProducto,
     cambiarCantidad,
     agregarProductoNoRegistrado,
     asignarCliente,

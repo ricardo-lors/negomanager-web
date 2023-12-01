@@ -100,17 +100,17 @@ export const ProductoPage = () => {
                         <p className="card-text position-absolute bottom-0 end-0 m-1" >${prod.precio}  -  Stock: {prod.stock} </p>
                       </div>
                       <div className="card-footer p-1">
-                        <Link
+                        {/* <Link
                           to={`/dashboard/${usuario?.roles[0]}/producto/${prod.id}`}
                           className="btn btn-primary "
                           replace
-                        ><i className="bi bi-pencil-square"></i></Link>
+                        ><i className="bi bi-pencil-square"></i></Link> */}
                         {
-                          usuario?.roles.includes('administrador') && <Link
-                            to={`/dashboard/${usuario?.roles[0]}/producto/inventario`}
+                          (usuario?.roles.includes('administrador') || usuario?.permisos?.includes('editar_producto')) && <Link
+                            to={`/dashboard/${usuario?.roles[0]}/producto/${prod.id}`}
                             className="btn btn-primary "
                             replace
-                          > Modificar Inventario </Link>
+                          > <i className="bi bi-pencil-square"></i></Link>
                         }
                       </div>
                     </div>

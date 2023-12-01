@@ -8,7 +8,7 @@ import { obtenerProductoCodigo } from "../../../../store/slices/producto/product
 
 import * as Yup from 'yup';
 import { useFormik } from "formik";
-import { agregarProducto, cambiarCantidad, crearVenta, desasignarCliente, resetear } from "../../../../store/slices/venta";
+import { agregarProducto, cambiarCantidad, crearVenta, desasignarCliente, quitarProducto, resetear } from "../../../../store/slices/venta";
 import { Modal, MyButtonTooltip, Ticket } from "../../../shared";
 import { ModalAgregarProductoNoRegistrado } from "./modals/ModalAgregarProductoNoRegistradoProps";
 import { ModalAsignarCliente } from "./modals/ModalAsignarCliente";
@@ -140,6 +140,7 @@ export const HomePage = () => {
           {/* style={{height: 300}} */}
           <thead>
             <tr>
+              <th scope="col"></th>
               <th scope="col">Codigo</th>
               <th scope="col">Descripcion</th>
               <th scope="col">Precio</th>
@@ -150,6 +151,7 @@ export const HomePage = () => {
           <tbody>
             {
               detalles.map((st, i) => <tr key={st.producto.id}>
+                <th onClick={() => dispatch(quitarProducto(st.producto.id))} > X </th>
                 <th>{st.producto.codigo}</th>
                 <th>{st.producto.titulo}</th>
                 <th>{st.producto.precio}</th>
@@ -162,7 +164,7 @@ export const HomePage = () => {
       </div>
       <div className="row text-end">
         <h2 className="text-end" >Total: {total}</h2>
-        <h2 className="text-end" >Total: {redondearNumero(total)}</h2>
+        {/* <h2 className="text-end" >Total: {redondearNumero(total)}</h2> */}
       </div>
       <div className="row">
         <div className="col-md-6">
