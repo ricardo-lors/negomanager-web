@@ -10,7 +10,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import { NavLink } from 'react-router-dom';
 
-
 export const VentasPage = () => {
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
@@ -23,23 +22,15 @@ export const VentasPage = () => {
 
     const columnas = useMemo<ColumnDef<Movimiento>[]>(
         () => [
-            //     {
-            //     accessorKey: 'cliente',
-            //     header: () => <span>Cliente</span>,
-            //     cell: info => <span> {info.row.original.venta.cliente ? info.row.original.venta.cliente.nombre : 'Publico General'} </span>,
-            //     // footer: props => props.column.id,
-            // },
             {
                 accessorKey: 'folio',
                 cell: info => info.getValue(),
                 header: () => <span>Folio</span>,
-                // footer: props => props.column.id,
             },
             {
                 accessorKey: 'tipo',
                 cell: info => info.getValue(),
                 header: () => <span>Tipo</span>,
-                // footer: props => props.column.id,
             }, {
                 accessorKey: 'fecha',
                 cell: info => moment(info.row.getValue('fecha')).format('YYYY-MM-DD, h:mm:ss a'),
@@ -59,7 +50,7 @@ export const VentasPage = () => {
             }, {
                 accessorKey: 'venta',
                 header: () => <span>Subtotal</span>,
-                cell: info => <span>{info.row.original.venta.total}</span>,
+                cell: info => <span>{info.row.original.venta?.total}</span>,
             }, {
                 accessorKey: 'total',
                 cell: info => info.getValue(),
@@ -79,7 +70,6 @@ export const VentasPage = () => {
 
     return (
         <div>
-            {/* <h2 className="text-center">Movimientos</h2> */}
             <div className='row border-bottom'>
                 <div className='col-lg-3 col-md-3 col-xs-12 border-end mt-2' >
                     <div className='card h-100 mb-2'>
@@ -98,7 +88,6 @@ export const VentasPage = () => {
                             onClickFila={
                                 (mov) => {
                                     console.log(mov)
-                                    // <NavLink to={''} />
                                 }
                             }
                         />

@@ -8,15 +8,16 @@
 import { Usuario } from "./Usuario.interface";
 
 export interface Movimiento {
-    id: string;
-    folio: number;
+    id?: string;
+    folio?: number;
     tipo: string;
-    fecha: Date;
-    descuento: boolean;
-    razon_descuento: null;
-    cantidad: number;
-    total: string;
-    venta: Venta;
+    fecha?: Date;
+    descuento?: boolean;
+    razon_descuento?: null;
+    cantidad?: number;
+    total: number;
+    cancelado?: boolean;
+    venta?: Venta;
 }
 
 export interface MovimientoParams {
@@ -32,6 +33,8 @@ export interface MovimientoParams {
     venta?: string;
 
     vendedor?: string;
+
+    cancelado?: boolean;
 
 }
 

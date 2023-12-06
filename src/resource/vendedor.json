@@ -25,20 +25,20 @@
         "ruta": "/dashboard/vendedor/provedores",
         "nombre": "Provedores",
         "replace": true,
-        "icono": "bi-bag-plus"
+        "icono": "bi-box-seam-fill"
     },
     {
         "id": 6,
         "ruta": "/dashboard/vendedor/categorias",
         "nombre": "Categorias",
         "replace": true,
-        "icono": "bi-bag-plus"
+        "icono": "bi-tag"
     },
     {
         "id": 7,
         "ruta": "/dashboard/vendedor/caja",
-        "nombre": "Ventas",
+        "nombre": "Caja",
         "replace": true,
-        "icono": "bi-bag-plus"
+        "icono": "bi-wallet2"
     }
 ]

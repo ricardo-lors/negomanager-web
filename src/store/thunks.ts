@@ -1,3 +1,9 @@
 
 
-export const redondearNumero = (numero: number): number => (Math.round(numero + Number.EPSILON) * 100) / 100;
+export const formatearNumero = (numero?: number): string => {
+    return numero ? Intl.NumberFormat('ES-MX', {
+        style: 'currency',
+        currency: 'MXN',
+    }).format(numero).toString()
+    : ''
+};

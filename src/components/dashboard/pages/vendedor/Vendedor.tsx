@@ -1,7 +1,7 @@
 
 import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './HomePage'
-import { InventarioPage, AgregarModificarProductoPage, ClientesPage, ProvedoresPage, CategoriasPage, } from '../shared';
+import { AgregarModificarProductoPage, ClientesPage, ProvedoresPage, CategoriasPage, } from '../shared';
 import { Caja } from './caja/Caja';
 import { ProductoRouter } from '../shared/producto/ProductoRouter';
 

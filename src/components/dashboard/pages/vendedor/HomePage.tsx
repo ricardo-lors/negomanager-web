@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useReactToPrint } from "react-to-print";
 import { useAppDispatch } from "../../../../hooks";
 import { NuevaVenta } from "../../../../interfaces";
-import { RootState, redondearNumero } from "../../../../store";
+import { RootState, formatearNumero } from "../../../../store";
 import { obtenerProductoCodigo } from "../../../../store/slices/producto/productoThuncks";
 
 import * as Yup from 'yup';
@@ -13,6 +13,10 @@ import { Modal, MyButtonTooltip, Ticket } from "../../../shared";
 import { ModalAgregarProductoNoRegistrado } from "./modals/ModalAgregarProductoNoRegistradoProps";
 import { ModalAsignarCliente } from "./modals/ModalAsignarCliente";
 import { Tooltip } from 'react-tooltip'
+import { ModalEntradaSalidaDinero } from "./modals/ModalEntradaSalidaDinero";
+import { crearMovimiento } from "../../../../store/slices/movimiento";
+import { revalidarSesion } from "../../../../store/slices/usuario";
+import { locales } from "moment";
 
 export const HomePage = () => {
 
@@ -26,6 +30,8 @@ export const HomePage = () => {
   const [openModals, setOpenModals] = useState({
     modalAgregarProductoNoRegistrado: false,
     modalAgregarCliente: false,
+    modalEntradaDinero: false,
+    modalSalidaDinero: false,
   });
 
   const handleImprimirTicket = useReactToPrint({
@@ -67,6 +73,7 @@ export const HomePage = () => {
         handleImprimirTicket();
         dispatch(resetear());
       }
+      dispatch(revalidarSesion());
     },
     validationSchema: Yup.object({
       pago: Yup.string().required('EL dato es requerido'),
@@ -113,7 +120,7 @@ export const HomePage = () => {
           </button>
           <Tooltip id="btn-agnore-tooltip" />
           <button
-            className="btn btn-primary"
+            className="btn btn-primary me-1"
             data-tooltip-id="btn-search-tooltip"
             data-tooltip-content="Buscar Producto"
             data-tooltip-place="right-end"
@@ -121,12 +128,29 @@ export const HomePage = () => {
             <i className="bi bi-search"></i> Buscar
           </button>
           <Tooltip id="btn-search-tooltip" />
-          {/*  */}
+          <button
+            className="btn btn-primary me-1"
+            data-tooltip-id="btn-entrada-tooltip"
+            data-tooltip-content="Entrada de dinero"
+            data-tooltip-place="right-end"
+            onClick={() => setOpenModals(prev => ({ ...prev, modalEntradaDinero: true }))} >
+            <i className="bi bi-cash-coin"></i> Entrada
+          </button>
+          <Tooltip id="btn-entrada-tooltip" />
+          <button
+            className="btn btn-primary me-1"
+            data-tooltip-id="btn-salida-tooltip"
+            data-tooltip-content="Salida de dinero"
+            data-tooltip-place="right-end"
+            onClick={() => setOpenModals(prev => ({ ...prev, modalSalidaDinero: true }))} >
+            <i className="bi bi-cash-coin"></i> Salida
+          </button>
+          <Tooltip id="btn-salida-tooltip" />
           {/* <p className="btn">{usuario?.attributos?.caja}</p> */}
         </div>
-        <div className="col text-end">
-          <h3>${usuario?.attributos?.caja ? redondearNumero(usuario?.attributos?.caja) : '0.0'}</h3>
-        </div>
+        {/* <div className="col text-end">
+          <h3>{usuario?.attributos?.caja ? formatearNumero(usuario?.attributos?.caja) : '0.0'}</h3>
+        </div> */}
       </div>
 
       <form className="" noValidate onSubmit={handleSubmitSearch}>
@@ -154,17 +178,16 @@ export const HomePage = () => {
                 <th onClick={() => dispatch(quitarProducto(st.producto.id))} > X </th>
                 <th>{st.producto.codigo}</th>
                 <th>{st.producto.titulo}</th>
-                <th>{st.producto.precio}</th>
+                <th>{formatearNumero(st.producto.precio)}</th>
                 <th><input className="form-control" onFocus={onFocus} onChange={(e) => agregarPorTabla(e, i)} type="number" value={st.cantidad} /></th>
-                <th>{st.total}</th>
+                <th>{formatearNumero(st.total)}</th>
               </tr>)
             }
           </tbody>
         </table>
       </div>
       <div className="row text-end">
-        <h2 className="text-end" >Total: {total}</h2>
-        {/* <h2 className="text-end" >Total: {redondearNumero(total)}</h2> */}
+        <h2 className="text-end" >Total: {total ? formatearNumero(total) : '$0.00'}</h2>
       </div>
       <div className="row">
         <div className="col-md-6">
@@ -212,6 +235,34 @@ export const HomePage = () => {
         onRequestClose={() => setOpenModals(prev => ({ ...prev, modalAgregarCliente: false }))}
         titulo={'Asignar un cliente'}
       />
+      <Modal
+        isOpen={openModals.modalEntradaDinero}
+        children={<ModalEntradaSalidaDinero onSubmit={async (values) => {
+          await crearMovimiento({
+            tipo: 'Entrada',
+            total: +values.total
+          });
+          setOpenModals(prev => ({ ...prev, modalEntradaDinero: false }));
+          dispatch(revalidarSesion());
+        }} />}
+        onRequestClose={() => setOpenModals(prev => ({ ...prev, modalEntradaDinero: false }))}
+        titulo={'Entrada de dinero'}
+      />
+
+      <Modal
+        isOpen={openModals.modalSalidaDinero}
+        children={<ModalEntradaSalidaDinero onSubmit={async (values) => {
+          await crearMovimiento({
+            tipo: 'Salida',
+            total: +(-values.total)
+          });
+          setOpenModals(prev => ({ ...prev, modalSalidaDinero: false }));
+          dispatch(revalidarSesion());
+        }} />}
+        onRequestClose={() => setOpenModals(prev => ({ ...prev, modalSalidaDinero: false }))}
+        titulo={'Salida de dinero'}
+      />
+
     </div>
   )
 }

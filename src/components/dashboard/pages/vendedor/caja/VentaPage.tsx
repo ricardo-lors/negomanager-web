@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { obtenerVentaId } from '../../../../../store/slices/venta';
+import { cancelarVenta, obtenerVentaId } from '../../../../../store/slices/venta';
 import { DetallesVenta, Venta } from '../../../../../interfaces';
 import { Tabla } from '../../../../shared/Tabla';
 import moment from 'moment';
@@ -70,7 +70,7 @@ export const VentaPage = () => {
                         </div>
 
                         <div className='d-flex justify-content-between'>
-                            <button className='btn btn-primary'>Cancelar Venta</button>
+                            <button className='btn btn-primary' onClick={() => cancelarVenta(venta.id)} >Cancelar Venta</button>
                             <h5 className=''>{moment(venta?.fecha).format('YYYY-MM-DD, h:mm a')}</h5>
                         </div>
 

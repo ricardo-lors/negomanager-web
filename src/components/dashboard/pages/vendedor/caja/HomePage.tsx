@@ -7,7 +7,7 @@ import { Tabla } from '../../../../shared/Tabla';
 import { Movimiento } from '../../../../../interfaces';
 import moment from 'moment';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../store';
+import { RootState, formatearNumero } from '../../../../../store';
 import { NavLink, useNavigate } from 'react-router-dom';
 
 export const HomePage = () => {
@@ -19,73 +19,71 @@ export const HomePage = () => {
 
     useEffect(() => {
         obtenerMovimientos({
+            // cancelado: false
         }).then(data => setMovimientos(data));
     }, []);
 
     const columnas = useMemo<ColumnDef<Movimiento>[]>(
         () => [
-        //     {
-        //     accessorKey: 'cliente',
-        //     header: () => <span>Cliente</span>,
-        //     cell: info => <span> {info.row.original.venta.cliente ? info.row.original.venta.cliente.nombre : 'Publico General'} </span>,
-        //     // footer: props => props.column.id,
-        // },
-        {
-            accessorKey: 'folio',
-            cell: info => info.getValue(),
-            header: () => <span>Folio</span>,
-            // footer: props => props.column.id,
-        },
-        {
-            accessorKey: 'tipo',
-            cell: info => info.getValue(),
-            header: () => <span>Tipo</span>,
-            // footer: props => props.column.id,
-        }, {
-            accessorKey: 'fecha',
-            cell: info => moment(info.row.getValue('fecha')).format('YYYY-MM-DD, h:mm:ss a'),
-            header: () => <span>Fecha</span>,
-        }, {
-            accessorKey: 'descuento',
-            header: () => <span>Descuento</span>,
-            cell: info => <span>{info.getValue() ? 'Si' : 'No'}</span>,
-        }, {
-            accessorKey: 'razon_descuento',
-            header: () => <span>Razon</span>,
-            cell: info => info.getValue(),
-        }, {
-            accessorKey: 'cantidad',
-            header: () => <span>Cantidad</span>,
-            cell: info => info.getValue(),
-        }, {
-            accessorKey: 'venta',
-            header: () => <span>Subtotal</span>,
-            cell: info => <span>{info.row.original.venta.total}</span>,
-        }, {
-            accessorKey: 'total',
-            cell: info => info.getValue(),
-            header: () => <span>Total</span>,
-            footer: () => {
-                if (movimientos.length > 0) {
-                    let suma = 0;
-                    movimientos.forEach(mov => {
-                        suma += +(mov.total)
-                    });
-                    return `Total: ${suma}`;
+            {
+                accessorKey: 'folio',
+                cell: info => info.getValue(),
+                header: () => <span>Folio</span>,
+            },
+            {
+                accessorKey: 'cancelado',
+                cell: info => <>{info.row.original.cancelado ? 'SI' : 'NO'}</>,
+                header: () => <span>Cancelada</span>,
+            },
+            {
+                accessorKey: 'tipo',
+                cell: info => info.getValue(),
+                header: () => <span>Tipo</span>,
+            }, {
+                accessorKey: 'fecha',
+                cell: info => moment(info.row.getValue('fecha')).format('YYYY-MM-DD, h:mm:ss a'),
+                header: () => <span>Fecha</span>,
+            }, {
+                accessorKey: 'descuento',
+                header: () => <span>Descuento</span>,
+                cell: info => <span>{info.getValue() ? 'Si' : 'No'}</span>,
+            }, {
+                accessorKey: 'razon_descuento',
+                header: () => <span>Razon</span>,
+                cell: info => info.getValue(),
+            }, {
+                accessorKey: 'cantidad',
+                header: () => <span>Cantidad</span>,
+                cell: info => info.getValue(),
+            }, {
+                accessorKey: 'venta',
+                header: () => <span>Subtotal</span>,
+                cell: info => <span>{formatearNumero(info.row.original.venta?.total)}</span>,
+            }, {
+                accessorKey: 'total',
+                cell: info => <span>{formatearNumero(info.row.original.total)}</span>,
+                header: () => <span>Total</span>,
+                footer: () => {
+                    if (movimientos.length > 0) {
+                        let suma = 0;
+                        movimientos.forEach(mov => {
+                            suma += +(mov.total)
+                        });
+                        return `Total: ${formatearNumero(suma)}`;
+                    }
                 }
-            }
-        },
+            },
         ], [movimientos]
     );
 
     return (
         <div>
-            {/* <h2 className="text-center">Movimientos</h2> */}
             <div className='row border-bottom'>
                 <div className='col-lg-3 col-md-3 col-xs-12 border-end mt-2' >
                     <div className='card h-100 mb-2'>
                         <div className='card-header'>
-                            <h2 className='text-center'>${usuario?.attributos?.caja}</h2>
+                            {/* {usuario?.attributos?.caja} */}
+                            <h2 className='text-center'> {usuario?.attributos?.caja ? formatearNumero(usuario.attributos.caja) : '$0.00'} </h2>
                         </div>
                         <div className='card-body'>
 
@@ -100,8 +98,28 @@ export const HomePage = () => {
                             columns={columnas}
                             verFooter={true}
                             onClickFila={
-                                (mov) => {
-                                    navigate(`/dashboard/vendedor/caja/venta/${mov.venta.id}`)
+                                (mov: Movimiento) => {
+                                    switch (mov.tipo) {
+                                        case 'Venta':
+                                            navigate(`/dashboard/vendedor/caja/venta/${mov.venta?.id}`)
+                                            break;
+                                        case 'Entrada':
+                                            navigate(`/dashboard/vendedor/caja/movimiento`, {
+                                                state: { ...mov }
+                                            })
+                                            break;
+                                        case 'Salida':
+                                            navigate(`/dashboard/vendedor/caja/movimiento`, {
+                                                state: { ...mov }
+                                            })
+                                            break;
+                                        default:
+                                            console.log(mov)
+                                            break;
+                                    }
+                                    console.log(mov);
+
+                                    // navigate(`/dashboard/vendedor/caja/venta/${mov.venta.id}`)
                                     // <NavLink to={''} />
                                     //                 <Link
                                     //     to={`/dashboard/${usuario?.roles[0]}/inventario/producto`}

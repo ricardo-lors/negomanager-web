@@ -3,6 +3,7 @@ import { NuevaVenta, Venta, VentaConvert } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { getMeesageError } from "../../errors/errors";
+import { AxiosError } from "axios";
 // import { setVentas, startGetVentas } from "./ventaSlice";
 
 export const obtenerVentaNegocio = (negocioid: string) => {
@@ -59,6 +60,30 @@ export const crearVenta = async (venta: NuevaVenta): Promise<Boolean> => {
 }
 
 
+export const cancelarVenta = async (id: string) => {
+    try {
+
+        Swal.fire('Cancelando movimiento');
+        Swal.showLoading();
+        const { status, data } = await servicesApiToken(`/ventas/${id}`, { method: 'DELETE' });
+        console.log(status);
+        console.log(data);
+        Swal.close();
+        return data;
+    } catch (e) {
+        console.log(e)
+        if (e instanceof AxiosError) {
+            // ✅ TypeScript knows err is Error
+            if (e.code === "ERR_NETWORK") return Swal.fire('Error', `Error de red, Verifique su conexion`, 'error');
+
+            Swal.fire('Error', `${e.response?.data.message}`, 'error');
+        } else {
+            console.log('Unexpected error', e);
+        }
+    }
+
+
+}
 //Parte de creacion de ventas
 
 
