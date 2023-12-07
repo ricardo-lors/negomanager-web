@@ -145,7 +145,11 @@ export const AgregarModificarProductoPage = () => {
         },
         validationSchema: Yup.object({
             codigo: Yup.string().required('Requerido'),
-            cantidad_mayoreo: Yup.number().when('mayoreo', { is: true, then: Yup.number().optional().min(1) })
+            cantidad_mayoreo: Yup.number().when('mayoreo', { is: true, then: Yup.number().required().min(1) }),
+            inventario: Yup.boolean(),
+            stock: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
+            stock_minimo: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
+            stock_maximo: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
         }),
         enableReinitialize: true
     });
@@ -287,7 +291,8 @@ export const AgregarModificarProductoPage = () => {
                             </div>
                         </div>
                         {
-                            (usuario?.permisos?.includes('modificar_inventario') || usuario?.roles.includes('administrador')) && <div className="row">
+                            // (usuario?.permisos?.includes('modificar_inventario') || usuario?.roles.includes('administrador'))
+                            (!producto || producto && !producto.inventario) && <div className="row">
                                 <div>
                                     <MyCheckbox
                                         checked={values.inventario!}

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import { NegoManager } from './NegoManager';
+import { PuntoVPro } from './PuntoVPro';
 import { Provider } from 'react-redux';
 import { store } from './store';
 // import reportWebVitals from './reportWebVitals';
@@ -13,7 +13,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <NegoManager /> 
+      <PuntoVPro />
     </Provider>
   </React.StrictMode>
 );

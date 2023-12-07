@@ -1,6 +1,6 @@
 
 import { AppRouter } from './routes/AppRouter';
 
-export const NegoManager = () => {
+export const PuntoVPro = () => {
     return <AppRouter />
 }

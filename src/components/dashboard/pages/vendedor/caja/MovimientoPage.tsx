@@ -36,7 +36,7 @@ export const MovimientoPage = () => {
                 </div>
 
                 <div className='text-end'>
-                    <button className='btn btn-primary'>Cancelar Venta</button>
+                    {!state.cancelado ? <button className='btn btn-primary'>Cancelar Movimiento</button> : <></>}
                 </div>
 
             </div>
