@@ -114,9 +114,10 @@ export const ProductoPage = () => {
                         }
                         {
                           (usuario?.roles.includes('') || prod.inventario && usuario?.permisos?.includes('modificar_inventario')) && <Link
-                            to={`/dashboard/${usuario?.roles[0]}/producto/${prod.id}`}
+                            to={`/dashboard/${usuario?.roles[0]}/producto/inventario`}
+                            state={prod}
                             className="btn btn-primary ms-1"
-                            replace
+                            // replace
                           > <i className="bi bi-gear-wide-connected"></i></Link>
                         }
                       </div>
