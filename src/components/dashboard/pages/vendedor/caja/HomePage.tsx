@@ -9,6 +9,8 @@ import moment from 'moment';
 import { useSelector } from 'react-redux';
 import { RootState, formatearNumero } from '../../../../../store';
 import { NavLink, useNavigate } from 'react-router-dom';
+import { MyButtonTooltip } from '../../../../shared';
+import { crearCorte } from '../../../../../store/slices/corte';
 
 export const HomePage = () => {
 
@@ -76,6 +78,10 @@ export const HomePage = () => {
         ], [movimientos]
     );
 
+    const onCrearCorte = () => crearCorte({
+        total: usuario!.attributos!.caja
+    });
+
     return (
         <div>
             <div className='row border-bottom'>
@@ -86,7 +92,15 @@ export const HomePage = () => {
                             <h2 className='text-center'> {usuario?.attributos?.caja ? formatearNumero(usuario.attributos.caja) : '$0.00'} </h2>
                         </div>
                         <div className='card-body'>
-
+                            {/* <MyButtonTooltip
+                                id='corte-tooltip'
+                                content='Generar corte de caja'
+                                place='top'
+                                className='w-100'
+                                onClick={() => { }}
+                                children={<><i className="bi bi-cash-stack"></i></>}
+                            /> */}
+                            <button className='btn btn-primary w-100' onClick={onCrearCorte} ><i className="bi bi-scissors" /> Generar corte de caja</button>
                         </div>
                     </div>
                 </div>
@@ -101,7 +115,9 @@ export const HomePage = () => {
                                 (mov: Movimiento) => {
                                     switch (mov.tipo) {
                                         case 'Venta':
-                                            navigate(`/dashboard/vendedor/caja/venta/${mov.venta?.id}`)
+                                            navigate(`/dashboard/vendedor/caja/venta`, {
+                                                state: { ...mov }
+                                            })
                                             break;
                                         case 'Entrada':
                                             navigate(`/dashboard/vendedor/caja/movimiento`, {

@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../../store';
+import { AppDispatch, RootState, formatearNumero } from '../../../../../store';
 import { useReactToPrint } from 'react-to-print';
 import { obtenerProductos, obtenerProductosQuery } from '../../../../../store/slices/producto';
 import { useFormik } from 'formik';
@@ -8,6 +8,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { Link } from 'react-router-dom';
 import { TituloPagina } from '../TituloPagina';
+import { QueryParamsProducto } from '../../../../../interfaces';
 
 export const ProductoPage = () => {
 
@@ -30,16 +31,18 @@ export const ProductoPage = () => {
     }))
   }, [dispatch, usuario]);
 
-  const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch, } = useFormik({
-    initialValues: { query: '' },
+  const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch, } = useFormik<QueryParamsProducto>({
+    initialValues: { titulo: '' },
     onSubmit: async (values) => {
+      console.log(values);
       // dispatch(obtenerProductosQuery(values.query));
-      const resp = await obtenerProductosQuery(values.query, `${usuario?.negocio!.id!}`);
-      console.log(resp);
-      resetFormSearch();
+      dispatch(obtenerProductos({
+        titulo: values.titulo,
+      }));
+      // resetFormSearch();
     },
     validationSchema: Yup.object({
-      query: Yup.string().required('Requerido')
+      titulo: Yup.string().required('Requerido')
     }),
 
   });
@@ -76,10 +79,10 @@ export const ProductoPage = () => {
         <div className="col">
           <form onSubmit={handleSubmitSearch}>
             <div className="input-group">
-              <input type="text" className="form-control" placeholder="Buscar..." {...getFieldPropsSearch('query')} />
+              <input type="text" className="form-control" placeholder="Buscar..." {...getFieldPropsSearch('titulo')} />
               <button type="submit" className="btn btn-primary">Buscar</button>
             </div>
-            {touchedSearch.query && errorsSearch.query && <span className="text-danger">{errorsSearch.query}</span>}
+            {touchedSearch.titulo && errorsSearch.titulo && <span className="text-danger">{errorsSearch.titulo}</span>}
           </form>
         </div>
       </div>
@@ -97,7 +100,7 @@ export const ProductoPage = () => {
                       </div>
                       <div className="card-body p-1 position-relative">{/* overflow-auto */}
                         <p className="card-text" >{prod.titulo}</p>
-                        <p className="card-text position-absolute bottom-0 end-0 m-1" >${prod.precio}  -  Stock: {prod.stock} </p>
+                        <p className="card-text position-absolute bottom-0 end-0 m-1" >{formatearNumero(prod.precio)}{prod.inventario ? `- Stock:${prod.stock}` : ''}</p>
                       </div>
                       <div className="card-footer p-1">
                         {/* <Link
@@ -117,7 +120,7 @@ export const ProductoPage = () => {
                             to={`/dashboard/${usuario?.roles[0]}/producto/inventario`}
                             state={prod}
                             className="btn btn-primary ms-1"
-                            // replace
+                          // replace
                           > <i className="bi bi-gear-wide-connected"></i></Link>
                         }
                       </div>

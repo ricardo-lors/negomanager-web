@@ -1,22 +1,24 @@
 import { useEffect, useState, useMemo } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { cancelarVenta, obtenerVentaId } from '../../../../../store/slices/venta';
-import { DetallesVenta, Venta } from '../../../../../interfaces';
+import { DetallesVenta, Movimiento, Venta } from '../../../../../interfaces';
 import { Tabla } from '../../../../shared/Tabla';
 import moment from 'moment';
 import { ColumnDef } from '@tanstack/react-table';
+import { formatearNumero } from '../../../../../store';
 
 export const VentaPage = () => {
 
     const navigate = useNavigate();
-    const { id } = useParams();
+
+    const location = useLocation();
+    const movimiento = location.state as Movimiento;
 
     const [venta, setVenta] = useState<Venta>();
 
     useEffect(() => {
-        id && setTimeout(() => obtenerVentaId(id).then((vn) => setVenta(vn)), 200);
-    }, [id]);
-
+        movimiento && setTimeout(() => obtenerVentaId(movimiento.venta!.id).then((vn) => setVenta(vn)), 200);
+    }, []);
 
     const columnas = useMemo<ColumnDef<DetallesVenta>[]>(
         () => [{
@@ -31,7 +33,7 @@ export const VentaPage = () => {
         }, {
             accessorKey: 'total',
 
-            cell: info => info.getValue(),
+            cell: info => <>{formatearNumero(info.row.original.total)}</>,
             header: () => <span>Total</span>,
             // footer: () => {
             //     const detalles = venta?.detalles;
@@ -64,6 +66,10 @@ export const VentaPage = () => {
                     <div className='card p-3' aria-hidden="true">
 
                         <div className="card-body">
+                            {movimiento.cancelado &&
+                                <div className="alert alert-danger" role="alert">
+                                    Cancelado
+                                </div>}
                             <h3>Folio: {venta?.folio}</h3>
                             <h4>Vendedor: {venta?.vendedor.nombre}</h4>
                             <h4>Cliente: {venta?.cliente ? venta?.cliente?.nombre : 'Publico General'}</h4>
@@ -79,7 +85,7 @@ export const VentaPage = () => {
                         </div>
 
                         <div className='mt-2 text-end'>
-                            <h3 >Total: {venta?.total}</h3>
+                            <h3 >Total: {formatearNumero(venta?.total)}</h3>
                             <h3>Pago con: {venta?.pago}</h3>
                         </div>
                     </div>

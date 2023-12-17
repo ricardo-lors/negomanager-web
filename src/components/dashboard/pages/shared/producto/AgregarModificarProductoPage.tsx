@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -21,7 +21,6 @@ export const AgregarModificarProductoPage = () => {
     const { usuario } = useSelector((state: RootState) => state.usuario);
     const { provedores } = useSelector((state: RootState) => state.provedor);
     const { categorias } = useSelector((state: RootState) => state.categoria);
-
 
     const [producto, setProducto] = useState<FormularioProducto>();
 
@@ -154,17 +153,11 @@ export const AgregarModificarProductoPage = () => {
         enableReinitialize: true
     });
 
-    useEffect(() => {
-        const porcentaje = Number(values.ganancia / 100);
-        const precio = values.costo + porcentaje * values.costo;
-        setFieldValue('precio', precio);
-    }, [values.ganancia, values.costo, setFieldValue]);
+    // useEffect(() => {
+    // }, [values.ganancia, values.costo, setFieldValue]);
 
-    useEffect(() => {
-        // if (values.costo === 0) return;
-        // const porcentaje = ((values.precio - values.costo) / ((values.precio + values.costo) / 2)) * 100;
-        // setFieldValue('ganancia', porcentaje);
-    }, [values.precio]);
+    // useEffect(() => {
+    // }, [values.precio]);
 
     return (
         <div>
@@ -185,6 +178,13 @@ export const AgregarModificarProductoPage = () => {
             <div className='card p-3 mb-2'>
                 <div className="row">
                     <form className="container mt-2" noValidate onSubmit={handleSubmit}>
+                        <div>
+                            <MyCheckbox
+                                checked={values.activo}
+                                label="Activo (Desactiva completamente el producto, por lo cual no se puede usar realizar ventas)."
+                                {...getFieldProps('activo')}
+                            />
+                        </div>
                         <div className="row">
                             <div className="col">
                                 <MyTextInput
@@ -223,6 +223,13 @@ export const AgregarModificarProductoPage = () => {
                                     label="Costo (Compra)"
                                     placeholder='$0.00'
                                     className="form-control"
+                                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                                        const value = +evt.target.value;
+                                        setFieldValue('costo', value);
+                                        const porcentaje = Number(values.ganancia / 100);
+                                        const precio = value + porcentaje * value;
+                                        setFieldValue('precio', precio);
+                                    }}
                                     value={(values.costo !== 0 || values.costo !== undefined) ? values.costo : ''}
                                     errors={(touched.costo && errors.costo) || ''}
 
@@ -236,6 +243,13 @@ export const AgregarModificarProductoPage = () => {
                                     label="Porcentaje %"
                                     placeholder='$0.00'
                                     className="form-control"
+                                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                                        const value = +evt.target.value;
+                                        setFieldValue('ganancia', value);
+                                        const porcentaje = Number(value / 100);
+                                        const precio = values.costo + porcentaje * values.costo;
+                                        setFieldValue('precio', precio);
+                                    }}
                                     value={(values.ganancia !== 0 || values.ganancia !== undefined) ? values.ganancia : ''}
                                     errors={(touched.ganancia && errors.ganancia) || ''}
                                 />
@@ -248,6 +262,15 @@ export const AgregarModificarProductoPage = () => {
                                     label="Precio (Venta)"
                                     placeholder='$0.00'
                                     className="form-control"
+                                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                                        const value = +evt.target.value;
+                                        if (values.costo === 0) return;
+                                        const ganancia = value - values.costo;
+                                        console.log(ganancia);
+                                        const porcentaje = (ganancia / value) * 100;
+                                        setFieldValue('ganancia', porcentaje);
+                                        setFieldValue('precio', value);
+                                    }}
                                     value={(values.precio !== 0 || values.precio !== undefined) ? values.precio : ''}
                                     errors={(touched.precio && errors.precio) || ''}
                                 // 

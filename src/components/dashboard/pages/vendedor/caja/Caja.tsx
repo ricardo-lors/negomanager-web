@@ -8,7 +8,7 @@ export const Caja = () => {
     return (
         <Routes>
             <Route path='/' element={<HomePage />} />
-            <Route path='/venta/:id' element={<VentaPage />} />
+            <Route path='/venta' element={<VentaPage />} />
             <Route path='/movimiento' element={<MovimientoPage />} />
         </Routes>
     )

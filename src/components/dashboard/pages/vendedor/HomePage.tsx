@@ -17,6 +17,7 @@ import { ModalEntradaSalidaDinero } from "./modals/ModalEntradaSalidaDinero";
 import { crearMovimiento } from "../../../../store/slices/movimiento";
 import { revalidarSesion } from "../../../../store/slices/usuario";
 import { locales } from "moment";
+import { ModalBuscarProducto } from "./modals/ModalBuscarProducto";
 
 export const HomePage = () => {
 
@@ -32,6 +33,7 @@ export const HomePage = () => {
     modalAgregarCliente: false,
     modalEntradaDinero: false,
     modalSalidaDinero: false,
+    modalBuscarProducto: false
   });
 
   const handleImprimirTicket = useReactToPrint({
@@ -124,7 +126,7 @@ export const HomePage = () => {
             data-tooltip-id="btn-search-tooltip"
             data-tooltip-content="Buscar Producto"
             data-tooltip-place="right-end"
-            onClick={() => setOpenModals(prev => ({ ...prev, modalAgregarProductoNoRegistrado: true }))} >
+            onClick={() => setOpenModals(prev => ({ ...prev, modalBuscarProducto: true }))} >
             <i className="bi bi-search"></i> Buscar
           </button>
           <Tooltip id="btn-search-tooltip" />
@@ -228,6 +230,12 @@ export const HomePage = () => {
         children={<ModalAgregarProductoNoRegistrado cerrarModal={() => { setOpenModals(prev => ({ ...prev, modalAgregarProductoNoRegistrado: false })) }} />}
         onRequestClose={() => setOpenModals(prev => ({ ...prev, modalAgregarProductoNoRegistrado: false }))}
         titulo={'Agregar Producto No Registrado'}
+      />
+      <Modal
+        isOpen={openModals.modalBuscarProducto}
+        children={<ModalBuscarProducto />}
+        onRequestClose={() => setOpenModals(prev => ({ ...prev, modalBuscarProducto: false }))}
+        titulo={'Buscar producto'}
       />
       <Modal
         isOpen={openModals.modalAgregarCliente}

@@ -6,6 +6,6 @@ export { ProvedoresPage } from "./ProvedoresPage";
 export { VentasPage } from "../vendedor/caja/VentasPage";
 
 export { AgregarModificarProductoPage } from "./producto/AgregarModificarProductoPage";
-export { InventarioPage } from "./InventarioPage";
+
 
 

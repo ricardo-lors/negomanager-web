@@ -5,9 +5,10 @@ interface TablaProps {
     data: any[];
     seleccionado?: string;
     onClickFila?: (arg: any) => void; // MouseEventHandler<HTMLTableRowElement>
+    onDoubleClick?: (arg: any) => void;
     verFooter?: boolean;
 }
-export const Tabla = ({ data, columns, seleccionado, onClickFila, verFooter = false }: TablaProps) => {
+export const Tabla = ({ data, columns, seleccionado, onClickFila, onDoubleClick, verFooter = false }: TablaProps) => {
 
     const tabla = useReactTable({
         data,
@@ -43,6 +44,7 @@ export const Tabla = ({ data, columns, seleccionado, onClickFila, verFooter = fa
                         key={row.id}
                         className={`${seleccionado !== undefined && (row.original.id === seleccionado || row.original.unidad === seleccionado) ? 'table-active' : ''}`}
                         onClick={onClickFila ? () => onClickFila!(row.original) : undefined}
+                        onDoubleClick={onDoubleClick ? () => onDoubleClick!(row.original) : undefined}
                     >
                         {row.getVisibleCells().map(cell => (
                             <td key={cell.id} align={(cell.column.columnDef.meta as any)?.align}>

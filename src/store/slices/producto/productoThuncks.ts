@@ -91,7 +91,7 @@ export const actualizarProducto = (producto: NuevoActualizarProducto, navigate: 
         try {
             const { data } = await servicesApiToken(`/productos/${producto.id}`, { method: 'PATCH', data: producto });
             dispatch(setProductos([data]));
-            navigate(`/dashboard/${rol}/inventario`, { replace: true });
+            navigate(`/dashboard/${rol}/producto`, { replace: true });
         } catch (e) {
             if (e instanceof AxiosError) {
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
@@ -113,19 +113,15 @@ export const obtenerProductoCodigo = async (codigo: string, sucursalid: string, 
     }
 }
 
-export const obtenerProductosQuery = async (query: string, negocioid: string) => {
+export const obtenerProductosQuery = async (queryParamsProducto: QueryParamsProducto) => {
     try {
-        const params = new URLSearchParams({ query, negocioid });
-        console.log(params.toString());
-        const { data } = await servicesApiToken(`/producto/buscar/query?${params.toString()}`, {});
+        const { data } = await servicesApiToken(`/productos`, { params: queryParamsProducto });
         console.log(data);
-        if (data.ok) {
-            return data.data;
-        } else {
-            Swal.fire('Error', `${data.data}`, 'info');
-        }
-    } catch (error) {
-        Swal.fire('Error', `${error}`, 'error');
+        const productos = ProductoConvert.toProducToList(JSON.stringify(data));
+        return productos;
+    } catch (e) {
+        console.log(e);
+        Swal.fire('Error',)
     }
 };
 

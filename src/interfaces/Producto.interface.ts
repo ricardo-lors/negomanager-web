@@ -81,7 +81,7 @@ export interface QueryParamsProducto {
 
     codigo?: string;
 
-    nombre?: string;
+    titulo?: string;
 
     descripcion?: string;
 

@@ -3,6 +3,7 @@ import { Movimiento } from '../../../../../interfaces';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import moment from 'moment';
+import { formatearNumero } from '../../../../../store';
 
 export const MovimientoPage = () => {
 
@@ -32,7 +33,7 @@ export const MovimientoPage = () => {
                 </div>
 
                 <div className=''>
-                    <h3 >Total: {state.total}</h3>
+                    <h3 >Total: {formatearNumero(state.total)}</h3>
                 </div>
 
                 <div className='text-end'>

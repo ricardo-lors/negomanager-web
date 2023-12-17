@@ -4,7 +4,7 @@ import { HomePage } from "./HomePage"
 import { VendedoresPage } from "./VendedoresPage"
 import { ProvedoresPage } from "../shared/ProvedoresPage"
 import { CategoriasPage } from "../shared/CategoriasPage"
-import { InventarioPage, AgregarModificarProductoPage, VentasPage } from "../shared"
+import { AgregarModificarProductoPage, VentasPage } from "../shared"
 import { SucursalPage } from "./SucursalPage"
 import { useSelector } from "react-redux"
 import { RootState } from "../../../../store"
@@ -33,8 +33,6 @@ export const AdministradorRouter = () => {
             {/* Ritas del Inventario */}
             <Route path='/administrador/producto/*' element={<ProductoRouter />} />
 
-
-            <Route path='/administrador/inventario' element={<InventarioPage />} />
             <Route path='/administrador/inventario/producto/:id' element={<AgregarModificarProductoPage />} />
             <Route path='/administrador/inventario/producto' element={<AgregarModificarProductoPage />} />
 
