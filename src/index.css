@@ -106,6 +106,34 @@ th.precio {
   background: #f2f2f2;
 }
 
+/* 25: 25%,
+50: 50%,
+75: 75%,
+100: 100%, */
+
+/* SM breakpoint */
+@media (min-width: 576px) {
+
+  /* CUSTOM WIDTHS */
+  .w-sm-25 {
+    width: 25% !important;
+  }
+
+  .w-sm-50 {
+    width: 50% !important;
+  }
+
+  .w-sm-75 {
+    width: 75% !important;
+  }
+
+  .w-sm-100 {
+    width: 100% !important;
+  }
+}
+
+
+
 /* @media print {
 
   .btn,
@@ -117,34 +145,106 @@ th.precio {
     height: 312px;
     min-height: 312px;
   }
-}
-
-@media (width <=576px) {
-  .card {
-    height: 500px;
-  }
-}
-
-@media (576px <=width <=768px) {
-  .card {
-    height: 390px;
-  }
-}
-
-@media (769px <=width <=992px) {
-  .card {
-    height: 390px;
-  }
-}
-
-@media (993px <=width <=1200px) {
-  .card {
-    height: 360px;
-  }
-}
-
-@media (width >=1400px) {
-  .card {
-    background: green;
-  }
 } */
+
+@media (width <=576px) {}
+
+/* sm */
+@media (width >=576px) {
+
+  .w-sm-25 {
+    width: 25% !important;
+  }
+
+  .w-sm-50 {
+    width: 50% !important;
+  }
+
+  .w-sm-75 {
+    width: 75% !important;
+  }
+
+  .w-sm-100 {
+    width: 100% !important;
+  }
+}
+
+/* md */
+@media (width >=768px) {
+
+  .w-md-25 {
+    width: 25% !important;
+  }
+
+  .w-md-50 {
+    width: 50% !important;
+  }
+
+  .w-md-75 {
+    width: 75% !important;
+  }
+
+  .w-md-100 {
+    width: 100% !important;
+  }
+}
+
+/* lg */
+@media (width >=992px) {
+
+  .w-lg-25 {
+    width: 25% !important;
+  }
+
+  .w-lg-50 {
+    width: 50% !important;
+  }
+
+  .w-lg-75 {
+    width: 75% !important;
+  }
+
+  .w-lg-100 {
+    width: 100% !important;
+  }
+}
+
+/* xl */
+@media (width >=1200px) {
+
+  .w-xl-25 {
+    width: 25% !important;
+  }
+
+  .w-xl-50 {
+    width: 50% !important;
+  }
+
+  .w-xl-75 {
+    width: 75% !important;
+  }
+
+  .w-xl-100 {
+    width: 100% !important;
+  }
+}
+
+/* xxl */
+@media (width >=1400px) {
+
+  .w-xxl-25 {
+    width: 25% !important;
+  }
+
+  .w-xxl-50 {
+    width: 50% !important;
+  }
+
+  .w-xxl-75 {
+    width: 75% !important;
+  }
+
+  .w-xxl-100 {
+    width: 100% !important;
+  }
+}

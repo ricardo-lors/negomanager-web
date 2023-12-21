@@ -73,7 +73,7 @@ export const crearProducto = (producto: NuevoActualizarProducto, navigate: Navig
         try {
             const { data } = await servicesApiToken(`/productos`, { method: 'POST', data: producto });
             dispatch(setProductos([data]));
-            navigate(`/dashboard/${rol}/inventario`, { replace: true });
+            navigate(`/dashboard/${rol}/producto`, { replace: true });
         } catch (e) {
             if (e instanceof AxiosError) {
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');

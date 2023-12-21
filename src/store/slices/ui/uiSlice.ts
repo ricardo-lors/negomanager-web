@@ -3,10 +3,12 @@ import type { PayloadAction } from '@reduxjs/toolkit'
 
 export interface uiState {
     openMenu: boolean,
+    darkMode: boolean,
 }
 
 const initialState: uiState = {
     openMenu: false,
+    darkMode: false
 }
 
 export const uiSlice = createSlice({
@@ -16,10 +18,13 @@ export const uiSlice = createSlice({
         openAndCloseMenu: (state, actions: PayloadAction<boolean>) => {
             state.openMenu = actions.payload;
         },
+        cambiarThemaApp: (state, actions: PayloadAction<boolean>) => {
+            state.darkMode = actions.payload;
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { openAndCloseMenu } = uiSlice.actions
+export const { openAndCloseMenu, cambiarThemaApp } = uiSlice.actions
 
 // export default usuarioSlice.reducer

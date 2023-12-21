@@ -54,6 +54,7 @@ export const DashboardPage = () => {
                         </div>
                     </>
             }
+            <div id="modal"></div>
         </>
     )
 }

@@ -8,6 +8,7 @@ import { RootState } from '../store';
 import { endGetUsuario, revalidarSesion } from '../store/slices/usuario';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
+import { comenzarCambioTema } from '../store/slices/ui';
 
 export const AppRouter = () => {
 
@@ -16,6 +17,16 @@ export const AppRouter = () => {
     const { cargando } = useSelector((state: RootState) => state.usuario);
 
     useEffect(() => {
+        const theme = localStorage.getItem('theme');
+        
+        if (theme === 'dark') {
+            dispatch(comenzarCambioTema(true));
+        } else {
+            dispatch(comenzarCambioTema(false));
+        }
+        // const html = document.getElementById('htmlprin');
+        // html?.setAttribute('data-bs-theme', `${theme}`);
+
         if (localStorage.getItem('x-token')) {
             dispatch(revalidarSesion());
         } else {
@@ -31,6 +42,7 @@ export const AppRouter = () => {
             </div>
         </div>
     }
+
     return (
         <BrowserRouter>
             <Routes>

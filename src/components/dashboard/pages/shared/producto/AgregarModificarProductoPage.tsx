@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { FormularioProducto } from '../../../../../interfaces';
 import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../../store/slices/producto';
 import { useAppDispatch } from '../../../../../hooks';
-import { RootState } from '../../../../../store';
+import { RootState, formatearNumero } from '../../../../../store';
 import { MyCheckbox, MySelect, MyTextInput } from '../../../../shared';
 import { Tooltip } from 'react-tooltip';
 
@@ -267,7 +267,7 @@ export const AgregarModificarProductoPage = () => {
                                         if (values.costo === 0) return;
                                         const ganancia = value - values.costo;
                                         console.log(ganancia);
-                                        const porcentaje = (ganancia / value) * 100;
+                                        const porcentaje = (ganancia * 100) / values.costo;
                                         setFieldValue('ganancia', porcentaje);
                                         setFieldValue('precio', value);
                                     }}
