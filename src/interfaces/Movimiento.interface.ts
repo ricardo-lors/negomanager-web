@@ -18,6 +18,7 @@ export interface Movimiento {
     total: number;
     cancelado?: boolean;
     venta?: Venta;
+    sucursal?: Sucursal
 }
 
 export interface MovimientoParams {
@@ -36,12 +37,19 @@ export interface MovimientoParams {
 
     cancelado?: boolean;
 
+    sucursal?: string;
+
 }
 
 interface Venta {
     id: string;
     total: number;
     cliente: Usuario
+}
+
+interface Sucursal {
+    id: string;
+    nombre: string;
 }
 
 // Converts JSON strings to/from your types
