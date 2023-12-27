@@ -18,6 +18,7 @@ import { crearMovimiento } from "../../../../store/slices/movimiento";
 import { revalidarSesion } from "../../../../store/slices/usuario";
 import { locales } from "moment";
 import { ModalBuscarProducto } from "./modals/ModalBuscarProducto";
+import { QrBarcodeScanner } from "../../../shared/QrBarcodeScanner";
 
 export const HomePage = () => {
 
@@ -161,6 +162,16 @@ export const HomePage = () => {
           <button type="submit" className="btn btn-primary" >Agregar</button>
         </div>
       </form>
+      <QrBarcodeScanner
+        // fps={10}  
+        // qrbox={250}
+        // disableFlip={false}
+        // qrCodeSuccessCallback={onNewScanResult}
+        reedSucces={async (rederResp) => {
+          const producto = await obtenerProductoCodigo(rederResp, usuario?.sucursal!.id!, usuario?.negocio!.id!);
+          if (producto) dispatch(agregarProducto(producto));
+        }}
+      />
       <div className="container border h-50 overflow-auto mt-2">
         <table className="table">
           {/* style={{height: 300}} */}
