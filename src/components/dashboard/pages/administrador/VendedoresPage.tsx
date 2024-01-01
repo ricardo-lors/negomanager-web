@@ -5,20 +5,20 @@ import * as Yup from 'yup';
 import { actualizarUsuario, buscarUsuarios, crearUsuario } from "../../../../store/slices/usuario";
 import { useFormik } from "formik";
 import { MySelect, MyTextInput } from "../../../shared";
-import { obtenerSucursales } from "../../../../store/slices/sucursal";
 import { Tabla } from "../../../shared/Tabla";
 import { RootState } from "../../../../store";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAppDispatch } from "../../../../hooks";
 
 import permisos from "../../../../resource/permisos.json";
+import { obtenerAlmacen } from "../../../../store/slices/almacen";
 
 export const VendedoresPage = () => {
 
     const dispatch = useAppDispatch();
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
-    const { sucursales } = useSelector((state: RootState) => state.sucursal);
+    const { almacenes } = useSelector((state: RootState) => state.almacen);
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
@@ -30,7 +30,7 @@ export const VendedoresPage = () => {
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
-        dispatch(obtenerSucursales({}));
+        dispatch(obtenerAlmacen({}));
     }, [dispatch, usuario]);
 
     const { handleSubmit, getFieldProps, resetForm, setValues } = useFormik<FormularioUsuario>({
@@ -144,7 +144,7 @@ export const VendedoresPage = () => {
                         >
                             <option value="">Seleccione una Sucursal</option>
                             {
-                                sucursales?.map(opt => (
+                                almacenes?.map(opt => (
                                     <option key={opt.id} value={opt.id}>{opt.nombre}</option>
                                 ))
                             }

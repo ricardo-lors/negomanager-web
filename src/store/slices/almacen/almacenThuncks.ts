@@ -1,14 +1,14 @@
 import Swal from "sweetalert2";
-import { NuevaSucursal, Sucursal, SucursalConvert, SucursalParams } from "../../../interfaces";
+import { NuevoAlmacen, Almacen, SucursalParams } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
-import { setSucursales, startGetSucursales } from "./sucursalSlice";
+import { setAlmacenes, } from "./almacenSlice";
 
-export const crearSucursal = async (sucursal: NuevaSucursal): Promise<Sucursal | undefined> => {
+export const crearAlmacen = async (almacen: NuevoAlmacen): Promise<Almacen | undefined> => {
     try {
         Swal.fire('Creando sucursal');
         Swal.showLoading();
-        const { status, data } = await servicesApiToken(`/sucursales`, { method: 'POST', data: sucursal });
+        const { status, data } = await servicesApiToken(`/almacenes`, { method: 'POST', data: almacen });
         Swal.close();
         if (status === 201) return data;
         return undefined;
@@ -19,12 +19,12 @@ export const crearSucursal = async (sucursal: NuevaSucursal): Promise<Sucursal |
     }
 }
 
-export const obtenerSucursales = (sucursalParams: SucursalParams) => {
+export const obtenerAlmacen = (sucursalParams: SucursalParams) => {
     return async (dispatch: AppDispatch) => {
         try {
-            const { status, data } = await servicesApiToken(`/sucursales`, { params: sucursalParams });
-            if (status === 201) return dispatch(setSucursales([]));
-            dispatch(setSucursales(data));
+            const { status, data } = await servicesApiToken(`/almacenes`, { params: sucursalParams });
+            if (status === 201) return dispatch(setAlmacenes([]));
+            dispatch(setAlmacenes(data));
             // if (status === 201) return undefined;
             // return data;
         } catch (error) {
@@ -35,7 +35,7 @@ export const obtenerSucursales = (sucursalParams: SucursalParams) => {
     }
 }
 
-export const actualizarSucursal = async (id: string, sucursal: Sucursal): Promise<Sucursal | undefined> => {
+export const actualizarAlmacen = async (id: string, sucursal: Almacen): Promise<Almacen | undefined> => {
     try {
         Swal.fire('Aplicando cambios');
         Swal.showLoading();

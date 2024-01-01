@@ -5,24 +5,24 @@ import { useFormik } from "formik";
 
 import { RootState } from "../../../../store";
 import { MyTextInput } from "../../../shared/MyTextInput";
-import { NuevaSucursal, NuevoNegocio, Sucursal } from "../../../../interfaces";
+import { NuevoAlmacen, NuevoNegocio, Almacen } from "../../../../interfaces";
 import { useAppDispatch } from "../../../../hooks";
 import { crearNegocio } from "../../../../store/slices/negocio/negocioThuncks";
-import { actualizarSucursal, agregarSucursal, crearSucursal, obtenerSucursales } from "../../../../store/slices/sucursal";
 import { ColumnDef } from "@tanstack/react-table";
 import { Tabla } from "../../../shared/Tabla";
 import { revalidarSesion } from "../../../../store/slices/usuario";
+import { actualizarAlmacen, agregarAlmacen, crearAlmacen, obtenerAlmacen } from "../../../../store/slices/almacen";
 
 export const NegocioPage = () => {
 
     const dispatch = useAppDispatch();
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
-    const { sucursales } = useSelector((state: RootState) => state.sucursal);
+    const { almacenes } = useSelector((state: RootState) => state.almacen);
 
     const { negocio } = usuario!;
 
-    const [sucursal, setSucursal] = useState<Sucursal>();
+    const [sucursal, setSucursal] = useState<Almacen>();
 
     const [state, setState] = useState({
         modificar: negocio !== null ? true : false
@@ -46,7 +46,7 @@ export const NegocioPage = () => {
         })
     });
 
-    const { handleSubmit: handleSubmitSucursales, errors: errorsSucursales, touched: touchedSucursales, getFieldProps: getFieldPropsSucursales, resetForm: resetFormSucursales, setValues: setValuesSucursales } = useFormik<NuevaSucursal>({
+    const { handleSubmit: handleSubmitSucursales, errors: errorsSucursales, touched: touchedSucursales, getFieldProps: getFieldPropsSucursales, resetForm: resetFormSucursales, setValues: setValuesSucursales } = useFormik<NuevoAlmacen>({
         initialValues: {
             // TODO: Verificar esta linea da error al valorizar null value
             nombre: '',
@@ -56,19 +56,19 @@ export const NegocioPage = () => {
         },
         onSubmit: async (values) => {
             if (!sucursal) {
-                const nuevaSucursal = await crearSucursal({ ...values });
-                if (nuevaSucursal) dispatch(agregarSucursal(nuevaSucursal));
+                const nuevaSucursal = await crearAlmacen({ ...values });
+                if (nuevaSucursal) dispatch(agregarAlmacen(nuevaSucursal));
                 // if (nuevaSucursal) setSucursales([nuevaSucursal, ...sucursales]);
 
             } else {
-                const sucursalActualizada = await actualizarSucursal(sucursal.id!, {
+                const sucursalActualizada = await actualizarAlmacen(sucursal.id!, {
                     nombre: values.nombre,
                     direccion: values.direccion,
                     correo: values.correo,
                     telefono: values.telefono,
                     caja: sucursal.caja
                 });
-                if (sucursalActualizada) dispatch(agregarSucursal(sucursalActualizada));
+                if (sucursalActualizada) dispatch(agregarAlmacen(sucursalActualizada));
                 // if (sucursalActualizada) setSucursales([sucursalActualizada, ...sucursales.filter(sc => sc.id !== sucursalActualizada?.id)]);
             }
 
@@ -82,10 +82,10 @@ export const NegocioPage = () => {
     });
 
     useEffect(() => {
-        dispatch(obtenerSucursales({}));
+        dispatch(obtenerAlmacen({}));
     }, []);
 
-    const columnasSucursales = useMemo<ColumnDef<Sucursal>[]>(
+    const columnasSucursales = useMemo<ColumnDef<Almacen>[]>(
         () => [
             {
                 id: 'nombre',
@@ -109,7 +109,7 @@ export const NegocioPage = () => {
                 cell: info => info.getValue(),
                 header: () => <span>Telefono</span>,
             },
-        ], [sucursales]
+        ], [almacenes]
     );
 
     return (
@@ -157,11 +157,10 @@ export const NegocioPage = () => {
                 />
 
             </form>
-
             <div>
-                <h2>Sucursales</h2>
+                <h2>Almacenes</h2>
             </div>
-            {sucursales.length === 0 && <div className="alert alert-danger" role="alert">
+            {almacenes.length === 0 && <div className="alert alert-danger" role="alert">
                 {!usuario?.negocio && <>Debe registrar primero su negocio<hr /></>}
                 Debe registrar al menos una sucursal
             </div>
@@ -202,7 +201,7 @@ export const NegocioPage = () => {
                 </div>
                 <div className="col">
                     <Tabla
-                        data={sucursales}
+                        data={almacenes}
                         columns={columnasSucursales}
                         seleccionado={sucursal?.id}
                         onClickFila={(sc) => {

@@ -9,7 +9,7 @@ import { Sidebar } from "../shared/Sidebar";
 import { AdministradorRouter } from "./pages/administrador/AdministradorRouter";
 import { SuperAdministrador } from "./pages/superadministrador/SuperAdministrador";
 import { Vendedor } from "./pages/vendedor/Vendedor";
-import { obtenerSucursales } from "../../store/slices/sucursal";
+import { obtenerAlmacen } from "../../store/slices/almacen";
 
 export const DashboardPage = () => {
 
@@ -18,7 +18,7 @@ export const DashboardPage = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        (usuario?.roles.includes('administrador') || usuario?.roles.includes('vendedor')) && dispatch(obtenerSucursales({}));
+        (usuario?.roles.includes('administrador') || usuario?.roles.includes('vendedor')) && dispatch(obtenerAlmacen({}));
         usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerCategorias(usuario?.negocio!.id));
         usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id));
         // usuario?.negocio && dispatch(obtenerClientes(usuario?.negocio!.id));
@@ -29,7 +29,7 @@ export const DashboardPage = () => {
     const { cargando: cargandoCategoria } = useSelector((state: RootState) => state.categoria);
     const { cargando: cargandoProvedor } = useSelector((state: RootState) => state.provedor);
     const { cargando: cargandoClientes } = useSelector((state: RootState) => state.cliente);
-    const { cargando: cargandoSucursales, sucursales } = useSelector((state: RootState) => state.sucursal);
+    const { cargando: cargandoSucursales, almacenes } = useSelector((state: RootState) => state.almacen);
 
     return (
         <>

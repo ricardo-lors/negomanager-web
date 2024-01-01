@@ -6,7 +6,7 @@
 
 import { Negocio } from "./Negocio.interface";
 
-interface SucursalBasica {
+interface AlmacenBasica {
     id?: string;
     nombre: string;
     direccion?: string;
@@ -14,12 +14,12 @@ interface SucursalBasica {
     telefono?: string;
 }
 
-export interface Sucursal extends SucursalBasica {
+export interface Almacen extends AlmacenBasica {
     caja: number;
     negocio?: Negocio;
 }
 
-export interface NuevaSucursal extends SucursalBasica {
+export interface NuevoAlmacen extends AlmacenBasica {
     caja?: number,
     negocio?: string;
 }
@@ -37,11 +37,11 @@ export interface SucursalParams {
 
 // Converts JSON strings to/from your types
 export class SucursalConvert {
-    public static toSucursal(json: string): Sucursal {
+    public static toSucursal(json: string): Almacen {
         return JSON.parse(json);
     }
 
-    public static sucursalToJson(value: Sucursal): string {
+    public static sucursalToJson(value: Almacen): string {
         return JSON.stringify(value);
     }
 }

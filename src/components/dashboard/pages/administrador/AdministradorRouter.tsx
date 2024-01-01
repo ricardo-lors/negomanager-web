@@ -13,9 +13,9 @@ import { ProductoRouter } from "../shared/producto/ProductoRouter"
 export const AdministradorRouter = () => {
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
-    const { sucursales } = useSelector((state: RootState) => state.sucursal);
+    const { almacenes } = useSelector((state: RootState) => state.almacen);
 
-    if (!usuario?.negocio || sucursales.length === 0) {
+    if (!usuario?.negocio || almacenes.length === 0) {
         return (
             <Routes>
                 <Route path='/administrador/negocio' element={<NegocioPage />} />

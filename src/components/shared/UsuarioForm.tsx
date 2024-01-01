@@ -1,14 +1,14 @@
-import { FormularioUsuario, Sucursal, Usuario } from '../../interfaces';
+import { FormularioUsuario, Almacen, Usuario } from '../../interfaces';
 import { FormikHelpers, useFormik } from 'formik';
 import { MyTextInput } from './MyTextInput';
 
 import * as Yup from 'yup';
 import { useEffect, useState } from 'react';
 import { MySelect } from './MySelect';
-import { obtenerSucursales } from '../../store/slices/sucursal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useAppDispatch } from '../../hooks';
+import { obtenerAlmacen } from '../../store/slices/almacen';
 
 interface UsuarioFormProps {
     rol: string[];
@@ -21,10 +21,10 @@ export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps
     const dispatch = useAppDispatch();
 
     const { usuario } = useSelector((state: RootState) => state.usuario);
-    const { sucursales } = useSelector((state: RootState) => state.sucursal);
+    const { almacenes } = useSelector((state: RootState) => state.almacen);
 
     useEffect(() => {
-        dispatch(obtenerSucursales({}));
+        dispatch(obtenerAlmacen({}));
     }, [])
 
 
@@ -92,7 +92,7 @@ export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps
                         {...getFieldProps('sucursal')}
                     >
                         {
-                            sucursales?.map(opt => (
+                            almacenes?.map(opt => (
                                 <option key={opt.id} value={opt.id}>{opt.nombre}</option>
                             ))
                         }

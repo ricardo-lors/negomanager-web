@@ -1,5 +1,5 @@
 import { Negocio } from "./Negocio.interface";
-import { Sucursal } from "./Sucursal.interface";
+import { Almacen } from "./Sucursal.interface";
 import { Usuario } from "./Usuario.interface";
 
 
@@ -11,7 +11,7 @@ interface CorteBasico {
 
 export interface Corte extends CorteBasico {
     vendedor?: Usuario,
-    sucursal?: Sucursal;
+    sucursal?: Almacen;
     negocio?: Negocio;
 }
 

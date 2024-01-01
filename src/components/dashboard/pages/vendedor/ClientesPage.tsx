@@ -1,15 +1,15 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { FormularioUsuario, Sucursal, Usuario } from "../../../../interfaces";
+import { FormularioUsuario, Almacen, Usuario } from "../../../../interfaces";
 import * as Yup from 'yup';
 import { actualizarUsuario, buscarUsuarios, crearUsuario } from "../../../../store/slices/usuario";
 import { useFormik } from "formik";
 import { MySelect, MyTextInput } from "../../../shared";
-import { obtenerSucursales } from "../../../../store/slices/sucursal";
 import { Tabla } from "../../../shared/Tabla";
 import { RootState } from "../../../../store";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAppDispatch } from "../../../../hooks";
+import { obtenerAlmacen } from "../../../../store/slices/almacen";
 
 export const ClientesPage = () => {
 
@@ -27,7 +27,7 @@ export const ClientesPage = () => {
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
-        dispatch(obtenerSucursales({}));
+        dispatch(obtenerAlmacen({}));
     }, [usuario]);
 
     const { handleSubmit, values, errors, touched, getFieldProps, resetForm, setValues } = useFormik<FormularioUsuario>({

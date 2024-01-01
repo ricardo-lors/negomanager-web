@@ -1,6 +1,6 @@
 
 import { Negocio } from "./Negocio.interface";
-import { Sucursal } from "./Sucursal.interface";
+import { Almacen } from "./Sucursal.interface";
 
 
 interface UsuarioBasico {
@@ -19,7 +19,7 @@ interface UsuarioBasico {
 }
 
 export interface Usuario extends UsuarioBasico {
-    sucursal?: Sucursal,
+    sucursal?: Almacen,
 }
 
 export interface Attributos {
