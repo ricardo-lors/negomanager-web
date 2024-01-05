@@ -7,14 +7,14 @@ import { MyTextInput } from "../../../shared";
 import { useFormik } from "formik";
 import { useAppDispatch } from "../../../../hooks";
 import { crearUsuario } from "../../../../store/slices/usuario";
-import { FormularioUsuario } from "../../../../interfaces";
+import { UsuarioNuevo } from "../../../../interfaces";
 
 export const HomePage = () => {
 
     const dispatch = useAppDispatch();
 
     const { negocios } = useSelector((state: RootState) => state.negocio);
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<FormularioUsuario>({
+    const { handleSubmit, errors, touched, getFieldProps } = useFormik<UsuarioNuevo>({
         initialValues: {
             nombre: '',
             correo: '',

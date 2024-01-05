@@ -41,7 +41,7 @@ export const Sidebar = () => {
         <div className={`offcanvas offcanvas-end ${openMenu ? 'show' : 'hide'} flex-shrink-0 pt-2 text-bg-dark`} tabIndex={-1} >
             <div className="offcanvas-header">
                 <h5 className="offcanvas-title">{usuario?.negocio?.nombre ? usuario!.negocio!.nombre : "NegoManager"}</h5>
-                <h5 className="offcanvas-title">{usuario?.sucursal?.nombre ? usuario!.sucursal!.nombre : "NegoManager"}</h5>
+                <h5 className="offcanvas-title">{usuario?.almacen?.nombre ? usuario!.almacen!.nombre : "NegoManager"}</h5>
                 <button type="button" className='btn btn-primary' onClick={handleMenu} ><i className="bi bi-x-lg"></i></button>
             </div>
             <hr className='m-0' />

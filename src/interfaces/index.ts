@@ -8,5 +8,5 @@ export * from './Cliente.interface';
 export * from './Producto.interface';
 export * from './Venta.interface';
 export * from './Movimiento.interface';
-export * from './Sucursal.interface';
+export * from './Almacen.interface';
 export * from './Corte.interface';

@@ -19,8 +19,8 @@ export const DashboardPage = () => {
 
     useEffect(() => {
         (usuario?.roles.includes('administrador') || usuario?.roles.includes('vendedor')) && dispatch(obtenerAlmacen({}));
-        usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerCategorias(usuario?.negocio!.id));
-        usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id));
+        usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerCategorias(usuario?.negocio!.id!));
+        usuario?.negocio && !usuario?.roles.includes('super-administrador') && dispatch(obtenerProvedoresNegocio(usuario?.negocio!.id!));
         // usuario?.negocio && dispatch(obtenerClientes(usuario?.negocio!.id));
         // usuario?.negocio && dispatch(obtenerUsuarios(usuario?.negocio!.id));
     }, [dispatch]);

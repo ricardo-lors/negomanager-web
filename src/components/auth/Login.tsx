@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -88,7 +88,7 @@ export const Login = () => {
                     </div> */}
                     </div>
                     <div className="text-center px-lg-5 pt-lg-3 pb-lg-4 p-4 w-100 mt-auto">
-                        <p className="d-inline-block mb-0">¿Todavia no tienes una cuenta?</p> <Link to="register" className="text-muted text-decoration-none">Crea una ahora</Link>
+                        <p className="d-inline-block mb-0">¿Todavia no tienes una cuenta?</p> <NavLink to="/registro" replace className="text-muted text-decoration-none">Crea una ahora</NavLink>
                     </div>
 
                 </section >

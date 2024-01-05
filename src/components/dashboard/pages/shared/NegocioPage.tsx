@@ -5,7 +5,7 @@ import { useFormik } from "formik";
 
 import { RootState } from "../../../../store";
 import { MyTextInput } from "../../../shared/MyTextInput";
-import { NuevoAlmacen, NuevoNegocio, Almacen } from "../../../../interfaces";
+import { NuevoAlmacen, NuevoNegocio, Almacen, Negocio } from "../../../../interfaces";
 import { useAppDispatch } from "../../../../hooks";
 import { crearNegocio } from "../../../../store/slices/negocio/negocioThuncks";
 import { ColumnDef } from "@tanstack/react-table";
@@ -28,21 +28,34 @@ export const NegocioPage = () => {
         modificar: negocio !== null ? true : false
     });
 
-    const { handleSubmit, errors, touched, getFieldProps } = useFormik<NuevoNegocio>({
+    const { handleSubmit, errors, touched, getFieldProps, values } = useFormik<Negocio>({
         initialValues: {
-            // TODO: Verificar esta linea da error al valorizar null value
-            nombre: negocio !== null ? negocio!.nombre : '',
-            descripcion: negocio !== null ? negocio!.descripcion : '',
-            correo: negocio !== null ? negocio!.correo : '',
-            telefono: negocio !== null ? negocio!.telefono : '',
+            nombre: (negocio !== null) ? negocio!.nombre : '',
+            descripcion: (negocio !== null) ? negocio!.descripcion : '',
+            rfc: (negocio !== null) ? negocio!.rfc : '',
+            calle: (negocio !== null) ? negocio!.calle : '',
+            ciudad: (negocio !== null) ? negocio!.ciudad : '',
+            colonia: (negocio !== null) ? negocio!.colonia : '',
+            estado: (negocio !== null) ? negocio!.estado : '',
+            pais: (negocio !== null) ? negocio!.pais : '',
+            codigo_postal: (negocio !== null) ? negocio!.codigo_postal : '',
+            correo: (negocio !== null) ? negocio!.correo : '',
+            telefono: (negocio !== null) ? negocio!.telefono : '',
+            giro: (negocio !== null) ? negocio!.giro : '',
+            pagina: (negocio !== null) ? negocio!.pagina : '',
+            municipio: (negocio !== null) ? negocio!.municipio : '',
+            no_ext: (negocio !== null) ? negocio!.no_ext : 0,
+            no_int: (negocio !== null) ? negocio!.no_int : 0,
         },
         onSubmit: async (values) => {
             console.log(values);
-            dispatch(crearNegocio(values));
+            dispatch(crearNegocio({
+                ...values,
+                no_ext: values.no_ext ? +values.no_ext : undefined
+            }));
         },
         validationSchema: Yup.object({
-            nombre: Yup.string().required('Nombre es nesesario'),
-            contrasena: Yup.string().min(6, 'La contraseña debe tener mas de 6 caracteres')
+            nombre: Yup.string().required('Nombre es nesesario')
         })
     });
 
@@ -121,41 +134,155 @@ export const NegocioPage = () => {
 
             <form className="container mt-2" noValidate onSubmit={handleSubmit}>
                 <div className="d-flex justify-content-between">
-                    <h5>Negocio</h5>
+                    <h5>Cuéntanos sobre tu Empresa / Negocio / Tiendita</h5>
                     <button disabled={usuario?.roles.includes('administrador') ? false : state.modificar} type="submit" className="btn btn-primary text-decoration-none">Guardar</button>
                 </div>
-                <MyTextInput
-                    label="Nombre"
-                    placeholder="Nombre de la empresa"
-                    className="form-control"
-                    disabled={state.modificar}
-                    {...getFieldProps('nombre')}
-                />
+                <div className="row">
+                    <div className="col-md-7">
+                        <MyTextInput
+                            {...getFieldProps('nombre')}
+                            label="Nombre*"
+                            placeholder="Nombre"
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                    <div className="col">
+                        <MyTextInput
+                            {...getFieldProps('rfc')}
+                            label="RFC"
+                            placeholder="RFC123456XF"
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                    <MyTextInput
+                        {...getFieldProps('descripcion')}
+                        label="Descripcion"
+                        placeholder="Escriba una descripcion"
+                        className="form-control"
+                        disabled={state.modificar}
+                    />
+                </div>
 
-                <MyTextInput
-                    label="Descripcion"
-                    placeholder="Escriba una descripcion"
-                    className="form-control"
-                    disabled={state.modificar}
-                    {...getFieldProps('descripcion')}
-                />
+                <div className="row">
 
-                <MyTextInput
-                    label="Correo"
-                    placeholder="correo@correo.com"
-                    className="form-control"
-                    disabled={state.modificar}
-                    {...getFieldProps('correo')}
-                />
+                    <MyTextInput
+                        {...getFieldProps('calle')}
+                        label="Calle*"
+                        placeholder=""
+                        className="form-control"
+                        disabled={state.modificar}
+                    />
+                    <div className="col-md-4">
+                        <MyTextInput
+                            {...getFieldProps('no_ext')}
+                            value={values.no_ext !== 0 ? values.no_ext : ''}
+                            label="No. Ext*"
+                            placeholder=""
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
 
-                <MyTextInput
-                    label="Telefono"
-                    placeholder="255 ... ..."
-                    className="form-control"
-                    disabled={state.modificar}
-                    {...getFieldProps('telefono')}
-                />
+                    <div className="col-md-4">
+                        <MyTextInput
+                            {...getFieldProps('no_int')}
+                            value={values.no_int !== 0 ? values.no_int : ''}
+                            label="No. Int"
+                            placeholder=""
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
 
+                    <div className="col-md-4">
+                        <MyTextInput
+                            {...getFieldProps('codigo_postal')}
+                            label="C.P*"
+                            placeholder=""
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-6">
+                        <MyTextInput
+                            {...getFieldProps('colonia')}
+                            label="Colonia*"
+                            placeholder=""
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <MyTextInput
+                            {...getFieldProps('ciudad')}
+                            label="Ciudad*"
+                            placeholder=""
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col-md-4">
+                        <MyTextInput
+                            {...getFieldProps('municipio')}
+                            label="Municipio"
+                            placeholder=""
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                    <div className="col-md-4">
+                        <MyTextInput
+                            {...getFieldProps('estado')}
+                            label="Estado*"
+                            placeholder=""
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                    <div className="col-md-4">
+                        <MyTextInput
+                            {...getFieldProps('pais')}
+                            label="Pais*"
+                            placeholder=""
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                </div>
+
+                <div className="row">
+                    <div className="col-md-6">
+                        <MyTextInput
+                            {...getFieldProps('telefono')}
+                            label="Telefono"
+                            placeholder="255 ... ..."
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                    <div className="col-md-6">
+                        <MyTextInput
+                            {...getFieldProps('correo')}
+                            label="Correo"
+                            placeholder="correo@correo.com"
+                            className="form-control"
+                            disabled={state.modificar}
+                        />
+                    </div>
+                    <MyTextInput
+                        {...getFieldProps('pagina')}
+                        label="Pagina web"
+                        placeholder="https://mi_pagina.com"
+                        className="form-control"
+                        disabled={state.modificar}
+                    />
+                </div>
             </form>
             <div>
                 <h2>Almacenes</h2>

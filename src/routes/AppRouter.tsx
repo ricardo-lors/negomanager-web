@@ -9,6 +9,7 @@ import { endGetUsuario, revalidarSesion } from '../store/slices/usuario';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 import { comenzarCambioTema } from '../store/slices/ui';
+import { Registro } from '../components/auth/Registro';
 
 export const AppRouter = () => {
 
@@ -49,6 +50,12 @@ export const AppRouter = () => {
                 <Route path="/login" element={
                     <PublicRoute>
                         <Login />
+                    </PublicRoute>
+                } />
+
+                <Route path="/registro" element={
+                    <PublicRoute>
+                        <Registro />
                     </PublicRoute>
                 } />
 

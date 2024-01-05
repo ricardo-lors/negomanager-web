@@ -1,5 +1,5 @@
 import { Negocio } from "./Negocio.interface";
-import { Almacen } from "./Sucursal.interface";
+import { Almacen } from "./Almacen.interface";
 import { Usuario } from "./Usuario.interface";
 
 

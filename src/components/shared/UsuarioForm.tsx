@@ -1,4 +1,4 @@
-import { FormularioUsuario, Almacen, Usuario } from '../../interfaces';
+import { UsuarioNuevo, Almacen, Usuario } from '../../interfaces';
 import { FormikHelpers, useFormik } from 'formik';
 import { MyTextInput } from './MyTextInput';
 
@@ -13,7 +13,7 @@ import { obtenerAlmacen } from '../../store/slices/almacen';
 interface UsuarioFormProps {
     rol: string[];
     usuarioSelected?: Usuario;
-    onSubmit: (values: FormularioUsuario, formikHelpers: FormikHelpers<FormularioUsuario>) => void | Promise<any>
+    onSubmit: (values: UsuarioNuevo, formikHelpers: FormikHelpers<UsuarioNuevo>) => void | Promise<any>
 }
 
 export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps) => {
@@ -28,14 +28,14 @@ export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps
     }, [])
 
 
-    const { handleSubmit, errors, touched, getFieldProps, resetForm } = useFormik<FormularioUsuario>({
+    const { handleSubmit, errors, touched, getFieldProps, resetForm } = useFormik<UsuarioNuevo>({
         initialValues: usuarioSelected ? {
             nombre: usuarioSelected.nombre,
             correo: usuarioSelected.correo,
             telefono: usuarioSelected.telefono,
             contrasena: '',
             contrasenaRepeat: '',
-            sucursal: usuarioSelected.sucursal?.id,
+            almacen: usuarioSelected.almacen?.id,
             roles: [...rol]
         } : {
             nombre: '',
@@ -43,7 +43,7 @@ export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps
             telefono: '',
             contrasena: '',
             contrasenaRepeat: '',
-            sucursal: '',
+            almacen: '',
             roles: [...rol]
         },
         onSubmit: (values, elper) => {

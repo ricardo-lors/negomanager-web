@@ -1,4 +1,4 @@
-import { UsuarioConvert, FormularioUsuario, UsuarioLogin, Usuario, QueryParamsUsuario } from "../../../interfaces";
+import { UsuarioConvert, UsuarioNuevo, UsuarioLogin, Usuario, QueryParamsUsuario } from "../../../interfaces";
 import { servicesApi, servicesApiToken, servicesApiTokenFile } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setUsuario, endGetUsuario, removerUsuario } from "./usuarioSlice";
@@ -30,6 +30,31 @@ export const sesion = (credenciales: UsuarioLogin) => {
     }
 }
 
+export const registrarUsuario = (usuario: UsuarioNuevo) => {
+    return async (dispatch: AppDispatch) => {
+        try {
+            Swal.fire('Agregando el usuario nuevo');
+            Swal.showLoading();
+            const { data, status } = await servicesApiToken(`/auth/registro/usuario`, { method: 'POST', data: usuario });
+            Swal.close();
+            if (status === 201) {
+                localStorage.setItem('x-token', data.token);
+                const usuarioNuevo = UsuarioConvert.toUsuario(JSON.stringify(data));
+                dispatch(setUsuario(usuarioNuevo));
+            }
+        } catch (e) {
+            console.log(e);
+            if (e instanceof AxiosError) {
+                // ✅ TypeScript knows err is Error
+                Swal.fire('Error', `${e.response?.data.message}`, 'error');
+            } else {
+                console.log('Unexpected error', e);
+            }
+            return undefined;
+        }
+    }
+}
+
 export const revalidarSesion = () => {
     return async (dispatch: AppDispatch) => {
         // dispatch(startGetUsuario());
@@ -54,7 +79,7 @@ export const removerSesion = () => {
     }
 };
 
-export const crearUsuario = async (usuario: FormularioUsuario): Promise<Usuario | undefined> => {
+export const crearUsuario = async (usuario: UsuarioNuevo): Promise<Usuario | undefined> => {
     try {
         Swal.fire('Agregando el usuario nuevo');
         Swal.showLoading();
@@ -74,7 +99,7 @@ export const crearUsuario = async (usuario: FormularioUsuario): Promise<Usuario 
 }
 
 
-export const actualizarUsuario = async (id: string, usuario: FormularioUsuario): Promise<Usuario | undefined> => {
+export const actualizarUsuario = async (id: string, usuario: UsuarioNuevo): Promise<Usuario | undefined> => {
     try {
         Swal.fire('Guardando cambios');
         Swal.showLoading();

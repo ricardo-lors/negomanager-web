@@ -1,13 +1,13 @@
 import { AxiosError } from "axios";
 import Swal from "sweetalert2";
-import { NegocioConvert, NuevoNegocio } from "../../../interfaces";
+import { Negocio, NegocioConvert, NuevoNegocio } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
 import { setNegocio, setNegocios, startGetNegocio } from "./negocioSlice";
 import { revalidarSesion } from "../usuario";
 
 
-export const crearNegocio = (negocio: NuevoNegocio) => {
+export const crearNegocio = (negocio: Negocio) => {
     return async (dispatch: AppDispatch) => {
         try {
             const { data, status } = await servicesApiToken(`/negocios`, { method: 'POST', data: negocio });

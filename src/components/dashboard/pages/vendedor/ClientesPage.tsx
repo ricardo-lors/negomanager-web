@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { FormularioUsuario, Almacen, Usuario } from "../../../../interfaces";
+import { UsuarioNuevo, Almacen, Usuario } from "../../../../interfaces";
 import * as Yup from 'yup';
 import { actualizarUsuario, buscarUsuarios, crearUsuario } from "../../../../store/slices/usuario";
 import { useFormik } from "formik";
@@ -30,14 +30,14 @@ export const ClientesPage = () => {
         dispatch(obtenerAlmacen({}));
     }, [usuario]);
 
-    const { handleSubmit, values, errors, touched, getFieldProps, resetForm, setValues } = useFormik<FormularioUsuario>({
+    const { handleSubmit, values, errors, touched, getFieldProps, resetForm, setValues } = useFormik<UsuarioNuevo>({
         initialValues: {
             nombre: '',
             correo: '',
             telefono: '',
             contrasena: '',
             contrasenaRepeat: '',
-            sucursal: '',
+            almacen: '',
             roles: ['cliente']
         },
         onSubmit: async (values) => {
@@ -49,7 +49,7 @@ export const ClientesPage = () => {
                     correo: values.correo,
                     telefono: values.telefono,
                     contrasena: values.contrasena,
-                    sucursal: values.sucursal,
+                    almacen: values.almacen,
                     roles: values.roles
                 });
                 nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
@@ -59,7 +59,7 @@ export const ClientesPage = () => {
                     correo: values.correo,
                     telefono: values.telefono,
                     contrasena: values.contrasena,
-                    sucursal: values.sucursal,
+                    almacen: values.almacen,
                     roles: values.roles
                 });
                 usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
@@ -95,7 +95,7 @@ export const ClientesPage = () => {
                 header: () => <span>Telefono</span>,
             }, {
                 id: 'sucursal',
-                cell: info => info.row.original.sucursal?.nombre,
+                cell: info => info.row.original.almacen?.nombre,
                 header: () => <span>Telefono</span>,
             },
         ], [usuarios]
@@ -164,7 +164,7 @@ export const ClientesPage = () => {
                                     telefono: us.telefono,
                                     contrasena: '',
                                     contrasenaRepeat: '',
-                                    sucursal: us.sucursal ? us.sucursal.id : '',
+                                    almacen: us.almacen ? us.almacen.id : '',
                                     roles: ['cliente']
                                 });
                             } else {
@@ -175,7 +175,7 @@ export const ClientesPage = () => {
                                     telefono: '',
                                     contrasena: '',
                                     contrasenaRepeat: '',
-                                    sucursal: '',
+                                    almacen: '',
                                     roles: ['cliente']
                                 });
                             }

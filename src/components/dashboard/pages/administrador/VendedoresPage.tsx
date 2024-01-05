@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { FormularioUsuario, Usuario } from "../../../../interfaces";
+import { UsuarioNuevo, Usuario } from "../../../../interfaces";
 import * as Yup from 'yup';
 import { actualizarUsuario, buscarUsuarios, crearUsuario } from "../../../../store/slices/usuario";
 import { useFormik } from "formik";
@@ -33,14 +33,14 @@ export const VendedoresPage = () => {
         dispatch(obtenerAlmacen({}));
     }, [dispatch, usuario]);
 
-    const { handleSubmit, getFieldProps, resetForm, setValues } = useFormik<FormularioUsuario>({
+    const { handleSubmit, getFieldProps, resetForm, setValues } = useFormik<UsuarioNuevo>({
         initialValues: {
             nombre: '',
             correo: '',
             telefono: '',
             contrasena: '',
             contrasenaRepeat: '',
-            sucursal: '',
+            almacen: '',
             permisos: [],
             roles: ['vendedor']
         },
@@ -53,7 +53,7 @@ export const VendedoresPage = () => {
                     correo: values.correo,
                     telefono: values.telefono,
                     contrasena: values.contrasena,
-                    sucursal: values.sucursal,
+                    almacen: values.almacen,
                     permisos: values.permisos,
                     roles: values.roles
                 });
@@ -64,7 +64,7 @@ export const VendedoresPage = () => {
                     correo: values.correo,
                     telefono: values.telefono,
                     contrasena: values.contrasena,
-                    sucursal: values.sucursal,
+                    almacen: values.almacen,
                     permisos: values.permisos,
                     roles: values.roles
                 });
@@ -101,7 +101,7 @@ export const VendedoresPage = () => {
                 header: () => <span>Telefono</span>,
             }, {
                 id: 'sucursal',
-                cell: info => info.row.original.sucursal?.nombre,
+                cell: info => info.row.original.almacen?.nombre,
                 header: () => <span>Sucursal</span>,
             },
         ], [usuarios]
@@ -200,7 +200,7 @@ export const VendedoresPage = () => {
                                     telefono: us.telefono,
                                     contrasena: '',
                                     contrasenaRepeat: '',
-                                    sucursal: us.sucursal ? us.sucursal.id : '',
+                                    almacen: us.almacen ? us.almacen.id : '',
                                     permisos: us.permisos,
                                     roles: ['vendedor']
                                 });
@@ -212,7 +212,7 @@ export const VendedoresPage = () => {
                                     telefono: '',
                                     contrasena: '',
                                     contrasenaRepeat: '',
-                                    sucursal: '',
+                                    almacen: '',
                                     permisos: [],
                                     roles: ['vendedor']
                                 });
