@@ -1,8 +1,3 @@
-// To parse this data:
-//
-//   import { Convert, Sucursal } from "./file";
-//
-//   const sucursal = Convert.toSucursal(json);
 
 import { Negocio } from "./Negocio.interface";
 
@@ -15,12 +10,12 @@ interface AlmacenBasica {
 }
 
 export interface Almacen extends AlmacenBasica {
-    caja: number;
+    dinero: number;
     negocio?: Negocio;
 }
 
 export interface NuevoAlmacen extends AlmacenBasica {
-    caja?: number,
+    dinero?: number,
     negocio?: string;
 }
 

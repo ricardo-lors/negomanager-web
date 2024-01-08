@@ -9,13 +9,13 @@ import { Tabla } from "../../../shared/Tabla";
 import { RootState } from "../../../../store";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAppDispatch } from "../../../../hooks";
-import { obtenerAlmacen } from "../../../../store/slices/almacen";
+import { obtenerAlmacenes } from "../../../../store/slices/almacen";
 
 export const ClientesPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
@@ -27,7 +27,6 @@ export const ClientesPage = () => {
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
-        dispatch(obtenerAlmacen({}));
     }, [usuario]);
 
     const { handleSubmit, values, errors, touched, getFieldProps, resetForm, setValues } = useFormik<UsuarioNuevo>({

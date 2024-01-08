@@ -26,11 +26,14 @@ export const almacenSlice = createSlice({
         agregarAlmacen: (state, actions: PayloadAction<Almacen>) => {
             state.almacenes = [actions.payload, ...state.almacenes.filter(sc => sc.id !== actions.payload.id)];
             // setSucursales([sucursalActualizada, ...sucursales.filter(sc => sc.id !== sucursalActualizada?.id)]);
+        },
+        endCargandoAlmacen: (state) => {
+            state.cargando = false;
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { startGetAlmacenes, setAlmacenes, agregarAlmacen } = almacenSlice.actions
+export const { startGetAlmacenes, setAlmacenes, agregarAlmacen, endCargandoAlmacen } = almacenSlice.actions
 
 // export default provedorSlice.reducer

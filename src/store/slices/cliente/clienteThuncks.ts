@@ -6,7 +6,6 @@ import { setClientes, startGetClientes } from "./clienteSlice";
 
 export const obtenerClientes = (negocioid: string) => {
     return async (dispatch: AppDispatch) => {
-        dispatch(startGetClientes());
         const { data } = await servicesApiToken(`/cliente/negocio/${negocioid}`, {});
         if (data.ok) {
             const clientes = ClienteConvert.toClienteList(JSON.stringify(data.data));

@@ -6,7 +6,6 @@ import { setCategorias, startGetCategorias } from "./categoriaSlice";
 
 export const obtenerCategorias = (negocioid: string) => {
     return async (dispatch: AppDispatch) => {
-        dispatch(startGetCategorias());
         try {
             const { data } = await servicesApiToken(`/categorias/${negocioid}`, {});
             dispatch(setCategorias(data));

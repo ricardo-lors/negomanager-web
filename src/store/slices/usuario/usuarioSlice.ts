@@ -4,17 +4,16 @@ import { Usuario } from '../../../interfaces'
 
 export interface usuarioState {
     cargando: boolean,
-    logueado: boolean,
-    usuario?: Usuario
+    usuarios: Usuario[]
 }
 
 const initialState: usuarioState = {
     cargando: true,
-    logueado: false,
+    usuarios: []
 }
 
 export const usuarioSlice = createSlice({
-    name: 'usuario',
+    name: 'usuarios',
     initialState,
     reducers: {
         startGetUsuario: (state) => {
@@ -22,25 +21,23 @@ export const usuarioSlice = createSlice({
         },
         setUsuario: (state, actions: PayloadAction<Usuario>) => {
             state.cargando = false;
-            state.logueado = true;
-            state.usuario = actions.payload;
+            state.usuarios = [actions.payload, ...state.usuarios];
+        },
+        setUsuarios: (state, actions: PayloadAction<Usuario[]>) => {
+            state.cargando = false;
+            state.usuarios = actions.payload;
         },
         endGetUsuario: (state) => {
             state.cargando = false;
         },
-        setUsuarios: (state, actions: PayloadAction<Usuario[]>) => {
-            state.cargando = false;
-            state.logueado = true;
-        },
-        removerUsuario: (state) => {
+        removerSession: (state) => {
             state.cargando = initialState.cargando;
-            state.logueado = initialState.logueado;
-            state.usuario = initialState.usuario;
+            state.usuarios = initialState.usuarios;
         },
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { startGetUsuario, setUsuario, endGetUsuario, setUsuarios, removerUsuario } = usuarioSlice.actions
+export const { startGetUsuario, setUsuario, endGetUsuario } = usuarioSlice.actions
 
 // export default usuarioSlice.reducer

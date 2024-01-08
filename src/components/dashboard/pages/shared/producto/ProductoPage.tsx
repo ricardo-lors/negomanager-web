@@ -20,7 +20,7 @@ export const ProductoPage = () => {
     pageStyle: ''
   });
 
-  const { usuario } = useSelector((state: RootState) => state.usuario);
+  const { usuario } = useSelector((state: RootState) => state.sesion);
   const { productos } = useSelector((state: RootState) => state.producto);
 
   useEffect(() => {

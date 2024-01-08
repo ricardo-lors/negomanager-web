@@ -16,7 +16,7 @@ export const HomePage = () => {
 
     const navigate = useNavigate();
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
 
     useEffect(() => {

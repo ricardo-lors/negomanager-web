@@ -9,14 +9,13 @@ import administradorRoutes from "../../resource/administrador.json";
 import vendedorRoutes from "../../resource/vendedor.json"
 import { useAppDispatch } from '../../hooks';
 import { startOpenAndCloseMenu } from '../../store/slices/ui';
-import { removerSesion } from '../../store/slices/usuario';
+// import { removerSesion } from '../../store/slices/usuario';
 
 export const Sidebar = () => {
 
     const dispatch = useAppDispatch();
 
-    const { negocio } = useSelector((state: RootState) => state.negocio);
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const { openMenu } = useSelector((state: RootState) => state.ui);
 
     const handleMenu = () => {
@@ -25,7 +24,7 @@ export const Sidebar = () => {
 
     const handleCerrarSesion = () => {
         dispatch(startOpenAndCloseMenu(!openMenu));
-        dispatch(removerSesion());
+        // dispatch(removerSesion());
         // navigate("/login", {
         //     replace: true
         // })

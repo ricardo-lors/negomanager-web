@@ -18,7 +18,7 @@ export const AgregarModificarProductoPage = () => {
     const navigate = useNavigate();
     let { id } = useParams();
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const { provedores } = useSelector((state: RootState) => state.provedor);
     const { categorias } = useSelector((state: RootState) => state.categoria);
 

@@ -18,7 +18,6 @@ export const crearProvedor = (provedor: Provedor) => {
 
 export const obtenerProvedoresNegocio = (negocioid: string) => {
     return async (dispatch: AppDispatch) => {
-        dispatch(startGetProvedores());
         try {
             const { data } = await servicesApiToken(`/provedores/${negocioid}`, {});
             dispatch(setProvedores(data));

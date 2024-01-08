@@ -8,7 +8,7 @@ export interface provedorState {
 }
 
 const initialState: provedorState = {
-    cargando: false,
+    cargando: true,
     provedores: []
 }
 
@@ -22,11 +22,14 @@ export const provedorSlice = createSlice({
         setProvedores: (state, actions: PayloadAction<Provedor[]>) => {
             state.cargando = false;
             state.provedores = actions.payload;
+        },
+        endCargandoProvedores: (state) => {
+            state.cargando = false;
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { startGetProvedores, setProvedores } = provedorSlice.actions
+export const { startGetProvedores, setProvedores, endCargandoProvedores } = provedorSlice.actions
 
 // export default provedorSlice.reducer

@@ -9,7 +9,7 @@ interface props {
 
 export const PublicRoute = ({ children }: props) => {
 
-    const { logueado } = useSelector((state: RootState) => state.usuario);
+    const { logueado } = useSelector((state: RootState) => state.sesion);
     return (
         <>
             {

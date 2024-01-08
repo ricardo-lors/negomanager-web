@@ -12,7 +12,7 @@ import { NavLink } from 'react-router-dom';
 
 export const VentasPage = () => {
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const [movimientos, setMovimientos] = useState<Movimiento[]>([]);
 
     useEffect(() => {

@@ -11,13 +11,13 @@ import { ColumnDef } from "@tanstack/react-table";
 import { useAppDispatch } from "../../../../hooks";
 
 import permisos from "../../../../resource/permisos.json";
-import { obtenerAlmacen } from "../../../../store/slices/almacen";
+import { obtenerAlmacenes } from "../../../../store/slices/almacen";
 
 export const VendedoresPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const { almacenes } = useSelector((state: RootState) => state.almacen);
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
@@ -30,7 +30,6 @@ export const VendedoresPage = () => {
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
-        dispatch(obtenerAlmacen({}));
     }, [dispatch, usuario]);
 
     const { handleSubmit, getFieldProps, resetForm, setValues } = useFormik<UsuarioNuevo>({

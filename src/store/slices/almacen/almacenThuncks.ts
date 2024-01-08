@@ -2,7 +2,7 @@ import Swal from "sweetalert2";
 import { NuevoAlmacen, Almacen, SucursalParams } from "../../../interfaces";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
-import { setAlmacenes, } from "./almacenSlice";
+import { setAlmacenes, startGetAlmacenes, } from "./almacenSlice";
 
 export const crearAlmacen = async (almacen: NuevoAlmacen): Promise<Almacen | undefined> => {
     try {
@@ -19,14 +19,12 @@ export const crearAlmacen = async (almacen: NuevoAlmacen): Promise<Almacen | und
     }
 }
 
-export const obtenerAlmacen = (sucursalParams: SucursalParams) => {
+export const obtenerAlmacenes = (sucursalParams: SucursalParams) => {
     return async (dispatch: AppDispatch) => {
         try {
             const { status, data } = await servicesApiToken(`/almacenes`, { params: sucursalParams });
             if (status === 201) return dispatch(setAlmacenes([]));
             dispatch(setAlmacenes(data));
-            // if (status === 201) return undefined;
-            // return data;
         } catch (error) {
             console.log(error);
             Swal.fire('Error', `${error}`, 'error');

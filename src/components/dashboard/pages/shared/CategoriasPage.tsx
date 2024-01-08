@@ -13,7 +13,7 @@ export const CategoriasPage = () => {
 
     const dispatch = useAppDispatch();
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const { categorias } = useSelector((state: RootState) => state.categoria);
 
     // useEffect(() => {

@@ -1,7 +1,7 @@
 import { UsuarioConvert, UsuarioNuevo, UsuarioLogin, Usuario, QueryParamsUsuario } from "../../../interfaces";
 import { servicesApi, servicesApiToken, servicesApiTokenFile } from "../../../services/services.api";
 import { AppDispatch } from "../../store";
-import { setUsuario, endGetUsuario, removerUsuario } from "./usuarioSlice";
+import { setUsuario, endGetUsuario } from "./usuarioSlice";
 import Swal from 'sweetalert2'
 import { AxiosError } from "axios";
 
@@ -54,30 +54,6 @@ export const registrarUsuario = (usuario: UsuarioNuevo) => {
         }
     }
 }
-
-export const revalidarSesion = () => {
-    return async (dispatch: AppDispatch) => {
-        // dispatch(startGetUsuario());
-        try {
-            const { data } = await servicesApiToken(`/auth/check-status`, {});
-            localStorage.setItem('x-token', data.token);
-            const usuario = UsuarioConvert.toUsuario(JSON.stringify(data));
-            dispatch(setUsuario(usuario));
-        } catch (error) {
-            console.log(error);
-            Swal.fire('Error', "Sesion cerrada, vuelva a iniciar", 'info');
-            localStorage.removeItem('x-token');
-            dispatch(endGetUsuario());
-        }
-    }
-};
-
-export const removerSesion = () => {
-    return async (dispatch: AppDispatch) => {
-        localStorage.removeItem('x-token');
-        dispatch(removerUsuario());
-    }
-};
 
 export const crearUsuario = async (usuario: UsuarioNuevo): Promise<Usuario | undefined> => {
     try {

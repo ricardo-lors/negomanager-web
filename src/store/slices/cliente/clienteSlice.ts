@@ -8,7 +8,7 @@ export interface clienteState {
 }
 
 const initialState: clienteState = {
-    cargando: false,
+    cargando: true,
     clientes: []
 }
 
@@ -22,11 +22,14 @@ export const clienteSlice = createSlice({
         setClientes: (state, action: PayloadAction<Cliente[]>) => {
             state.cargando = false;
             state.clientes = action.payload;
+        },
+        endCargandoClientes: (state) => {
+            state.cargando = false;
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { startGetClientes, setClientes } = clienteSlice.actions
+export const { startGetClientes, setClientes, endCargandoClientes } = clienteSlice.actions
 
 // export default clienteSlice.reducer

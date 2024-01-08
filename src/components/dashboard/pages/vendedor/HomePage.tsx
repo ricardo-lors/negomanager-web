@@ -15,7 +15,7 @@ import { ModalAsignarCliente } from "./modals/ModalAsignarCliente";
 import { Tooltip } from 'react-tooltip'
 import { ModalEntradaSalidaDinero } from "./modals/ModalEntradaSalidaDinero";
 import { crearMovimiento } from "../../../../store/slices/movimiento";
-import { revalidarSesion } from "../../../../store/slices/usuario";
+import { revalidarSesion } from "../../../../store/slices/session";
 import { locales } from "moment";
 import { ModalBuscarProducto } from "./modals/ModalBuscarProducto";
 import { QrBarcodeScanner } from "../../../shared/QrBarcodeScanner";
@@ -26,7 +26,7 @@ export const HomePage = () => {
 
   const ticket = useRef<HTMLDivElement>(null);
 
-  const { usuario } = useSelector((state: RootState) => state.usuario);
+  const { usuario } = useSelector((state: RootState) => state.sesion);
   const { detalles, total, cliente } = useSelector((state: RootState) => state.venta);
 
   const [openModals, setOpenModals] = useState({

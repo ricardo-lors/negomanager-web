@@ -5,11 +5,12 @@ import { Login } from '../components/auth/Login';
 import { DashboardPage } from '../components/dashboard/DashboardPage';
 import { useAppDispatch } from '../hooks';
 import { RootState } from '../store';
-import { endGetUsuario, revalidarSesion } from '../store/slices/usuario';
+import { revalidarSesion } from '../store/slices/session';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 import { comenzarCambioTema } from '../store/slices/ui';
 import { Registro } from '../components/auth/Registro';
+import { endGetUsuario } from '../store/slices/usuario';
 
 export const AppRouter = () => {
 
@@ -19,7 +20,7 @@ export const AppRouter = () => {
 
     useEffect(() => {
         const theme = localStorage.getItem('theme');
-        
+
         if (theme === 'dark') {
             dispatch(comenzarCambioTema(true));
         } else {

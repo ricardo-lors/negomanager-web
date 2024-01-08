@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom"
-import { NegocioPage } from "../shared/NegocioPage"
+import { NegocioPage } from "../negocio/NegocioPage"
 import { HomePage } from "./HomePage"
 import { VendedoresPage } from "./VendedoresPage"
 import { ProvedoresPage } from "../shared/ProvedoresPage"
@@ -12,10 +12,10 @@ import { ProductoRouter } from "../shared/producto/ProductoRouter"
 
 export const AdministradorRouter = () => {
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const { almacenes } = useSelector((state: RootState) => state.almacen);
 
-    if (!usuario?.negocio || almacenes.length === 0) {
+    if (!usuario?.negocio) {
         return (
             <Routes>
                 <Route path='/administrador/negocio' element={<NegocioPage />} />

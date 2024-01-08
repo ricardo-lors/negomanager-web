@@ -5,11 +5,10 @@ import { Negocio } from '../../../interfaces'
 interface negocioState {
     cargando: boolean;
     negocios: Negocio[];
-    negocio?: Negocio;
 }
 
 const initialState: negocioState = {
-    cargando: false,
+    cargando: true,
     negocios: [],
 }
 
@@ -20,10 +19,6 @@ export const negocioSlice = createSlice({
         startGetNegocio: (state) => {
             state.cargando = true;
         },
-        setNegocio: (state, action: PayloadAction<Negocio>) => {
-            state.cargando = false;
-            state.negocio = action.payload;
-        },
         setNegocios: (state, action: PayloadAction<Negocio[]>) => {
             state.cargando = false;
             state.negocios = action.payload;
@@ -31,13 +26,14 @@ export const negocioSlice = createSlice({
         removerNegocio: (state) => {
             state.cargando = initialState.cargando;
             state.negocios = initialState.negocios;
-            state.negocio = initialState.negocio;
-
         },
+        endCargandoNegocios: (state) => {
+            state.cargando = false;
+        }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { startGetNegocio, setNegocio, setNegocios, removerNegocio } = negocioSlice.actions
+export const { startGetNegocio, setNegocios, removerNegocio, endCargandoNegocios } = negocioSlice.actions
 
 // export default templateSlice.reducer

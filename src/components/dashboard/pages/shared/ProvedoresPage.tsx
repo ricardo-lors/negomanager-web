@@ -13,7 +13,7 @@ export const ProvedoresPage = () => {
 
   const dispatch = useAppDispatch();
 
-  const { usuario } = useSelector((state: RootState) => state.usuario);
+  const { usuario } = useSelector((state: RootState) => state.sesion);
   const { provedores } = useSelector((state: RootState) => state.provedor);
 
   const { handleSubmit, errors, touched, getFieldProps } = useFormik<Provedor>({

@@ -8,7 +8,7 @@ export interface categoriaState {
 }
 
 const initialState: categoriaState = {
-    cargando: false,
+    cargando: true,
     categorias: []
 }
 
@@ -22,11 +22,14 @@ export const categoriaSlice = createSlice({
         setCategorias: (state, actions: PayloadAction<Categoria[]>) => {
             state.cargando = false;
             state.categorias = actions.payload;
+        },
+        endCargandoCategorias: (state) => {
+            state.cargando = false;
         }
     },
 })
 
 // Action creators are generated for each case reducer function
-export const { startGetCategorias, setCategorias } = categoriaSlice.actions
+export const { startGetCategorias, setCategorias, endCargandoCategorias } = categoriaSlice.actions
 
 // export default categoriaSlice.reducer

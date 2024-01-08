@@ -8,7 +8,7 @@ import { MySelect } from './MySelect';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useAppDispatch } from '../../hooks';
-import { obtenerAlmacen } from '../../store/slices/almacen';
+import { obtenerAlmacenes } from '../../store/slices/almacen';
 
 interface UsuarioFormProps {
     rol: string[];
@@ -20,12 +20,12 @@ export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps
 
     const dispatch = useAppDispatch();
 
-    const { usuario } = useSelector((state: RootState) => state.usuario);
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const { almacenes } = useSelector((state: RootState) => state.almacen);
 
-    useEffect(() => {
-        dispatch(obtenerAlmacen({}));
-    }, [])
+    // useEffect(() => {
+    //     dispatch(obtenerAlmacen({}));
+    // }, [])
 
 
     const { handleSubmit, errors, touched, getFieldProps, resetForm } = useFormik<UsuarioNuevo>({

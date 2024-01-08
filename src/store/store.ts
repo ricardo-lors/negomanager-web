@@ -11,10 +11,11 @@ import { uiSlice } from './slices/ui';
 import { usuarioSlice } from './slices/usuario';
 import { ventaSlice } from './slices/venta';
 import { almacenSlice } from './slices/almacen';
+import { sesionSlice } from './slices/session';
 
 export const store = configureStore({
     reducer: {
-        counter: counterSlice.reducer,
+        sesion: sesionSlice.reducer,
         usuario: usuarioSlice.reducer,
         negocio: negocioSlice.reducer,
         almacen: almacenSlice.reducer,
@@ -24,6 +25,7 @@ export const store = configureStore({
         provedor: provedorSlice.reducer,
         venta: ventaSlice.reducer,
         ui: uiSlice.reducer,
+        counter: counterSlice.reducer,
         // provedor: provedor
     }
 });
