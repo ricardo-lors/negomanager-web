@@ -73,7 +73,7 @@ export const ModalBuscarProducto = () => {
                                     id: prod.id!,
                                     codigo: prod.codigo,
                                     titulo: prod.titulo,
-                                    inventario: prod.inventario,
+                                    inventario: prod.control,
                                     precio: prod.precio
                                 }));
                             }

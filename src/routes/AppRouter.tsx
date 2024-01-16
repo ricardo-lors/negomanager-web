@@ -5,18 +5,17 @@ import { Login } from '../components/auth/Login';
 import { DashboardPage } from '../components/dashboard/DashboardPage';
 import { useAppDispatch } from '../hooks';
 import { RootState } from '../store';
-import { revalidarSesion } from '../store/slices/session';
+import { finCargandoSesion, revalidarSesion } from '../store/slices/session';
 import { PrivateRoute } from './PrivateRoute';
 import { PublicRoute } from './PublicRoute';
 import { comenzarCambioTema } from '../store/slices/ui';
 import { Registro } from '../components/auth/Registro';
-import { endGetUsuario } from '../store/slices/usuario';
 
 export const AppRouter = () => {
 
     const dispatch = useAppDispatch();
 
-    const { cargando } = useSelector((state: RootState) => state.usuario);
+    const { cargando } = useSelector((state: RootState) => state.sesion);
 
     useEffect(() => {
         const theme = localStorage.getItem('theme');
@@ -26,13 +25,11 @@ export const AppRouter = () => {
         } else {
             dispatch(comenzarCambioTema(false));
         }
-        // const html = document.getElementById('htmlprin');
-        // html?.setAttribute('data-bs-theme', `${theme}`);
 
         if (localStorage.getItem('x-token')) {
             dispatch(revalidarSesion());
         } else {
-            dispatch(endGetUsuario());
+            dispatch(finCargandoSesion());
         }
     }, [dispatch, cargando]);
 
@@ -40,6 +37,7 @@ export const AppRouter = () => {
     if (cargando) {
         return <div className='d-flex justify-content-center align-items-center vh-100'>
             <div className="spinner-border" role="status">
+                rout
                 <span className="visually-hidden">Loading...</span>
             </div>
         </div>

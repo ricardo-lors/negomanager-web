@@ -1,6 +1,7 @@
-import { useEffect, useState, useMemo } from "react";
+
+import { useEffect, useState, useMemo, SyntheticEvent, ChangeEvent } from "react";
 import { useSelector } from "react-redux";
-import { UsuarioNuevo, Usuario } from "../../../../interfaces";
+import { UsuarioNuevo, Almacen, Usuario } from "../../../../interfaces";
 import * as Yup from 'yup';
 import { actualizarUsuario, buscarUsuarios, crearUsuario } from "../../../../store/slices/usuario";
 import { useFormik } from "formik";
@@ -9,16 +10,19 @@ import { Tabla } from "../../../shared/Tabla";
 import { RootState } from "../../../../store";
 import { ColumnDef } from "@tanstack/react-table";
 import { useAppDispatch } from "../../../../hooks";
-
-import permisos from "../../../../resource/permisos.json";
 import { obtenerAlmacenes } from "../../../../store/slices/almacen";
 
-export const VendedoresPage = () => {
+
+import permisos from "../../../../resource/permisos.json";
+import { obtenerCajas } from "../../../../store/slices/caja";
+
+export const UsuariosPage = () => {
 
     const dispatch = useAppDispatch();
 
     const { usuario } = useSelector((state: RootState) => state.sesion);
     const { almacenes } = useSelector((state: RootState) => state.almacen);
+    const { cajas } = useSelector((state: RootState) => state.caja);
 
     const [usuarios, setUsuarios] = useState<Usuario[]>([]);
 
@@ -26,14 +30,14 @@ export const VendedoresPage = () => {
 
     useEffect(() => {
         buscarUsuarios({
-            // roles: ['{vendedor}']
-            rol: 'vendedor'
+            // rol: 'vendedor'
+            // rol: ''
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
     }, [dispatch, usuario]);
 
-    const { handleSubmit, getFieldProps, resetForm, setValues } = useFormik<UsuarioNuevo>({
+    const { handleSubmit, getFieldProps, resetForm, setValues, setFieldValue, values } = useFormik<UsuarioNuevo>({
         initialValues: {
             nombre: '',
             correo: '',
@@ -42,9 +46,12 @@ export const VendedoresPage = () => {
             contrasenaRepeat: '',
             almacen: '',
             permisos: [],
-            rol: 'vendedor'
+            caja: '',
+            // Administrador, (gerente, encargado),  Cajero, Vendedor
+            rol: ''
         },
         onSubmit: async (values) => {
+            console.log(values);
             // onSubmit(values, elper);
 
             if (!usuarioSeleccionado) {
@@ -58,19 +65,20 @@ export const VendedoresPage = () => {
                     rol: values.rol
                 });
                 nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
-            } else {
-                const usuarioActualizado = await actualizarUsuario(usuarioSeleccionado.id!, {
-                    nombre: values.nombre,
-                    correo: values.correo,
-                    telefono: values.telefono,
-                    contrasena: values.contrasena,
-                    almacen: values.almacen,
-                    permisos: values.permisos,
-                    rol: values.rol
-                });
-                usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
             }
-            resetForm();
+            // else {
+            //     const usuarioActualizado = await actualizarUsuario(usuarioSeleccionado.id!, {
+            //         nombre: values.nombre,
+            //         correo: values.correo,
+            //         telefono: values.telefono,
+            //         contrasena: values.contrasena,
+            //         almacen: values.almacen,
+            //         permisos: values.permisos,
+            //         roles: values.roles
+            //     });
+            //     usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
+            // }
+            // resetForm();
         },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Requerido'),
@@ -109,15 +117,14 @@ export const VendedoresPage = () => {
 
     return (
         <div className="row">
-            <div className="col-3 border-end vh-100">
+            <div className="col-4 border-end vh-100">
                 <div className="text-center">
-                    <h2>Vendedores</h2>
+                    <h2>Usuarios</h2>
                 </div>
                 <form className="container mt-2" noValidate onSubmit={handleSubmit}>
-
                     <MyTextInput
                         label="Nombre"
-                        placeholder='Nombre de la persona'
+                        placeholder='Nombre completo'
                         className="form-control"
                         {...getFieldProps('nombre')}
                     />
@@ -136,11 +143,31 @@ export const VendedoresPage = () => {
                         {...getFieldProps('telefono')}
                     />
                     {
+                        usuario?.rol === 'administrador' && <MySelect
+                            {...getFieldProps('rol')}
+                            label="Rol"
+                            className="form-control"
+                        >
+                            <option value={''}>Seleccione un Rol</option>
+                            {
+                                ['gerente', 'cajero', 'vendedor'].map(opt => (
+                                    <option key={opt} value={opt}>{opt}</option>
+                                ))
+                            }
+                        </MySelect>
+                    }
+                    {
                         usuario?.rol === 'administrador' &&
                         < MySelect
-                            label="Sucursal"
+                            {...getFieldProps('almacen')}
+                            label="Almacen"
                             className="form-control"
-                            {...getFieldProps('sucursal')}
+                            onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+                                dispatch(obtenerCajas({
+                                    almacen: event.target.value
+                                }));
+                                setFieldValue('almacen', event.target.value)
+                            }}
                         >
                             <option value="">Seleccione una Sucursal</option>
                             {
@@ -152,11 +179,26 @@ export const VendedoresPage = () => {
 
                     }
                     {
+                        <MySelect
+                            {...getFieldProps('caja')}
+                            label="Caja"
+                            className="form-control"
+                            disabled={values.rol === 'gerente'}
+                        >
+                            <option value={''}>Seleccione una Caja</option>
+                            {
+                                cajas.map(opt => (
+                                    <option key={opt.id} value={opt.id}>{opt.nombre}</option>
+                                ))
+                            }
+                        </MySelect>
+                    }
+                    {
                         usuario?.rol === 'administrador' && <MySelect
+                            {...getFieldProps('permisos')}
                             label="Permisos"
                             className="form-control"
                             multiple={true}
-                            {...getFieldProps('permisos')}
                         >
                             {
                                 permisos?.map(opt => (
@@ -184,7 +226,7 @@ export const VendedoresPage = () => {
 
                 </form>
             </div>
-            <div className="col-9">
+            <div className="col-8">
                 <Tabla
                     data={usuarios}
                     columns={columnasUsuarios}
@@ -194,28 +236,30 @@ export const VendedoresPage = () => {
                             if (us.id !== usuarioSeleccionado?.id) {
                                 setUsuarioSeleccionado(us);
                                 console.log(us)
-                                // setValues({
-                                //     nombre: us.nombre,
-                                //     correo: us.correo,
-                                //     telefono: us.telefono,
-                                //     contrasena: '',
-                                //     contrasenaRepeat: '',
-                                //     almacen: us.almacen ? us.almacen.id : '',
-                                //     permisos: us.permisos,
-                                //     roles: ['vendedor']
-                                // });
+                                setValues({
+                                    nombre: us.nombre,
+                                    correo: us.correo,
+                                    telefono: us.telefono,
+                                    contrasena: '',
+                                    contrasenaRepeat: '',
+                                    almacen: us.almacen ? us.almacen.id : '',
+                                    permisos: us.permisos,
+                                    rol: us.rol
+                                    // roles: ['vendedor']
+                                });
                             } else {
                                 setUsuarioSeleccionado(undefined);
-                                // setValues({
-                                //     nombre: '',
-                                //     correo: '',
-                                //     telefono: '',
-                                //     contrasena: '',
-                                //     contrasenaRepeat: '',
-                                //     almacen: '',
-                                //     permisos: [],
-                                //     roles: ['vendedor'
-                                // });
+                                setValues({
+                                    nombre: '',
+                                    correo: '',
+                                    telefono: '',
+                                    contrasena: '',
+                                    contrasenaRepeat: '',
+                                    almacen: '',
+                                    permisos: [],
+                                    rol: 'administrador'
+                                    // roles: ['vendedor']
+                                });
                             }
                         }
                     }

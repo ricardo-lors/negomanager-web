@@ -1,22 +1,26 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-import { FormularioProducto } from '../../../../../interfaces';
+import { Almacen, FormularioProducto } from '../../../../../interfaces';
 import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../../store/slices/producto';
 import { useAppDispatch } from '../../../../../hooks';
 import { RootState, formatearNumero } from '../../../../../store';
 import { MyCheckbox, MySelect, MyTextInput } from '../../../../shared';
 import { Tooltip } from 'react-tooltip';
+import { handleAgreggrarProducto } from '../../../../../store/slices/inventario';
 
 export const AgregarModificarProductoPage = () => {
 
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
     let { id } = useParams();
+
+    const location = useLocation();
+    const almacen = location.state as Almacen;
 
     const { usuario } = useSelector((state: RootState) => state.sesion);
     const { provedores } = useSelector((state: RootState) => state.provedor);
@@ -26,35 +30,36 @@ export const AgregarModificarProductoPage = () => {
 
     useEffect(() => {
 
-        if (usuario?.roles.includes('vendedor')) {
+        if (usuario?.rol === 'vendedor') {
             if (id) {
                 if (!usuario.permisos?.includes('editar_producto'))
-                    return navigate(`/dashboard/${usuario.roles[0]}/producto`, { replace: true });
+                    return navigate(`/dashboard/${usuario.rol}/producto`, { replace: true });
             } else {
                 if (!usuario.permisos?.includes('crear_producto'))
-                    return navigate(`/dashboard/${usuario.roles[0]}/producto`, { replace: true });
+                    return navigate(`/dashboard/${usuario.rol}/producto`, { replace: true });
             }
         }
 
         id && obtenerProducto(id).then((pd) => {
             setProducto({
                 ...pd,
+                tipo: pd!.tipo,
                 titulo: pd!.titulo,
                 codigo: pd!.codigo,
                 descripcion: pd!.descripcion!,
                 costo: pd!.costo,
-                ganancia: pd!.ganancia,
+                // ganancia: pd!.ganancia,
                 precio: pd!.precio,
                 mayoreo: pd!.mayoreo,
                 precio_mayoreo: pd?.precio_mayoreo ? pd.precio_mayoreo : undefined,
                 cantidad_mayoreo: pd?.cantidad_mayoreo ? pd.cantidad_mayoreo : undefined,
-                inventario: pd!.inventario,
+                control: pd!.control,
                 stock: pd?.stock ? pd.stock : undefined,
                 stock_minimo: pd?.stock_minimo ? pd.stock_minimo : undefined,
                 stock_maximo: pd?.stock_maximo ? pd.stock_maximo : undefined,
                 activo: pd!.activo,
                 provedor: pd?.provedor ? pd!.provedor.id! : "",
-                categorias: pd!.categorias,
+                categoria: pd!.categoria,
                 attributos: pd?.attributos,
                 imagenes: pd?.imagenes?.map((img) => img.url),
                 files: undefined,
@@ -63,26 +68,26 @@ export const AgregarModificarProductoPage = () => {
         //   return () => {
         //     second
         //   }
-    }, [id, navigate, usuario?.permisos, usuario?.roles]);
+    }, [id, navigate, usuario?.permisos, usuario?.rol]);
 
     const { handleSubmit, errors, touched, getFieldProps, values, setFieldValue } = useFormik<FormularioProducto>({
         initialValues: producto ? producto : {
+            tipo: 'producto',
             codigo: '',
             titulo: '',
             descripcion: '',
             costo: 0,
-            ganancia: 20,
             precio: 0,
             mayoreo: false,
             precio_mayoreo: undefined,
             cantidad_mayoreo: undefined,
-            inventario: true,
+            control: true,
             stock: undefined,
             stock_minimo: undefined,
             stock_maximo: undefined,
             activo: true,
             provedor: '',
-            categorias: [],
+            categoria: '',
             imagenes: [],
             files: undefined
         },
@@ -98,46 +103,48 @@ export const AgregarModificarProductoPage = () => {
             }
 
             if (!producto) {
-                await dispatch(crearProducto({
+                await dispatch(handleAgreggrarProducto({
+                    tipo: values.tipo,
                     titulo: values.titulo,
                     codigo: values.codigo,
                     descripcion: values.descripcion,
                     costo: values.costo,
-                    ganancia: values.ganancia,
                     precio: values.precio,
                     mayoreo: values.mayoreo,
                     precio_mayoreo: values.precio_mayoreo,
                     cantidad_mayoreo: values.cantidad_mayoreo,
-                    inventario: values.inventario,
+                    control: values.control,
                     stock: values.stock,
                     stock_minimo: values.stock_minimo,
                     stock_maximo: values.stock_maximo,
                     activo: values.activo,
-                    categorias: values.categorias,
+                    categoria: values.categoria,
                     provedor: values.provedor,
+                    almacen: almacen.id,
                     imagenes
-                }, navigate, usuario!.roles[0]));
+                }));
+                // , navigate, usuario!.roles[0]
             } else {
-                await dispatch(actualizarProducto({
-                    id: producto.id,
-                    codigo: values.codigo,
-                    titulo: values.titulo,
-                    descripcion: values.descripcion,
-                    costo: values.costo,
-                    ganancia: values.ganancia,
-                    precio: values.precio,
-                    mayoreo: values.mayoreo,
-                    precio_mayoreo: values.precio_mayoreo === 0 ? undefined : values.precio_mayoreo,
-                    cantidad_mayoreo: values.cantidad_mayoreo === 0 ? undefined : values.cantidad_mayoreo,
-                    inventario: values.inventario,
-                    stock: values.stock === 0 ? undefined : values.stock,
-                    stock_minimo: values.stock_minimo === 0 ? undefined : values.stock_minimo,
-                    stock_maximo: values.stock_maximo === 0 ? undefined : values.stock_maximo,
-                    activo: values.activo,
-                    categorias: values.categorias,
-                    provedor: values.provedor,
-                    imagenes
-                }, navigate, usuario!.roles[0]));
+                // await dispatch(actualizarProducto({
+                //     id: producto.id,
+                //     codigo: values.codigo,
+                //     titulo: values.titulo,
+                //     descripcion: values.descripcion,
+                //     costo: values.costo,
+                //     ganancia: values.ganancia,
+                //     precio: values.precio,
+                //     mayoreo: values.mayoreo,
+                //     precio_mayoreo: values.precio_mayoreo === 0 ? undefined : values.precio_mayoreo,
+                //     cantidad_mayoreo: values.cantidad_mayoreo === 0 ? undefined : values.cantidad_mayoreo,
+                //     inventario: values.inventario,
+                //     stock: values.stock === 0 ? undefined : values.stock,
+                //     stock_minimo: values.stock_minimo === 0 ? undefined : values.stock_minimo,
+                //     stock_maximo: values.stock_maximo === 0 ? undefined : values.stock_maximo,
+                //     activo: values.activo,
+                //     categorias: values.categorias,
+                //     provedor: values.provedor,
+                //     imagenes
+                // }, navigate, usuario!.roles[0]));
             }
 
             // navigate(`/dashboard/${usuario!.roles[0]}/inventario`, { replace: true });
@@ -145,7 +152,7 @@ export const AgregarModificarProductoPage = () => {
         validationSchema: Yup.object({
             codigo: Yup.string().required('Requerido'),
             cantidad_mayoreo: Yup.number().when('mayoreo', { is: true, then: Yup.number().required().min(1) }),
-            inventario: Yup.boolean(),
+            control: Yup.boolean(),
             stock: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
             stock_minimo: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
             stock_maximo: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
@@ -163,13 +170,14 @@ export const AgregarModificarProductoPage = () => {
         <div>
             <div className='d-flex justify-content-between mb-1 mt-1'>
                 <div>
-                    <Link
+                    {/* <Link
                         data-tooltip-id='btn-cancel-tooltip'
                         data-tooltip-content='Cancelar'
                         data-tooltip-place="right-end"
-                        to={`/dashboard/${usuario?.roles[0]}/producto`}
+                        to={`/dashboard/almacenes/inventario`}
                         className='btn btn-outline-secondary' replace ><i className="bi bi-arrow-left"></i></Link>
-                    <Tooltip id="btn-cancel-tooltip" />
+                    <Tooltip id="btn-cancel-tooltip" /> */}
+                    <button className='btn btn-outline-secondary' onClick={() => navigate(-1)}><i className="bi bi-arrow-left"></i></button>
                 </div>
                 <h2 className='text-center m-0'>{producto ? 'Modificar Producto' : 'Agregar Producto'}</h2>
                 <div></div>
@@ -213,8 +221,18 @@ export const AgregarModificarProductoPage = () => {
                             />
                             {/* <span className="text-danger">{errors}</span> */}
                         </div>
-
                         <div className="row">
+                            <div className='col-4'>
+                                <h5>Tipo de Reagistro</h5>
+                                <div className='form-check form-check-inline'>
+                                    <input {...getFieldProps('tipo')} className="form-check-input" checked={values.tipo === 'producto'} type="radio" value="producto" />
+                                    <label className="form-check-label" /* for="inlineRadio1" */ >Producto</label>
+                                </div>
+                                <div className='form-check form-check-inline'>
+                                    <input {...getFieldProps('tipo')} className="form-check-input" type="radio" value="servicio" />
+                                    <label className="form-check-label" /* for="inlineRadio1" */ >Servicio</label>
+                                </div>
+                            </div>
                             <div className="col-4">
                                 <MyTextInput
                                     {...getFieldProps('costo')}
@@ -223,35 +241,16 @@ export const AgregarModificarProductoPage = () => {
                                     label="Costo (Compra)"
                                     placeholder='$0.00'
                                     className="form-control"
-                                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                                        const value = +evt.target.value;
-                                        setFieldValue('costo', value);
-                                        const porcentaje = Number(values.ganancia / 100);
-                                        const precio = value + porcentaje * value;
-                                        setFieldValue('precio', precio);
-                                    }}
-                                    value={(values.costo !== 0 || values.costo !== undefined) ? values.costo : ''}
+                                    // onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                                    //     // const value = +evt.target.value;
+                                    //     // setFieldValue('costo', value);
+                                    //     // const porcentaje = Number(values.ganancia / 100);
+                                    //     // const precio = value + porcentaje * value;
+                                    //     // setFieldValue('precio', precio);
+                                    // }}
+                                    value={(values.costo !== 0) ? values.costo : ''}
                                     errors={(touched.costo && errors.costo) || ''}
 
-                                />
-                            </div>
-                            <div className="col-4">
-                                <MyTextInput
-                                    {...getFieldProps('ganancia')}
-                                    min='0'
-                                    type="number"
-                                    label="Porcentaje %"
-                                    placeholder='$0.00'
-                                    className="form-control"
-                                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                                        const value = +evt.target.value;
-                                        setFieldValue('ganancia', value);
-                                        const porcentaje = Number(value / 100);
-                                        const precio = values.costo + porcentaje * values.costo;
-                                        setFieldValue('precio', precio);
-                                    }}
-                                    value={(values.ganancia !== 0 || values.ganancia !== undefined) ? values.ganancia : ''}
-                                    errors={(touched.ganancia && errors.ganancia) || ''}
                                 />
                             </div>
                             <div className="col-4">
@@ -262,16 +261,16 @@ export const AgregarModificarProductoPage = () => {
                                     label="Precio (Venta)"
                                     placeholder='$0.00'
                                     className="form-control"
-                                    onChange={(evt: ChangeEvent<HTMLInputElement>) => {
-                                        const value = +evt.target.value;
-                                        if (values.costo === 0) return;
-                                        const ganancia = value - values.costo;
-                                        console.log(ganancia);
-                                        const porcentaje = (ganancia * 100) / values.costo;
-                                        setFieldValue('ganancia', porcentaje);
-                                        setFieldValue('precio', value);
-                                    }}
-                                    value={(values.precio !== 0 || values.precio !== undefined) ? values.precio : ''}
+                                    // onChange={(evt: ChangeEvent<HTMLInputElement>) => {
+                                    //     const value = +evt.target.value;
+                                    //     if (values.costo === 0) return;
+                                    //     const ganancia = value - values.costo;
+                                    //     console.log(ganancia);
+                                    //     const porcentaje = (ganancia * 100) / values.costo;
+                                    //     setFieldValue('ganancia', porcentaje);
+                                    //     setFieldValue('precio', value);
+                                    // }}
+                                    value={(values.precio !== 0) ? values.precio : ''}
                                     errors={(touched.precio && errors.precio) || ''}
                                 // 
                                 />
@@ -315,12 +314,12 @@ export const AgregarModificarProductoPage = () => {
                         </div>
                         {
                             // (usuario?.permisos?.includes('modificar_inventario') || usuario?.roles.includes('administrador'))
-                            (!producto || producto && !producto.inventario) && <div className="row">
+                            (!producto || producto && !producto.control) && <div className="row">
                                 <div>
                                     <MyCheckbox
-                                        checked={values.inventario!}
-                                        label="Inventario"
-                                        {...getFieldProps('inventario')}
+                                        checked={values.control!}
+                                        label="Control de Inventario"
+                                        {...getFieldProps('control')}
                                     />
                                 </div>
                                 <div className="col-4">
@@ -331,7 +330,7 @@ export const AgregarModificarProductoPage = () => {
                                         label="Stock"
                                         placeholder='0'
                                         className="form-control"
-                                        disabled={!values.inventario}
+                                        disabled={!values.control}
                                         value={values.stock !== undefined ? values.stock : ''}
                                         errors={(touched.stock && errors.stock) || ''}
                                     />
@@ -344,7 +343,7 @@ export const AgregarModificarProductoPage = () => {
                                         label='Stock Minimo'
                                         placeholder='0'
                                         className="form-control"
-                                        disabled={!values.inventario}
+                                        disabled={!values.control}
                                         value={values.stock_minimo !== undefined ? values.stock_minimo : ''}
                                         errors={(touched.stock_minimo && errors.stock_minimo) || ''}
                                     />
@@ -357,7 +356,7 @@ export const AgregarModificarProductoPage = () => {
                                         label="Stock Maximo"
                                         placeholder='0'
                                         className="form-control"
-                                        disabled={!values.inventario}
+                                        disabled={!values.control}
                                         value={values.stock_maximo !== undefined ? values.stock_maximo : ''}
                                         errors={(touched.stock_maximo && errors.stock_maximo) || ''}
                                     />
@@ -367,16 +366,16 @@ export const AgregarModificarProductoPage = () => {
                         <div className="row">
                             <div className="col-6">
                                 <MySelect
+                                    {...getFieldProps('categoria')}
                                     label="Categoria"
                                     className="form-control"
-                                    multiple={true}
-                                    // disabled={!values.inventario}
-                                    {...getFieldProps('categorias')}
+                                // multiple={true}
+                                // disabled={!values.inventario}
                                 >
                                     <option value="" >Sin categorias</option>
                                     {
                                         categorias?.map(opt => (
-                                            <option key={opt.id} value={opt.nombre}>{opt.nombre}</option>
+                                            <option key={opt.id} value={opt.id}>{opt.nombre}</option>
                                         ))
                                     }
                                 </MySelect>

@@ -2,30 +2,35 @@ import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState, formatearNumero } from '../../../../../store';
 import { useReactToPrint } from 'react-to-print';
-import { obtenerProductos, obtenerProductosQuery } from '../../../../../store/slices/producto';
+import { obtenerProductos } from '../../../../../store/slices/producto';
 import { useFormik } from 'formik';
 
 import * as Yup from 'yup';
-import { Link } from 'react-router-dom';
-import { TituloPagina } from '../TituloPagina';
-import { QueryParamsProducto } from '../../../../../interfaces';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { TituloPagina } from '../../shared/TituloPagina';
+import { Almacen, QueryParamsProducto } from '../../../../../interfaces';
+import { handleObtenerProductos } from '../../../../../store/slices/inventario';
 
-export const ProductoPage = () => {
+export const InventarioPage = () => {
 
   const dispatch = useDispatch<AppDispatch>();
   const productosList = useRef(null);
-
+  const navigate = useNavigate();
+  const location = useLocation();
+  const almacen = location.state as Almacen;
+  // console.log(almacen)
   const handleimprimirProductosList = useReactToPrint({
     content: () => productosList.current,
     pageStyle: ''
   });
 
   const { usuario } = useSelector((state: RootState) => state.sesion);
-  const { productos } = useSelector((state: RootState) => state.producto);
+  const { productos } = useSelector((state: RootState) => state.inventario);
 
   useEffect(() => {
-    // take: 10 
-    usuario && dispatch(obtenerProductos({
+    // take: 10
+    usuario && dispatch(handleObtenerProductos({
+      almacen: almacen.id
       // sucursal: usuario.sucursal ? usuario.sucursal.id : undefined,
       // negocio: usuario?.negocio?.id!
     }))
@@ -49,21 +54,22 @@ export const ProductoPage = () => {
 
   return (
     <div>
-
+      <button className='btn btn-outline-secondary' onClick={() => navigate(-1)}><i className="bi bi-arrow-left"></i></button>
       <div className="row mt-1">
         {/* <h2 className="text-center">INVENTARIO</h2> */}
-        <TituloPagina centro='PRODUCTOS' />
+        <TituloPagina centro='INVENTARIO' />
         <div className="col">
           {/* <button className="btn btn-primary" onClick={() => setState({ openModal: !openModal })}>Agregar</button>/admin/inventario/nuevo/producto */}
           {
-            (usuario?.permisos?.includes('crear_producto') || usuario?.roles.includes('administrador')) &&
+            (usuario?.permisos?.includes('crear_producto') || usuario?.rol === 'administrador') &&
             <Link
-              to={`/dashboard/${usuario?.roles[0]}/producto/agregar`}
+              to={`/dashboard/almacenes/inventario/agregar`}
               className="btn btn-primary me-2"
               data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip"
               data-bs-title="This top tooltip is themed via CSS variables."
-              replace
+              // replace
+              state={{ ...almacen }}
             >
               <i className="bi bi-plus-square" />
             </Link>
@@ -100,7 +106,7 @@ export const ProductoPage = () => {
                       </div>
                       <div className="card-body p-1 position-relative">{/* overflow-auto */}
                         <p className="card-text" >{prod.titulo}</p>
-                        <p className="card-text position-absolute bottom-0 end-0 m-1" >{formatearNumero(prod.precio)}{prod.inventario ? `- Stock:${prod.stock}` : ''}</p>
+                        <p className="card-text position-absolute bottom-0 end-0 m-1" >{formatearNumero(prod.precio)}{prod.control ? `- Stock:${prod.stock}` : ''}</p>
                       </div>
                       <div className="card-footer p-1">
                         {/* <Link
@@ -109,15 +115,15 @@ export const ProductoPage = () => {
                           replace
                         ><i className="bi bi-pencil-square"></i></Link> */}
                         {
-                          (usuario?.roles.includes('administrador') || usuario?.permisos?.includes('editar_producto')) && <Link
-                            to={`/dashboard/${usuario?.roles[0]}/producto/${prod.id}`}
+                          (usuario?.rol === 'administrador' || usuario?.permisos?.includes('editar_producto')) && <Link
+                            to={`/dashboard/almacenes/inventario/${prod.id}`}
                             className="btn btn-primary "
                             replace
                           > <i className="bi bi-pencil-square"></i></Link>
                         }
                         {
-                          (usuario?.roles.includes('') || prod.inventario && usuario?.permisos?.includes('modificar_inventario')) && <Link
-                            to={`/dashboard/${usuario?.roles[0]}/producto/inventario`}
+                          (usuario?.rol === '' || prod.control && usuario?.permisos?.includes('modificar_inventario')) && <Link
+                            to={`/dashboard/almacenes/inventario`}
                             state={prod}
                             className="btn btn-primary ms-1"
                           // replace

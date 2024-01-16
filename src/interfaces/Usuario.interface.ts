@@ -2,14 +2,13 @@
 import { Negocio } from "./Negocio.interface";
 import { Almacen } from "./Almacen.interface";
 
-
 interface UsuarioBasico {
     id?: string;
     nombre: string;
     correo: string;
+    rol: string;
     telefono?: string;
     activo?: boolean;
-    roles: string[];
     permisos?: string[];
     attributos?: Attributos;
     creado?: Date;
@@ -21,16 +20,30 @@ interface UsuarioBasico {
 
 export interface Usuario extends UsuarioBasico {
     almacen?: Almacen,
+    caja?: Caja;
 }
 
 export interface Attributos {
     caja: number;
 }
 
+export interface Caja {
+    id: string;
+    nombre: string;
+    activa: boolean;
+    abierta: boolean;
+    captura_cliente: boolean;
+    aplicar_descuentos: boolean;
+    restringir_venta: boolean;
+    dinero: number;
+    almacen: Almacen;
+}
+
 export interface UsuarioNuevo extends UsuarioBasico {
     contrasena: string;
     contrasenaRepeat?: string;
     almacen?: string,
+    caja?: string;
 }
 
 export interface UsuarioLogin {
@@ -58,10 +71,9 @@ export interface QueryParamsUsuario {
     nombre?: string;
     telefono?: string;
     activo?: boolean;
-    roles?: string[]
+    rol?: string;
     negocio?: Negocio
 }
-
 
 // To parse this data:
 //

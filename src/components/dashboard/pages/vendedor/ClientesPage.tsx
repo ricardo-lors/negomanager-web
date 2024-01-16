@@ -23,7 +23,7 @@ export const ClientesPage = () => {
 
     useEffect(() => {
         buscarUsuarios({
-            roles: ['{cliente}']
+            rol: 'cliente',
         }).then(listaUsuarios => {
             setUsuarios(listaUsuarios);
         });
@@ -37,7 +37,7 @@ export const ClientesPage = () => {
             contrasena: '',
             contrasenaRepeat: '',
             almacen: '',
-            roles: ['cliente']
+            rol: 'cliente'
         },
         onSubmit: async (values) => {
             // onSubmit(values, elper);
@@ -49,7 +49,7 @@ export const ClientesPage = () => {
                     telefono: values.telefono,
                     contrasena: values.contrasena,
                     almacen: values.almacen,
-                    roles: values.roles
+                    rol: values.rol
                 });
                 nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
             } else {
@@ -59,7 +59,7 @@ export const ClientesPage = () => {
                     telefono: values.telefono,
                     contrasena: values.contrasena,
                     almacen: values.almacen,
-                    roles: values.roles
+                    rol: values.rol
                 });
                 usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
             }
@@ -157,26 +157,26 @@ export const ClientesPage = () => {
                         (us: Usuario) => {
                             if (us.id !== usuarioSeleccionado?.id) {
                                 setUsuarioSeleccionado(us);
-                                setValues({
-                                    nombre: us.nombre,
-                                    correo: us.correo,
-                                    telefono: us.telefono,
-                                    contrasena: '',
-                                    contrasenaRepeat: '',
-                                    almacen: us.almacen ? us.almacen.id : '',
-                                    roles: ['cliente']
-                                });
+                                // setValues({
+                                //     nombre: us.nombre,
+                                //     correo: us.correo,
+                                //     telefono: us.telefono,
+                                //     contrasena: '',
+                                //     contrasenaRepeat: '',
+                                //     almacen: us.almacen ? us.almacen.id : '',
+                                //     roles: ['cliente']
+                                // });
                             } else {
                                 setUsuarioSeleccionado(undefined);
-                                setValues({
-                                    nombre: '',
-                                    correo: '',
-                                    telefono: '',
-                                    contrasena: '',
-                                    contrasenaRepeat: '',
-                                    almacen: '',
-                                    roles: ['cliente']
-                                });
+                                // setValues({
+                                //     nombre: '',
+                                //     correo: '',
+                                //     telefono: '',
+                                //     contrasena: '',
+                                //     contrasenaRepeat: '',
+                                //     almacen: '',
+                                //     roles: ['cliente']
+                                // });
                             }
                         }
                     }

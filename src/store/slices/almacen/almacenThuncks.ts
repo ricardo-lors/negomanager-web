@@ -26,6 +26,7 @@ export const obtenerAlmacenes = (sucursalParams: SucursalParams) => {
             if (status === 201) return dispatch(setAlmacenes([]));
             dispatch(setAlmacenes(data));
         } catch (error) {
+            dispatch(setAlmacenes([]));
             console.log(error);
             Swal.fire('Error', `${error}`, 'error');
             // return undefined;

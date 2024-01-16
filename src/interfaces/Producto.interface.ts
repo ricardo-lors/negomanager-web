@@ -1,66 +1,92 @@
+import { Almacen } from "./Almacen.interface";
 import { Categoria } from "./Categoria.interface";
 import { Negocio } from "./Negocio.interface";
 import { Provedor } from "./Provedor.interface";
 
-// id:               string;
-// codigo:           string;
-// descripcion:      string;
-// costo:            number;
-// ganancia:         number;
-// precio:           number;
-// mayoreo:          boolean;
-// precio_mayoreo:   number;
-// cantidad_mayoreo: number;
-// inventario:       boolean;
-// stock:            number;
-// stock_minimo:     number;
-// stock_maximo:     number;
-// activo:           boolean;
-// provedores:       any[];
-// categorias:       string[];
-// attributos:       Attributos;
-// creado:           Date;
-// actualizado:      Date;
-// imagenes:         Imagene[];
-// negocio:          Negocio;
+
+// id: string;
+// // Tipo
+// // p: Producto
+// // s: Servicio
+// // k: kit
+// tipo: string;
+// codigo: string;
+// titulo: string;
+// descripcion?: string;
+// costo: number;
+// precio_cambiable?: boolean;
+// precio: number;
+// mayoreo: boolean;
+// precio_mayoreo?: number;
+// cantidad_mayoreo?: number;
+// control: boolean;
+// stock?: number;
+// stock_minimo?: number;
+// stock_maximo?: number;
+// activo: boolean;
+// clave_sat: string;
+// medida_sat: string;
+// provedor: Provedor;
+// linea: string;
+// departamento: string;
+// categoria: string;
+// attributos: Object;
+// creado: Date;
+// actualizado: Date;
+// imagenes?: InventarioImagenes[];
+// almacen: Almacen;
+// negocio: Negocio;
 
 interface ProductoBasico {
     id?: string,
+    tipo: string;
     codigo: string,
     titulo: string;
-    descripcion: string,
+    descripcion?: string,
     costo: number,
-    ganancia: number,
     precio: number,
+    precio_cambiable?: boolean;
     mayoreo: boolean,
     precio_mayoreo?: number,
     cantidad_mayoreo?: number,
-    inventario: boolean;
+    control: boolean;
     stock?: number,
     stock_minimo?: number;
     stock_maximo?: number;
     activo: boolean,
-    categorias: string[],
-    attributos?: object,
+    clave_sat?: string;
+    medida_sat?: string;
+    attributos?: object;
     creado?: string; //Date
-    actualizado?: string,
+    actualizado?: string;
     sucursal?: string;
 }
 
 export interface Producto extends ProductoBasico {
     provedor: Provedor,
     imagenes?: ProductoImagen[],
+    linea?: string;
+    departamento?: string;
+    categoria?: string;
+    almacen: Almacen,
     negocioid?: number
 }
 
 export interface FormularioProducto extends ProductoBasico {
-    provedor: string,
+    provedor?: string,
+    linea?: string;
+    departamento?: string;
+    categoria?: string;
     imagenes?: string[],
     files?: FileList
 }
 
 export interface NuevoActualizarProducto extends ProductoBasico {
-    provedor: string,
+    provedor?: string,
+    linea?: string;
+    departamento?: string;
+    categoria?: string;
+    almacen?: string;
     imagenes?: string[]
 }
 
@@ -108,7 +134,7 @@ export interface QueryParamsProducto {
 
     categorias?: string[];
 
-    sucursal?: string;
+    almacen?: string;
 
     negocio?: string;
 

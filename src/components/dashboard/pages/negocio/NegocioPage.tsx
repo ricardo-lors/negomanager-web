@@ -69,7 +69,7 @@ export const NegocioPage = () => {
             <form className="container mt-2" noValidate onSubmit={handleSubmit}>
                 <div className="d-flex justify-content-between">
                     <h5>Cuéntanos sobre tu Empresa / Negocio / Tiendita</h5>
-                    <button disabled={usuario?.roles.includes('administrador') ? false : state.modificar} type="submit" className="btn btn-primary text-decoration-none">Guardar</button>
+                    <button disabled={usuario?.rol === 'administrador' ? false : state.modificar} type="submit" className="btn btn-primary text-decoration-none">Guardar</button>
                 </div>
                 <div className="row">
                     <div className="col-md-7">

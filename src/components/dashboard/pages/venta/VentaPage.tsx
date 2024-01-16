@@ -10,17 +10,16 @@ import * as Yup from 'yup';
 import { useFormik } from "formik";
 import { agregarProducto, cambiarCantidad, crearVenta, desasignarCliente, quitarProducto, resetear } from "../../../../store/slices/venta";
 import { Modal, MyButtonTooltip, Ticket } from "../../../shared";
-import { ModalAgregarProductoNoRegistrado } from "../venta/modals/ModalAgregarProductoNoRegistradoProps";
-import { ModalAsignarCliente } from "../venta/modals/ModalAsignarCliente";
+import { ModalAgregarProductoNoRegistrado } from "./modals/ModalAgregarProductoNoRegistradoProps";
+import { ModalAsignarCliente } from "./modals/ModalAsignarCliente";
 import { Tooltip } from 'react-tooltip'
-import { ModalEntradaSalidaDinero } from "../venta/modals/ModalEntradaSalidaDinero";
+import { ModalEntradaSalidaDinero } from "./modals/ModalEntradaSalidaDinero";
 import { crearMovimiento } from "../../../../store/slices/movimiento";
 import { revalidarSesion } from "../../../../store/slices/session";
 import { locales } from "moment";
-import { ModalBuscarProducto } from "../venta/modals/ModalBuscarProducto";
+import { ModalBuscarProducto } from "./modals/ModalBuscarProducto";
 import { QrBarcodeScanner } from "../../../shared/QrBarcodeScanner";
-
-export const HomePage = () => {
+export const VentaPage = () => {
 
   const dispatch = useAppDispatch();
 
@@ -47,10 +46,10 @@ export const HomePage = () => {
     // }
   }, [cliente])
 
-
   const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch } = useFormik({
     initialValues: { codigo: '' },
     onSubmit: async (values) => {
+      console.log(values)
       const producto = await obtenerProductoCodigo(values.codigo, usuario?.almacen!.id!, usuario?.negocio!.id!);
       if (producto) dispatch(agregarProducto(producto));
       resetFormSearch();
@@ -152,8 +151,8 @@ export const HomePage = () => {
           {/* <p className="btn">{usuario?.attributos?.caja}</p> */}
         </div>
         {/* <div className="col text-end">
-          <h3>{usuario?.attributos?.caja ? formatearNumero(usuario?.attributos?.caja) : '0.0'}</h3>
-        </div> */}
+            <h3>{usuario?.attributos?.caja ? formatearNumero(usuario?.attributos?.caja) : '0.0'}</h3>
+          </div> */}
       </div>
 
       <form className="" noValidate onSubmit={handleSubmitSearch}>
@@ -176,7 +175,7 @@ export const HomePage = () => {
         <table className="table">
           {/* style={{height: 300}} */}
           <thead>
-            <tr>
+            <tr >
               <th scope="col"></th>
               <th scope="col">Codigo</th>
               <th scope="col">Descripcion</th>

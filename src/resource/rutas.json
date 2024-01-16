@@ -1,0 +1,58 @@
+[
+    {
+        "id": 1,
+        "ruta": "/dashboard",
+        "nombre": "Home",
+        "replace": true,
+        "icono": "home"
+    },
+    {
+        "id": 2,
+        "ruta": "/dashboard/venta",
+        "nombre": "Venta",
+        "replace": true,
+        "icono": "bi-upc-scan"
+    },
+    {
+        "id": 3,
+        "ruta": "/dashboard/almacenes",
+        "nombre": "Almacenes",
+        "replace": true,
+        "icono": "bi-upc-scan"
+    },
+    {
+        "id": 4,
+        "ruta": "/dashboard/usuarios",
+        "nombre": "Usuarios",
+        "replace": true,
+        "icono": "bi-upc-scan"
+    },
+    {
+        "id": 5,
+        "ruta": "/dashboard/provedores",
+        "nombre": "Provedores",
+        "replace": true,
+        "icono": "bi-upc-scan"
+    },
+    {
+        "id": 6,
+        "ruta": "/dashboard/categorias",
+        "nombre": "Categorias",
+        "replace": true,
+        "icono": "bi-upc-scan"
+    },
+    {
+        "id": 7,
+        "ruta": "/dashboard/departamentos",
+        "nombre": "Departamentos",
+        "replace": true,
+        "icono": "bi-upc-scan"
+    },
+    {
+        "id": 8,
+        "ruta": "/dashboard/lineas",
+        "nombre": "Lineas",
+        "replace": true,
+        "icono": "bi-upc-scan"
+    }
+]

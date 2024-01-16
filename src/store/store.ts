@@ -12,10 +12,13 @@ import { usuarioSlice } from './slices/usuario';
 import { ventaSlice } from './slices/venta';
 import { almacenSlice } from './slices/almacen';
 import { sesionSlice } from './slices/session';
+import { inventarioSlice } from './slices/inventario/inventarioSlice';
+import { cajaSlice } from './slices/caja';
 
 export const store = configureStore({
     reducer: {
         sesion: sesionSlice.reducer,
+        inventario: inventarioSlice.reducer,
         usuario: usuarioSlice.reducer,
         negocio: negocioSlice.reducer,
         almacen: almacenSlice.reducer,
@@ -25,6 +28,7 @@ export const store = configureStore({
         provedor: provedorSlice.reducer,
         venta: ventaSlice.reducer,
         ui: uiSlice.reducer,
+        caja: cajaSlice.reducer,
         counter: counterSlice.reducer,
         // provedor: provedor
     }

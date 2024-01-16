@@ -105,7 +105,8 @@ export const actualizarProducto = (producto: NuevoActualizarProducto, navigate: 
 
 export const obtenerProductoCodigo = async (codigo: string, sucursalid: string, negocioid: string) => {
     try {
-        const { data } = await servicesApiToken(`/productos/${codigo}/${sucursalid}/${negocioid}`, {});
+        const { data } = await servicesApiToken(`/inventario/${codigo}/${sucursalid}/${negocioid}`, {});
+        console.log(data);
         return data;
     } catch (e) {
         const message = getMeesageError(e);

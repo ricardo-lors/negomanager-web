@@ -23,7 +23,8 @@ export const Registro = () => {
             correo: '',
             contrasena: '',
             contrasenaRepeat: '',
-            roles: ['administrador']
+            // roles: ['administrador']
+            rol: 'administrador'
         },
         onSubmit: (values) => {
             console.log(values);
@@ -33,7 +34,7 @@ export const Registro = () => {
                 telefono: values.telefono,
                 contrasena: values.contrasena,
                 almacen: values.almacen,
-                roles: values.roles
+                rol: values.rol
             }));
         },
         validationSchema: Yup.object({

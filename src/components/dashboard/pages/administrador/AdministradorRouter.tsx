@@ -2,13 +2,13 @@ import { Navigate, Route, Routes } from "react-router-dom"
 import { NegocioPage } from "../negocio/NegocioPage"
 import { HomePage } from "./HomePage"
 import { VendedoresPage } from "./VendedoresPage"
-import { ProvedoresPage } from "../shared/ProvedoresPage"
+// import { ProvedoresPage } from "../shared/ProvedoresPage"
 import { CategoriasPage } from "../shared/CategoriasPage"
 import { AgregarModificarProductoPage, VentasPage } from "../shared"
 import { SucursalPage } from "./SucursalPage"
 import { useSelector } from "react-redux"
 import { RootState } from "../../../../store"
-import { ProductoRouter } from "../shared/producto/ProductoRouter"
+import { InventarioRouter } from "../almacen/inventario/InventarioRouter"
 
 export const AdministradorRouter = () => {
 
@@ -31,14 +31,14 @@ export const AdministradorRouter = () => {
             } */}
             <Route path='/administrador' element={<HomePage />} />
             {/* Ritas del Inventario */}
-            <Route path='/administrador/producto/*' element={<ProductoRouter />} />
+            <Route path='/administrador/producto/*' element={<InventarioRouter />} />
 
             <Route path='/administrador/inventario/producto/:id' element={<AgregarModificarProductoPage />} />
             <Route path='/administrador/inventario/producto' element={<AgregarModificarProductoPage />} />
 
             <Route path='/administrador/vendedores' element={<VendedoresPage />} />
 
-            <Route path='/administrador/provedores' element={<ProvedoresPage />} />
+            {/* <Route path='/administrador/provedores' element={<ProvedoresPage />} /> */}
             <Route path='/administrador/categorias' element={<CategoriasPage />} />
 
             <Route path='/administrador/negocio' element={<NegocioPage />} />

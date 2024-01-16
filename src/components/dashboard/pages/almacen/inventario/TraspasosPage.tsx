@@ -10,7 +10,7 @@ import { ColumnDef } from '@tanstack/react-table';
 import { Tabla } from '../../../../shared/Tabla';
 import moment from 'moment';
 
-export const InventarioPage = () => {
+export const TraspasosPage = () => {
 
     const navigate = useNavigate();
 

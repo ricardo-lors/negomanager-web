@@ -14,7 +14,7 @@ export const ModalAsignarCliente = () => {
         const usuarios = await buscarUsuarios({
             nombre: values.target.value,
             correo: values.target.value,
-            roles: ['{cliente}']
+            rol: 'cliente'
         });
         setClientes(usuarios);
     }

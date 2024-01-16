@@ -13,6 +13,7 @@ import { endCargandoAlmacen, obtenerAlmacenes } from "../../store/slices/almacen
 import { endCargandoNegocios, obtenerNegocios } from "../../store/slices/negocio";
 import { endCargandoCategorias } from "../../store/slices/categoria";
 import { endCargandoClientes } from "../../store/slices/cliente";
+import { DashboardRouter } from "./pages/DashboardRouter";
 
 export const DashboardPage = () => {
 
@@ -21,22 +22,22 @@ export const DashboardPage = () => {
     const dispatch = useAppDispatch();
 
     useEffect(() => {
-        if (usuario!.roles.includes('super-administrador')) {
+        if (usuario!.rol === 'super-administrador') {
             dispatch(obtenerNegocios());
             dispatch(endCargandoAlmacen());
             dispatch(endCargandoCategorias());
             dispatch(endCargandoProvedores());
             dispatch(endCargandoClientes());
         }
-        if (usuario!.roles.includes('administrador')) {
+        if (usuario!.rol === 'administrador') {
             dispatch(endCargandoNegocios());
-            usuario?.negocio && dispatch(obtenerAlmacenes({}));
-            usuario?.negocio && dispatch(obtenerCategorias(usuario!.negocio!.id!));
-            usuario?.negocio && dispatch(obtenerProvedoresNegocio(usuario!.negocio!.id!));
+            usuario?.negocio ? dispatch(obtenerAlmacenes({})) : dispatch(endCargandoAlmacen());
+            usuario?.negocio ? dispatch(obtenerCategorias(usuario!.negocio!.id!)) : dispatch(endCargandoCategorias());
+            usuario?.negocio ? dispatch(obtenerProvedoresNegocio(usuario!.negocio!.id!)) : dispatch(endCargandoProvedores());;
             // usuario?.negocio && dispatch(obtenerClientes(usuario!.negocio!.id!));
             dispatch(endCargandoClientes());
         }
-        if (usuario!.roles.includes('vendedor')) {
+        if (usuario!.rol === 'vendedor') {
             dispatch(endCargandoNegocios());
             usuario?.negocio && dispatch(obtenerAlmacenes({}));
             usuario?.negocio && dispatch(obtenerCategorias(usuario!.negocio!.id!));
@@ -58,6 +59,7 @@ export const DashboardPage = () => {
                 cargandoNegocios || cargandoCategoria || cargandoProvedor || cargandoClientes || cargandoAlmacenes
                     ? <div className='d-flex justify-content-center align-items-center vh-100'>
                         <div className="spinner-border" role="status">
+                            dash
                             <span className="visually-hidden">Loading...</span>
                         </div>
                     </div>
@@ -66,11 +68,9 @@ export const DashboardPage = () => {
                         <div className="container-fluid">
                             <Sidebar />
                             {
-                                usuario?.roles.includes('super-administrador')
+                                usuario?.rol === 'super-administrador'
                                     ? <SuperAdministrador />
-                                    : usuario?.roles.includes('administrador')
-                                        ? <AdministradorRouter />
-                                        : <Vendedor />
+                                    : < DashboardRouter />
                             }
                         </div>
                     </>

@@ -11,7 +11,7 @@ import { useAppDispatch } from '../../hooks';
 import { obtenerAlmacenes } from '../../store/slices/almacen';
 
 interface UsuarioFormProps {
-    rol: string[];
+    rol: string;
     usuarioSelected?: Usuario;
     onSubmit: (values: UsuarioNuevo, formikHelpers: FormikHelpers<UsuarioNuevo>) => void | Promise<any>
 }
@@ -36,7 +36,7 @@ export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps
             contrasena: '',
             contrasenaRepeat: '',
             almacen: usuarioSelected.almacen?.id,
-            roles: [...rol]
+            rol: rol
         } : {
             nombre: '',
             correo: '',
@@ -44,7 +44,7 @@ export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps
             contrasena: '',
             contrasenaRepeat: '',
             almacen: '',
-            roles: [...rol]
+            rol: rol
         },
         onSubmit: (values, elper) => {
             onSubmit(values, elper);
@@ -84,7 +84,7 @@ export const UsuarioForm = ({ usuarioSelected, rol, onSubmit }: UsuarioFormProps
                     {...getFieldProps('telefono')}
                 />
                 {
-                    usuario?.roles.includes('administrador') &&
+                    usuario?.rol === 'administrador' &&
                     < MySelect
                         label="Sucursal"
                         className="form-control"

@@ -20,14 +20,14 @@ export const HomePage = () => {
             correo: '',
             contrasena: '',
             contrasenaRepeat: '',
-            roles: ['administrador']
+            rol: 'administrador'
         },
         onSubmit: async (values) => {
             crearUsuario({
                 nombre: values.nombre,
                 contrasena: values.contrasena,
                 correo: values.correo,
-                roles: values.roles
+                rol: values.rol
             });
         },
         validationSchema: Yup.object({

@@ -7,9 +7,10 @@ import { RootState } from '../../store';
 import superadministradorRoutes from "../../resource/superadministrador.json";
 import administradorRoutes from "../../resource/administrador.json";
 import vendedorRoutes from "../../resource/vendedor.json"
+import rutasJson from "../../resource/rutas.json"
 import { useAppDispatch } from '../../hooks';
 import { startOpenAndCloseMenu } from '../../store/slices/ui';
-// import { removerSesion } from '../../store/slices/usuario';
+// import { r } from '../../store/slices/usuario';
 
 export const Sidebar = () => {
 
@@ -30,11 +31,9 @@ export const Sidebar = () => {
         // })
     }
 
-    const rutas = usuario?.roles.includes('super-administrador')
+    const rutas = usuario?.rol === 'super-administrador'
         ? superadministradorRoutes
-        : usuario?.roles.includes('administrador')
-            ? administradorRoutes
-            : vendedorRoutes;
+        : rutasJson;
 
     return (
         <div className={`offcanvas offcanvas-end ${openMenu ? 'show' : 'hide'} flex-shrink-0 pt-2 text-bg-dark`} tabIndex={-1} >
