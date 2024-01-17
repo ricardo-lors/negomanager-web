@@ -36,8 +36,18 @@ export interface Caja {
     aplicar_descuentos: boolean;
     restringir_venta: boolean;
     dinero: number;
+    apertura: Apertura;
     almacen: Almacen;
 }
+
+export interface Apertura {
+    id: number;
+    fecha_inicio: string;
+    fecha_final?: string;
+    dinero_inicial: number;
+    dinero_final?: number;
+}
+
 
 export interface UsuarioNuevo extends UsuarioBasico {
     contrasena: string;

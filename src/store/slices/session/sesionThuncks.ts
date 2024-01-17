@@ -11,6 +11,7 @@ export const sesion = (credenciales: UsuarioLogin) => {
         Swal.showLoading();
         try {
             const { data } = await servicesApi(`/auth/login`, 'POST', credenciales);
+            console.log(data);
             localStorage.setItem('x-token', data.token);
             const usuario = UsuarioConvert.toUsuario(JSON.stringify(data));
             dispatch(agregarSesion(usuario));

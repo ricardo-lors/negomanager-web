@@ -27,7 +27,7 @@ export const AperturaCaja = () => {
         dinero_inicial: +values.dinero_inicial
       }));
     }
-  })
+  });
 
   return (
     <div>
@@ -59,7 +59,7 @@ export const AperturaCaja = () => {
             {...getFieldProps('caja')}
             label="Caja"
             className="form-control"
-            disabled={usuario!.rol !== 'administrador'}
+            disabled={usuario!.rol !== 'administrador' && usuario!.rol !== 'gerente'}
           >
             <option value={''}>Seleccione una Caja</option>
             {

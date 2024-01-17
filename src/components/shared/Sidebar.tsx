@@ -1,5 +1,5 @@
 
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -10,11 +10,13 @@ import vendedorRoutes from "../../resource/vendedor.json"
 import rutasJson from "../../resource/rutas.json"
 import { useAppDispatch } from '../../hooks';
 import { startOpenAndCloseMenu } from '../../store/slices/ui';
+import { removerSesion } from '../../store/slices/session';
 // import { r } from '../../store/slices/usuario';
 
 export const Sidebar = () => {
 
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
 
     const { usuario } = useSelector((state: RootState) => state.sesion);
     const { openMenu } = useSelector((state: RootState) => state.ui);
@@ -25,10 +27,10 @@ export const Sidebar = () => {
 
     const handleCerrarSesion = () => {
         dispatch(startOpenAndCloseMenu(!openMenu));
-        // dispatch(removerSesion());
-        // navigate("/login", {
-        //     replace: true
-        // })
+        dispatch(removerSesion());
+        navigate("/login", {
+            replace: true
+        })
     }
 
     const rutas = usuario?.rol === 'super-administrador'

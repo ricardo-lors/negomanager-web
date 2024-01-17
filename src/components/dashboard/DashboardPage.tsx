@@ -14,6 +14,7 @@ import { endCargandoNegocios, obtenerNegocios } from "../../store/slices/negocio
 import { endCargandoCategorias } from "../../store/slices/categoria";
 import { endCargandoClientes } from "../../store/slices/cliente";
 import { DashboardRouter } from "./pages/DashboardRouter";
+import { obtenerCajas } from "../../store/slices/caja";
 
 export const DashboardPage = () => {
 
@@ -34,7 +35,14 @@ export const DashboardPage = () => {
             usuario?.negocio ? dispatch(obtenerAlmacenes({})) : dispatch(endCargandoAlmacen());
             usuario?.negocio ? dispatch(obtenerCategorias(usuario!.negocio!.id!)) : dispatch(endCargandoCategorias());
             usuario?.negocio ? dispatch(obtenerProvedoresNegocio(usuario!.negocio!.id!)) : dispatch(endCargandoProvedores());;
-            // usuario?.negocio && dispatch(obtenerClientes(usuario!.negocio!.id!));
+            dispatch(endCargandoClientes());
+        }
+        if (usuario!.rol === 'gerente') {
+            dispatch(endCargandoNegocios());
+            dispatch(endCargandoAlmacen());
+            usuario?.negocio ? dispatch(obtenerCategorias(usuario!.negocio!.id!)) : dispatch(endCargandoCategorias());
+            usuario?.negocio ? dispatch(obtenerProvedoresNegocio(usuario!.negocio!.id!)) : dispatch(endCargandoProvedores());;
+            dispatch(obtenerCajas({ almacen: usuario?.almacen!.id }));
             dispatch(endCargandoClientes());
         }
         if (usuario!.rol === 'vendedor') {

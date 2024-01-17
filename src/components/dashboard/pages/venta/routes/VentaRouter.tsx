@@ -1,10 +1,11 @@
 import React from 'react'
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { VentaPage } from '../VentaPage'
-import { VerificarCaja } from './VerificarCaja'
+import { VerificarCaja } from '../VerificarCaja'
 import { AperturaCaja } from '../AperturaCaja'
 import { CajaAbierta } from './CajaAbierta'
 import { CajaCerrada } from './CajaCerrada'
+import { CerrarCaja } from '../CerrarCaja'
 
 export const VentaRouter = () => {
 
@@ -16,6 +17,13 @@ export const VentaRouter = () => {
                     <VentaPage />
                 </CajaAbierta>
             } />
+
+            <Route path='/cerrar' element={
+                <CajaAbierta>
+                    <CerrarCaja />
+                </CajaAbierta>
+            } />
+
             <Route path='/apertura' element={
                 <CajaCerrada>
                     <AperturaCaja />

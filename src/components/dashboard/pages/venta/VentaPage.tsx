@@ -19,9 +19,11 @@ import { revalidarSesion } from "../../../../store/slices/session";
 import { locales } from "moment";
 import { ModalBuscarProducto } from "./modals/ModalBuscarProducto";
 import { QrBarcodeScanner } from "../../../shared/QrBarcodeScanner";
+import { useNavigate } from "react-router-dom";
 export const VentaPage = () => {
 
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
   const ticket = useRef<HTMLDivElement>(null);
 
@@ -234,6 +236,8 @@ export const VentaPage = () => {
           </form>
         </div>
       </div>
+      <button className="btn btn-primary" onClick={() => navigate('/dashboard/venta/cerrar')} >Cerrar caja</button>
+
       <Ticket ref={ticket} venta={{ cliente, detalles, total }} />
       <Modal
         isOpen={openModals.modalAgregarProductoNoRegistrado}
@@ -257,7 +261,7 @@ export const VentaPage = () => {
         isOpen={openModals.modalEntradaDinero}
         children={<ModalEntradaSalidaDinero onSubmit={async (values) => {
           await crearMovimiento({
-            tipo: 'Entrada',
+            tipo: 'ENTRADA',
             total: +values.total
           });
           setOpenModals(prev => ({ ...prev, modalEntradaDinero: false }));
@@ -271,7 +275,7 @@ export const VentaPage = () => {
         isOpen={openModals.modalSalidaDinero}
         children={<ModalEntradaSalidaDinero onSubmit={async (values) => {
           await crearMovimiento({
-            tipo: 'Salida',
+            tipo: 'SALIDA',
             total: +(-values.total)
           });
           setOpenModals(prev => ({ ...prev, modalSalidaDinero: false }));

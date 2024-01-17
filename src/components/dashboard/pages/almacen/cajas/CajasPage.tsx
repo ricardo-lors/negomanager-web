@@ -23,7 +23,6 @@ export const CajasPage = () => {
     const location = useLocation();
     const almacen = location.state as Almacen;
 
-
     useEffect(() => {
         dispatch(obtenerCajas({
             almacen: almacen.id
@@ -50,7 +49,7 @@ export const CajasPage = () => {
             }));
         },
         validationSchema: Yup.object({
-            nombre: Yup.string().required('El nobre es requerido')
+            nombre: Yup.string().required('El nombre es requerido')
         })
     });
 
@@ -125,10 +124,7 @@ export const CajasPage = () => {
                         }
                     />
                 </div>
-
-
             </div>
-
         </div>
     )
 }
