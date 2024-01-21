@@ -53,32 +53,33 @@ export const UsuariosPage = () => {
         onSubmit: async (values) => {
             console.log(values);
             // onSubmit(values, elper);
-
             if (!usuarioSeleccionado) {
                 const nuevoUsuario = await crearUsuario({
                     nombre: values.nombre,
                     correo: values.correo,
                     telefono: values.telefono,
                     contrasena: values.contrasena,
+                    caja: values.caja,
                     almacen: values.almacen,
                     permisos: values.permisos,
                     rol: values.rol
                 });
                 nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
             }
-            // else {
-            //     const usuarioActualizado = await actualizarUsuario(usuarioSeleccionado.id!, {
-            //         nombre: values.nombre,
-            //         correo: values.correo,
-            //         telefono: values.telefono,
-            //         contrasena: values.contrasena,
-            //         almacen: values.almacen,
-            //         permisos: values.permisos,
-            //         roles: values.roles
-            //     });
-            //     usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
-            // }
-            // resetForm();
+            else {
+                const usuarioActualizado = await actualizarUsuario(usuarioSeleccionado.id!, {
+                    nombre: values.nombre,
+                    correo: values.correo,
+                    telefono: values.telefono,
+                    contrasena: values.contrasena,
+                    almacen: values.almacen,
+                    caja: values.caja,
+                    permisos: values.permisos,
+                    rol: values.rol
+                });
+                usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
+            }
+            resetForm();
         },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Requerido'),
@@ -96,6 +97,13 @@ export const UsuariosPage = () => {
                 accessorKey: 'nombre',
                 cell: info => info.getValue(),
                 header: () => <span>Nombre</span>,
+                // footer: props => props.column.id,
+            },
+            {
+                id: 'rol',
+                accessorKey: 'rol',
+                cell: info => info.getValue(),
+                header: () => <span>Rol</span>,
                 // footer: props => props.column.id,
             }, {
                 id: 'correo',
@@ -234,6 +242,9 @@ export const UsuariosPage = () => {
                     onClickFila={
                         (us: Usuario) => {
                             if (us.id !== usuarioSeleccionado?.id) {
+                                dispatch(obtenerCajas({
+                                    almacen: us.almacen!.id
+                                }));
                                 setUsuarioSeleccionado(us);
                                 console.log(us)
                                 setValues({
@@ -243,6 +254,7 @@ export const UsuariosPage = () => {
                                     contrasena: '',
                                     contrasenaRepeat: '',
                                     almacen: us.almacen ? us.almacen.id : '',
+                                    caja: us.caja ? us.caja.id : '',
                                     permisos: us.permisos,
                                     rol: us.rol
                                     // roles: ['vendedor']

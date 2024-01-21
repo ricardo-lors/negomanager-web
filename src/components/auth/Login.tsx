@@ -3,13 +3,13 @@ import { Link, NavLink } from "react-router-dom";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { MyTextInput } from "../shared/MyTextInput";
-import { sesion } from "../../store/slices/usuario";
 import { useAppDispatch } from "../../hooks/index";
 import { UsuarioLogin } from "../../interfaces";
 import { ChangeEvent } from "react";
 import { useSelector } from "react-redux";
 import { comenzarCambioTema } from "../../store/slices/ui";
 import { RootState } from "../../store";
+import { sesion } from "../../store/slices/session";
 
 export const Login = () => {
 
@@ -74,7 +74,7 @@ export const Login = () => {
                                 label="Contraseña"
                                 className="form-control"
                                 {...getFieldProps('contrasena')}
-                                errors={touched.contrasena && errors.contrasena && errors.contrasena || ''}
+                                errors={touched.contrasena && errors.contrasena || ''}
                             />
 
                             <button type="submit" className="btn btn-primary text-decoration-none w-100">Iniciar</button>

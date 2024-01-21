@@ -11,7 +11,12 @@
         "ruta": "/dashboard/venta",
         "nombre": "Venta",
         "replace": true,
-        "icono": "bi-upc-scan"
+        "icono": "bi-upc-scan",
+        "roles": [
+            "administrador",
+            "gerente",
+            "cajero"
+        ]
     },
     {
         "id": 3,

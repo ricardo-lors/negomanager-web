@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { NuevoActualizarProducto, QueryParamsProducto } from "../../../interfaces";
+import { NuevoActualizarProducto, Producto, QueryParamsProducto } from "../../../interfaces";
 import { FormInventario, Inventario, QueryParamsInventario } from "../../../interfaces/Inventario.interface";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch, RootState } from "../../store";
@@ -74,5 +74,17 @@ export const obtenerMovimientoInventario = async (queryParamsInventario: QueryPa
         return data;
     } catch (error) {
         console.log(error)
+    }
+}
+
+
+export const obtenerProducto = async (id: string): Promise<Producto | undefined> => {
+    try {
+        const { data } = await servicesApiToken(`/inventario/${id}`, {});
+        return data;
+    } catch (e) {
+        console.log(e);
+        Swal.fire('Error',)
+        return undefined;
     }
 }

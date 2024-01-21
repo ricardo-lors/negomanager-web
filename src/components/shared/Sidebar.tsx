@@ -28,6 +28,7 @@ export const Sidebar = () => {
     const handleCerrarSesion = () => {
         dispatch(startOpenAndCloseMenu(!openMenu));
         dispatch(removerSesion());
+        localStorage.removeItem('x-token');
         navigate("/login", {
             replace: true
         })

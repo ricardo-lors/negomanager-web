@@ -39,10 +39,17 @@ export const DashboardPage = () => {
         }
         if (usuario!.rol === 'gerente') {
             dispatch(endCargandoNegocios());
-            dispatch(endCargandoAlmacen());
+            usuario?.negocio ? dispatch(obtenerAlmacenes({})) : dispatch(endCargandoAlmacen());
             usuario?.negocio ? dispatch(obtenerCategorias(usuario!.negocio!.id!)) : dispatch(endCargandoCategorias());
             usuario?.negocio ? dispatch(obtenerProvedoresNegocio(usuario!.negocio!.id!)) : dispatch(endCargandoProvedores());;
             dispatch(obtenerCajas({ almacen: usuario?.almacen!.id }));
+            dispatch(endCargandoClientes());
+        } if (usuario!.rol === 'cajero') {
+            dispatch(endCargandoNegocios());
+            usuario?.negocio ? dispatch(obtenerAlmacenes({})) : dispatch(endCargandoAlmacen());
+            usuario?.negocio ? dispatch(obtenerCategorias(usuario!.negocio!.id!)) : dispatch(endCargandoCategorias());
+            usuario?.negocio ? dispatch(obtenerProvedoresNegocio(usuario!.negocio!.id!)) : dispatch(endCargandoProvedores());;
+            // dispatch(obtenerCajas({ almacen: usuario?.almacen!.id }));
             dispatch(endCargandoClientes());
         }
         if (usuario!.rol === 'vendedor') {

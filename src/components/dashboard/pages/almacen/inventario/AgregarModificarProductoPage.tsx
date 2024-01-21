@@ -6,12 +6,12 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
 import { Almacen, FormularioProducto } from '../../../../../interfaces';
-import { actualizarProducto, agregarImagenes, crearProducto, obtenerProducto } from '../../../../../store/slices/producto';
+import { agregarImagenes } from '../../../../../store/slices/producto';
 import { useAppDispatch } from '../../../../../hooks';
 import { RootState, formatearNumero } from '../../../../../store';
 import { MyCheckbox, MySelect, MyTextInput } from '../../../../shared';
 import { Tooltip } from 'react-tooltip';
-import { handleAgreggrarProducto } from '../../../../../store/slices/inventario';
+import { handleActualizarProducto, handleAgreggrarProducto, obtenerProducto } from '../../../../../store/slices/inventario';
 
 export const AgregarModificarProductoPage = () => {
 
@@ -41,14 +41,14 @@ export const AgregarModificarProductoPage = () => {
         }
 
         id && obtenerProducto(id).then((pd) => {
+            console.log(pd)
             setProducto({
                 ...pd,
                 tipo: pd!.tipo,
-                titulo: pd!.titulo,
                 codigo: pd!.codigo,
+                titulo: pd!.titulo,
                 descripcion: pd!.descripcion!,
                 costo: pd!.costo,
-                // ganancia: pd!.ganancia,
                 precio: pd!.precio,
                 mayoreo: pd!.mayoreo,
                 precio_mayoreo: pd?.precio_mayoreo ? pd.precio_mayoreo : undefined,
@@ -125,26 +125,28 @@ export const AgregarModificarProductoPage = () => {
                 }));
                 // , navigate, usuario!.roles[0]
             } else {
-                // await dispatch(actualizarProducto({
-                //     id: producto.id,
-                //     codigo: values.codigo,
-                //     titulo: values.titulo,
-                //     descripcion: values.descripcion,
-                //     costo: values.costo,
-                //     ganancia: values.ganancia,
-                //     precio: values.precio,
-                //     mayoreo: values.mayoreo,
-                //     precio_mayoreo: values.precio_mayoreo === 0 ? undefined : values.precio_mayoreo,
-                //     cantidad_mayoreo: values.cantidad_mayoreo === 0 ? undefined : values.cantidad_mayoreo,
-                //     inventario: values.inventario,
-                //     stock: values.stock === 0 ? undefined : values.stock,
-                //     stock_minimo: values.stock_minimo === 0 ? undefined : values.stock_minimo,
-                //     stock_maximo: values.stock_maximo === 0 ? undefined : values.stock_maximo,
-                //     activo: values.activo,
-                //     categorias: values.categorias,
-                //     provedor: values.provedor,
-                //     imagenes
-                // }, navigate, usuario!.roles[0]));
+                await dispatch(handleActualizarProducto({
+                    id: producto.id,
+                    tipo: values.tipo,
+                    codigo: values.codigo,
+                    titulo: values.titulo,
+                    descripcion: values.descripcion,
+                    costo: values.costo,
+                    precio: values.precio,
+                    mayoreo: values.mayoreo,
+                    precio_mayoreo: values.precio_mayoreo === 0 ? undefined : values.precio_mayoreo,
+                    cantidad_mayoreo: values.cantidad_mayoreo === 0 ? undefined : values.cantidad_mayoreo,
+                    control: values.control,
+                    stock: values.stock === 0 ? undefined : values.stock,
+                    stock_minimo: values.stock_minimo === 0 ? undefined : values.stock_minimo,
+                    stock_maximo: values.stock_maximo === 0 ? undefined : values.stock_maximo,
+                    activo: values.activo,
+                    categoria: values.categoria,
+                    provedor: values.provedor,
+                    imagenes,
+
+                }));
+                // navigate, usuario!.roles[0])
             }
 
             // navigate(`/dashboard/${usuario!.roles[0]}/inventario`, { replace: true });

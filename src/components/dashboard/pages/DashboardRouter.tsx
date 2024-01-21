@@ -39,24 +39,6 @@ export const DashboardRouter = () => {
             <Route path='/departamentos' element={<DepartamentosPage />} />
             <Route path='/lineas' element={<LineasPage />} />
             <Route path='/negocio' element={<NegocioPage />} />
-            {/* {
-            (usuario) && <Navigate to='/dashboard/administrador/negocio' replace={true} />
-        } */}
-            {/* <Route path='/' element={<HomePage />} /> */}
-            {/* Ritas del Inventario */}
-            {/* <Route path='/administrador/producto/*' element={<ProductoRouter />} />
-
-            <Route path='/administrador/inventario/producto/:id' element={<AgregarModificarProductoPage />} />
-            <Route path='/administrador/inventario/producto' element={<AgregarModificarProductoPage />} />
-
-            <Route path='/administrador/vendedores' element={<VendedoresPage />} />
-
-            <Route path='/administrador/provedores' element={<ProvedoresPage />} />
-            <Route path='/administrador/categorias' element={<CategoriasPage />} />
-
-            <Route path='/administrador/sucursal' element={<SucursalPage />} />
-
-            <Route path='/administrador/ventas' element={<VentasPage />} /> */}
 
             <Route path='/*' element={<Navigate to="/dashboard" replace={true} />} />
         </Routes>

@@ -1,11 +1,16 @@
 import { forwardRef, LegacyRef } from 'react';
 import { VentaState } from '../../interfaces';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import moment from 'moment';
 
 interface TicketProps {
     venta: VentaState | undefined
 }
 
 export const Ticket = forwardRef((props: TicketProps, ref: LegacyRef<HTMLDivElement> | undefined) => {
+
+    const { usuario } = useSelector((state: RootState) => state.sesion);
 
     return (
         <div
@@ -17,9 +22,9 @@ export const Ticket = forwardRef((props: TicketProps, ref: LegacyRef<HTMLDivElem
                 src="https://yt3.ggpht.com/-3BKTe8YFlbA/AAAAAAAAAAI/AAAAAAAAAAA/ad0jqQ4IkGE/s900-c-k-no-mo-rj-c0xffffff/photo.jpg"
                 alt="Logotipo" /> */}
             <p className="centrado" >Ticket
-                <br />Venta de papeleria
-                <br />Papeleria Lopez
-                <br />14/11/2022
+                <br />{usuario?.negocio?.nombre}
+                <br />{usuario?.negocio?.descripcion}
+                <br />{moment().format('YYYY-MM-DD, h:mm:ss a')}
                 <br />Cliente: {props.venta?.cliente ? props.venta?.cliente.nombre : 'Publico General'}
             </p>
             <table className='centrado'>
@@ -48,7 +53,7 @@ export const Ticket = forwardRef((props: TicketProps, ref: LegacyRef<HTMLDivElem
                 </tbody>
             </table>
             <p className="centrado">¡GRACIAS POR SU COMPRA!
-                <br />richi.rlr97@gmail.com</p>
+                <br />{usuario?.negocio?.correo}</p>
         </div>
     )
 }

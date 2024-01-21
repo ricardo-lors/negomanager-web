@@ -16,6 +16,7 @@ export const AlmacenesPage = () => {
     const dispatch = useAppDispatch();
     const navigate = useNavigate();
 
+    const { usuario } = useSelector((state: RootState) => state.sesion);
     const { almacenes } = useSelector((state: RootState) => state.almacen);
     const [almacen, setAlmacen] = useState<Almacen>();
 
@@ -97,40 +98,43 @@ export const AlmacenesPage = () => {
                     }}
                 >Cajas</button>
             </div>
-            <div className="col-md-4 border-end">
-                <form className="" noValidate onSubmit={handleSubmit}>
-                    <MyTextInput
+            {
+                usuario!.rol === 'administrador' &&
+                <div className="col-md-4 border-end">
+                    <form className="" noValidate onSubmit={handleSubmit}>
+                        <MyTextInput
 
-                        {...getFieldProps('nombre')}
-                        label="Nombre de el almacen"
-                        placeholder="Nombre"
-                        className="form-control"
-                    // disabled={!usuario?.negocio}
-                    />
-                    <MyTextInput
-                        {...getFieldProps('direccion')}
-                        label="Direccion"
-                        placeholder=""
-                        className="form-control"
-                    // disabled={!usuario?.negocio}
-                    />
-                    <MyTextInput
-                        {...getFieldProps('correo')}
-                        label="Correo"
-                        placeholder="correo@ejemplo.com"
-                        className="form-control"
-                    // disabled={!usuario?.negocio}
-                    />
-                    <MyTextInput
-                        {...getFieldProps('telefono')}
-                        label="Telefono"
-                        placeholder=""
-                        className="form-control"
-                    // disabled={!usuario?.negocio}
-                    />
-                    <button type="submit" className="btn btn-primary text-decoration-none" >Guardar</button>
-                </form>
-            </div>
+                            {...getFieldProps('nombre')}
+                            label="Nombre de el almacen"
+                            placeholder="Nombre"
+                            className="form-control"
+                        // disabled={!usuario?.negocio}
+                        />
+                        <MyTextInput
+                            {...getFieldProps('direccion')}
+                            label="Direccion"
+                            placeholder=""
+                            className="form-control"
+                        // disabled={!usuario?.negocio}
+                        />
+                        <MyTextInput
+                            {...getFieldProps('correo')}
+                            label="Correo"
+                            placeholder="correo@ejemplo.com"
+                            className="form-control"
+                        // disabled={!usuario?.negocio}
+                        />
+                        <MyTextInput
+                            {...getFieldProps('telefono')}
+                            label="Telefono"
+                            placeholder=""
+                            className="form-control"
+                        // disabled={!usuario?.negocio}
+                        />
+                        <button type="submit" className="btn btn-primary text-decoration-none" >Guardar</button>
+                    </form>
+                </div>
+            }
             <div className="col">
                 <Tabla
                     data={almacenes}
