@@ -1,5 +1,5 @@
 import { useFormik } from 'formik'
-import React, { ChangeEvent } from 'react'
+import React, { ChangeEvent, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { MySelect, MyTextInput } from '../../../shared';
@@ -13,6 +13,16 @@ export const AperturaCaja = () => {
   const { usuario } = useSelector((state: RootState) => state.sesion);
   const { almacenes } = useSelector((state: RootState) => state.almacen);
   const { cajas } = useSelector((state: RootState) => state.caja);
+
+  useEffect(() => {
+
+    usuario?.almacen && dispatch(obtenerCajas({
+      almacen: usuario.almacen!.id
+    }));
+    // return () => {
+    //   second
+    // }
+  }, []);
 
   const { handleSubmit, getFieldProps, resetForm, setValues, setFieldValue, values } = useFormik({
     initialValues: {
@@ -34,12 +44,13 @@ export const AperturaCaja = () => {
       <form className="container mt-2" noValidate onSubmit={handleSubmit}>
 
         {
-          usuario?.rol === 'administrador' &&
           < MySelect
             {...getFieldProps('almacen')}
             label="Almacen"
             className="form-control"
+            disabled={usuario!.rol !== 'administrador'}
             onChange={(event: ChangeEvent<HTMLSelectElement>) => {
+
               dispatch(obtenerCajas({
                 almacen: event.target.value
               }));

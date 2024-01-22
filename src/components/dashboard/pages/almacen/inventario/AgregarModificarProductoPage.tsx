@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { KeyboardEvent, KeyboardEventHandler, useEffect, useState } from 'react';
 
 import { Link, useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -70,7 +70,7 @@ export const AgregarModificarProductoPage = () => {
         //   }
     }, [id, navigate, usuario?.permisos, usuario?.rol]);
 
-    const { handleSubmit, errors, touched, getFieldProps, values, setFieldValue } = useFormik<FormularioProducto>({
+    const { handleSubmit, errors, touched, getFieldProps, values, setFieldValue, resetForm } = useFormik<FormularioProducto>({
         initialValues: producto ? producto : {
             tipo: 'producto',
             codigo: '',
@@ -122,7 +122,7 @@ export const AgregarModificarProductoPage = () => {
                     provedor: values.provedor,
                     almacen: almacen.id,
                     imagenes
-                }));
+                }, resetForm));
                 // , navigate, usuario!.roles[0]
             } else {
                 await dispatch(handleActualizarProducto({
@@ -155,9 +155,9 @@ export const AgregarModificarProductoPage = () => {
             codigo: Yup.string().required('Requerido'),
             cantidad_mayoreo: Yup.number().when('mayoreo', { is: true, then: Yup.number().required().min(1) }),
             control: Yup.boolean(),
-            stock: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
-            stock_minimo: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
-            stock_maximo: Yup.number().when('inventario', { is: true, then: Yup.number().required().min(1) }),
+            stock: Yup.number().when('control', { is: true, then: Yup.number().required().min(1) }),
+            stock_minimo: Yup.number().when('control', { is: true, then: Yup.number().required().min(1) }),
+            stock_maximo: Yup.number().when('control', { is: true, then: Yup.number().required().min(1) }),
         }),
         enableReinitialize: true
     });
@@ -167,6 +167,12 @@ export const AgregarModificarProductoPage = () => {
 
     // useEffect(() => {
     // }, [values.precio]);
+
+    const onKeyDown = (keyEvent: KeyboardEvent<HTMLFormElement>) => {
+        if (keyEvent.code === "Enter") {
+            keyEvent.preventDefault();
+        }
+    }
 
     return (
         <div>
@@ -187,7 +193,7 @@ export const AgregarModificarProductoPage = () => {
 
             <div className='card p-3 mb-2'>
                 <div className="row">
-                    <form className="container mt-2" noValidate onSubmit={handleSubmit}>
+                    <form className="container mt-2" noValidate onSubmit={handleSubmit} onKeyDown={onKeyDown}>
                         <div>
                             <MyCheckbox
                                 checked={values.activo}
@@ -198,6 +204,7 @@ export const AgregarModificarProductoPage = () => {
                         <div className="row">
                             <div className="col">
                                 <MyTextInput
+                                    autoFocus
                                     {...getFieldProps('codigo')}
                                     value={values.codigo !== undefined ? values.codigo : ''}
                                     label="Codigo"

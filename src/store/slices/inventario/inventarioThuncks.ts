@@ -1,16 +1,21 @@
 import { AxiosError } from "axios";
-import { NuevoActualizarProducto, Producto, QueryParamsProducto } from "../../../interfaces";
+import { FormularioProducto, NuevoActualizarProducto, Producto, QueryParamsProducto } from "../../../interfaces";
 import { FormInventario, Inventario, QueryParamsInventario } from "../../../interfaces/Inventario.interface";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch, RootState } from "../../store";
 import { actualizarProducto, agregarProducto, agregarProductos } from "./inventarioSlice";
 import Swal from "sweetalert2";
+import { FormikState } from "formik";
 
-export const handleAgreggrarProducto = (producto: NuevoActualizarProducto) => {
+export const handleAgreggrarProducto = (producto: NuevoActualizarProducto, resetForm: () => void) => {
     return async (dispatch: AppDispatch /*, getState: () => RootState */) => {
         try {
+            Swal.fire('Guardando, por favor espere');
+            Swal.showLoading();
             const { data } = await servicesApiToken('/inventario', { method: 'POST', data: producto });
             dispatch(agregarProducto(data));
+            Swal.fire('Guardado correctamente', '', 'success');
+            resetForm();
         } catch (e) {
             if (e instanceof AxiosError) {
                 Swal.fire('Error', `${e.response?.data.message}`, 'error');
