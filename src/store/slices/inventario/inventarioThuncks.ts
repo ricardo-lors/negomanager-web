@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { FormularioProducto, NuevoActualizarProducto, Producto, QueryParamsProducto } from "../../../interfaces";
+import { FormularioProducto, NuevoActualizarProducto, Producto, ProductoConvert, QueryParamsProducto } from "../../../interfaces";
 import { FormInventario, Inventario, QueryParamsInventario } from "../../../interfaces/Inventario.interface";
 import { servicesApiToken } from "../../../services/services.api";
 import { AppDispatch, RootState } from "../../store";
@@ -93,3 +93,16 @@ export const obtenerProducto = async (id: string): Promise<Producto | undefined>
         return undefined;
     }
 }
+
+
+export const obtenerProductosQuery = async (queryParamsProducto: QueryParamsProducto) => {
+    try {
+        const { data } = await servicesApiToken(`/inventario`, { params: queryParamsProducto });
+        console.log(data);
+        const productos = ProductoConvert.toProducToList(JSON.stringify(data));
+        return productos;
+    } catch (e) {
+        console.log(e);
+        Swal.fire('Error',)
+    }
+};

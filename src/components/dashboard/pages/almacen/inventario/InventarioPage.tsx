@@ -41,8 +41,9 @@ export const InventarioPage = () => {
     onSubmit: async (values) => {
       console.log(values);
       // dispatch(obtenerProductosQuery(values.query));
-      dispatch(obtenerProductos({
+      dispatch(handleObtenerProductos({
         titulo: values.titulo,
+        almacen: almacen.id
       }));
       // resetFormSearch();
     },

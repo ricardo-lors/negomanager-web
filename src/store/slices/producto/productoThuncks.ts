@@ -114,17 +114,17 @@ export const obtenerProductoCodigo = async (codigo: string, sucursalid: string, 
     }
 }
 
-export const obtenerProductosQuery = async (queryParamsProducto: QueryParamsProducto) => {
-    try {
-        const { data } = await servicesApiToken(`/productos`, { params: queryParamsProducto });
-        console.log(data);
-        const productos = ProductoConvert.toProducToList(JSON.stringify(data));
-        return productos;
-    } catch (e) {
-        console.log(e);
-        Swal.fire('Error',)
-    }
-};
+// export const obtenerProductosQuery = async (queryParamsProducto: QueryParamsProducto) => {
+//     try {
+//         const { data } = await servicesApiToken(`/productos`, { params: queryParamsProducto });
+//         console.log(data);
+//         const productos = ProductoConvert.toProducToList(JSON.stringify(data));
+//         return productos;
+//     } catch (e) {
+//         console.log(e);
+//         Swal.fire('Error',)
+//     }
+// };
 
 export const agregarImagenes = async (file: File) => {
     try {

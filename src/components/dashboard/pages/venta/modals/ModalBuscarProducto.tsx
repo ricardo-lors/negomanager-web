@@ -5,10 +5,10 @@ import { Producto, ProductoVenta, QueryParamsProducto } from '../../../../../int
 import * as Yup from 'yup';
 import { ColumnDef } from '@tanstack/react-table';
 import { Tabla } from '../../../../shared/Tabla';
-import { obtenerProductosQuery } from '../../../../../store/slices/producto';
 import { formatearNumero } from '../../../../../store';
 import { useDispatch } from 'react-redux';
 import { agregarProducto } from '../../../../../store/slices/venta';
+import { obtenerProductosQuery } from '../../../../../store/slices/inventario';
 
 export const ModalBuscarProducto = () => {
 
