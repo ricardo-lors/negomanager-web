@@ -34,11 +34,11 @@ export const obtenerAlmacenes = (sucursalParams: SucursalParams) => {
     }
 }
 
-export const actualizarAlmacen = async (id: string, sucursal: Almacen): Promise<Almacen | undefined> => {
+export const actualizarAlmacen = async (id: string, almacen: NuevoAlmacen): Promise<Almacen | undefined> => {
     try {
         Swal.fire('Aplicando cambios');
         Swal.showLoading();
-        const { status, data } = await servicesApiToken(`/sucursales/${id}`, { method: 'PATCH', data: sucursal });
+        const { status, data } = await servicesApiToken(`/almacenes/${id}`, { method: 'PATCH', data: almacen });
         Swal.close();
         if (status === 200) return data;
         return undefined;

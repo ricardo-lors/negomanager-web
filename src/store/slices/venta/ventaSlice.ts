@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { PayloadAction } from '@reduxjs/toolkit'
-import { DetallesVenta, Producto, ProductoVenta, Usuario, VentaState } from '../../../interfaces'
+import { Cliente, DetallesVenta, Producto, ProductoVenta, Usuario, VentaState } from '../../../interfaces'
 
 const initialState: VentaState = {
     cliente: undefined,
@@ -52,7 +52,7 @@ export const ventaSlice = createSlice({
             state.detalles[index].total = state.detalles[index].producto.precio * cantidad;
             state.total = sumaTotal(state.detalles);
         },
-        asignarCliente: (state, actions: PayloadAction<Usuario>) => {
+        asignarCliente: (state, actions: PayloadAction<Cliente>) => {
             state.cliente = actions.payload;
         },
         desasignarCliente: (state) => {

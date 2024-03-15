@@ -2,12 +2,14 @@ import { useSelector } from "react-redux";
 import { useAppDispatch } from "../../../../hooks";
 import { RootState } from "../../../../store";
 import { useEffect } from 'react';
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import { Provedor } from "../../../../interfaces";
 
 import * as Yup from 'yup';
 import { MyTextInput } from "../../../shared/MyTextInput";
 import { crearProvedor } from "../../../../store/slices/provedor";
+import { Col, Row, Form } from "react-bootstrap";
+import { TituloPagina } from "../shared/TituloPagina";
 
 export const ProvedoresPage = () => {
 
@@ -33,12 +35,29 @@ export const ProvedoresPage = () => {
   });
 
   return (
-    <div className="row">
+    <Row>
+      <TituloPagina centro='PROVEDORES' />
+
+      <Col md={3} className="container bg-body-secondary ms-md-2 me-md-2 p-3">
+        <Formik
+          initialValues={{}}
+          onSubmit={(values) => console.log(values)}
+        >
+          {({ handleSubmit, getFieldProps }) => <Form onSubmit={handleSubmit} >
+            <fieldset>
+              <legend>Nuevo Provedor</legend>
+              <Form.Group>
+                <Form.Label>Nombre</Form.Label>
+                <Form.Control {...getFieldProps('nombre')} />
+              </Form.Group>
+
+            </fieldset>
+          </Form>}
+        </Formik>
+      </Col>
+
 
       <div className="col-md-3 border-end h-100">
-        <div className="text-center">
-          <h2>Provedores</h2>
-        </div>
         <form className="container mt-4" noValidate onSubmit={handleSubmit}>
           <MyTextInput
             label="Nombre"
@@ -88,6 +107,7 @@ export const ProvedoresPage = () => {
           </tbody>
         </table>
       </div>
-    </div >
+    </Row>
+
   )
 }

@@ -1,3 +1,4 @@
+import { Cliente } from "./Cliente.interface";
 import { Negocio } from "./Negocio.interface";
 import { Producto, ProductoVenta } from "./Producto.interface";
 import { Usuario } from "./Usuario.interface";
@@ -16,7 +17,7 @@ export interface Venta {
 
 export interface VentaState {
     detalles: DetallesVenta[];
-    cliente?: Usuario;
+    cliente?: Cliente;
     total: number;
 }
 

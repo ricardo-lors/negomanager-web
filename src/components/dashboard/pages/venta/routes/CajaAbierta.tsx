@@ -13,11 +13,11 @@ export const CajaAbierta = ({ children }: props) => {
 
     return (
         <>
-            {
+            {/* {
                 (usuario!.caja?.abierta)
                     ? children
                     : <Navigate to='/dashboard/venta/apertura' replace={true} />
-            }
+            } */}
         </>
     )
 }

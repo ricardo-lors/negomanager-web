@@ -16,9 +16,9 @@ export const AperturaCaja = () => {
 
   useEffect(() => {
 
-    usuario?.almacen && dispatch(obtenerCajas({
-      almacen: usuario.almacen!.id
-    }));
+    // usuario?.almacen && dispatch(obtenerCajas({
+    //   almacen: usuario.almacen!.id
+    // }));
     // return () => {
     //   second
     // }
@@ -26,16 +26,16 @@ export const AperturaCaja = () => {
 
   const { handleSubmit, getFieldProps, resetForm, setValues, setFieldValue, values } = useFormik({
     initialValues: {
-      almacen: usuario?.almacen ? usuario.almacen.id : '',
-      caja: usuario?.caja?.id ? usuario.caja.id : '',
+      // almacen: usuario?.almacen ? usuario.almacen.id : '',
+      // caja: usuario?.caja?.id ? usuario.caja.id : '',
       dinero_inicial: 0
     },
     onSubmit: (values) => {
       console.log(values);
-      dispatch(crearAperturaCaja({
-        ...values,
-        dinero_inicial: +values.dinero_inicial
-      }));
+      // dispatch(crearAperturaCaja({
+      //   ...values,
+      //   dinero_inicial: +values.dinero_inicial
+      // }));
     }
   });
 

@@ -4,13 +4,11 @@ import { RootState } from '../../../store';
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { NegocioPage } from './shared';
 import { HomePage } from './home/HomePage';
-import { UsuariosPage } from './usuarios/UsuariosPage';
 import { ProvedoresPage } from './provedores/ProvedoresPage';
-import { CategoriasPage } from './categorias/CategoriasPage';
-import { DepartamentosPage } from './departamentos/DepartamentosPage';
-import { LineasPage } from './lineas/LineasPage';
 import { VentaRouter } from './venta/routes/VentaRouter';
 import { AlmacenesRouter } from './almacen/AlmacenesRouter';
+import { ClientesRouter } from './cliente/ClientesRouter';
+import { UsuariosRouter } from './usuarios/UsuariosRouter';
 
 export const DashboardRouter = () => {
 
@@ -33,11 +31,9 @@ export const DashboardRouter = () => {
             <Route path='/' element={<HomePage />} />
             <Route path='/venta/*' element={<VentaRouter />} />
             <Route path='/almacenes/*' element={<AlmacenesRouter />} />
-            <Route path='/usuarios' element={<UsuariosPage />} />
+            <Route path='/usuarios/*' element={<UsuariosRouter />} />
+            <Route path='/clientes/*' element={<ClientesRouter />} />
             <Route path='/provedores' element={<ProvedoresPage />} />
-            <Route path='/categorias' element={<CategoriasPage />} />
-            <Route path='/departamentos' element={<DepartamentosPage />} />
-            <Route path='/lineas' element={<LineasPage />} />
             <Route path='/negocio' element={<NegocioPage />} />
 
             <Route path='/*' element={<Navigate to="/dashboard" replace={true} />} />

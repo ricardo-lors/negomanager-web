@@ -40,30 +40,29 @@ export const ClientesPage = () => {
             rol: 'cliente'
         },
         onSubmit: async (values) => {
-            // onSubmit(values, elper);
 
-            if (!usuarioSeleccionado) {
-                const nuevoUsuario = await crearUsuario({
-                    nombre: values.nombre,
-                    correo: values.correo,
-                    telefono: values.telefono,
-                    contrasena: values.contrasena,
-                    almacen: values.almacen,
-                    rol: values.rol
-                });
-                nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
-            } else {
-                const usuarioActualizado = await actualizarUsuario(usuarioSeleccionado.id!, {
-                    nombre: values.nombre,
-                    correo: values.correo,
-                    telefono: values.telefono,
-                    contrasena: values.contrasena,
-                    almacen: values.almacen,
-                    rol: values.rol
-                });
-                usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
-            }
-            resetForm();
+            // if (!usuarioSeleccionado) {
+            //     const nuevoUsuario = await crearUsuario({
+            //         nombre: values.nombre,
+            //         correo: values.correo,
+            //         telefono: values.telefono,
+            //         contrasena: values.contrasena,
+            //         almacen: values.almacen,
+            //         rol: values.rol
+            //     });
+            //     nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
+            // } else {
+            //     const usuarioActualizado = await actualizarUsuario(usuarioSeleccionado.id!, {
+            //         nombre: values.nombre,
+            //         correo: values.correo,
+            //         telefono: values.telefono,
+            //         contrasena: values.contrasena,
+            //         almacen: values.almacen,
+            //         rol: values.rol
+            //     });
+            //     usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
+            // }
+            // resetForm();
         },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Requerido'),
@@ -94,7 +93,7 @@ export const ClientesPage = () => {
                 header: () => <span>Telefono</span>,
             }, {
                 id: 'sucursal',
-                cell: info => info.row.original.almacen?.nombre,
+                cell: info => (info.row.original.almacen as Almacen)?.nombre,
                 header: () => <span>Telefono</span>,
             },
         ], [usuarios]

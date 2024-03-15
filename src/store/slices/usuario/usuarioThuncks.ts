@@ -4,6 +4,7 @@ import { AppDispatch } from "../../store";
 import { setUsuario, endGetUsuario } from "./usuarioSlice";
 import Swal from 'sweetalert2'
 import { AxiosError } from "axios";
+import { NavigateFunction } from "react-router-dom";
 
 export const sesion = (credenciales: UsuarioLogin) => {
     return async (dispatch: AppDispatch) => {
@@ -55,13 +56,14 @@ export const registrarUsuario = (usuario: UsuarioNuevo) => {
     }
 }
 
-export const crearUsuario = async (usuario: UsuarioNuevo): Promise<Usuario | undefined> => {
+export const crearUsuario = async (usuario: UsuarioNuevo, navigate: NavigateFunction): Promise<Usuario | undefined> => {
     try {
         Swal.fire('Agregando el usuario nuevo');
         Swal.showLoading();
         const { data } = await servicesApiToken(`/auth/registro`, { method: 'POST', data: usuario });
         Swal.close();
-        return data;
+        navigate("/dashboard/usuarios");
+        // return data;
     } catch (e) {
         console.log(e);
         if (e instanceof AxiosError) {

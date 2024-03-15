@@ -40,23 +40,9 @@
         "icono": "bi-upc-scan"
     },
     {
-        "id": 6,
-        "ruta": "/dashboard/categorias",
-        "nombre": "Categorias",
-        "replace": true,
-        "icono": "bi-upc-scan"
-    },
-    {
-        "id": 7,
-        "ruta": "/dashboard/departamentos",
-        "nombre": "Departamentos",
-        "replace": true,
-        "icono": "bi-upc-scan"
-    },
-    {
-        "id": 8,
-        "ruta": "/dashboard/lineas",
-        "nombre": "Lineas",
+        "id": 9,
+        "ruta": "/dashboard/clientes",
+        "nombre": "Clientes",
         "replace": true,
         "icono": "bi-upc-scan"
     }

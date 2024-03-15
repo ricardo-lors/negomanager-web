@@ -52,8 +52,8 @@ export const VentaPage = () => {
     initialValues: { codigo: '' },
     onSubmit: async (values) => {
       console.log(values)
-      const producto = await obtenerProductoCodigo(values.codigo, usuario?.almacen!.id!, usuario?.negocio!.id!);
-      if (producto) dispatch(agregarProducto(producto));
+      // const producto = await obtenerProductoCodigo(values.codigo, usuario?.almacen!.id!, usuario?.negocio!.id!);
+      // if (producto) dispatch(agregarProducto(producto));
       resetFormSearch();
     },
     validationSchema: Yup.object({
@@ -169,8 +169,8 @@ export const VentaPage = () => {
         // disableFlip={false}
         // qrCodeSuccessCallback={onNewScanResult}
         reedSucces={async (rederResp) => {
-          const producto = await obtenerProductoCodigo(rederResp, usuario?.almacen!.id!, usuario?.negocio!.id!);
-          if (producto) dispatch(agregarProducto(producto));
+          // const producto = await obtenerProductoCodigo(rederResp, usuario?.almacen!.id!, usuario?.negocio!.id!);
+          // if (producto) dispatch(agregarProducto(producto));
         }}
       />
       <div className="container border h-50 overflow-auto mt-2">

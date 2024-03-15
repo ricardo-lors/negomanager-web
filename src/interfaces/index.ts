@@ -10,3 +10,6 @@ export * from './Venta.interface';
 export * from './Movimiento.interface';
 export * from './Almacen.interface';
 export * from './Corte.interface';
+export * from './Departamento.interface';
+export * from './Departamento.interface';
+export * from './Linea.interface';

@@ -51,9 +51,9 @@ export const HomePage = () => {
   const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch } = useFormik({
     initialValues: { codigo: '' },
     onSubmit: async (values) => {
-      const producto = await obtenerProductoCodigo(values.codigo, usuario?.almacen!.id!, usuario?.negocio!.id!);
-      if (producto) dispatch(agregarProducto(producto));
-      resetFormSearch();
+      // const producto = await obtenerProductoCodigo(values.codigo, usuario?.almacen!.id!, usuario?.negocio!.id!);
+      // if (producto) dispatch(agregarProducto(producto));
+      // resetFormSearch();
     },
     validationSchema: Yup.object({
       codigo: Yup.string().required('Requerido')
@@ -168,8 +168,8 @@ export const HomePage = () => {
         // disableFlip={false}
         // qrCodeSuccessCallback={onNewScanResult}
         reedSucces={async (rederResp) => {
-          const producto = await obtenerProductoCodigo(rederResp, usuario?.almacen!.id!, usuario?.negocio!.id!);
-          if (producto) dispatch(agregarProducto(producto));
+          // const producto = await obtenerProductoCodigo(rederResp, usuario?.almacen!.id!, usuario?.negocio!.id!);
+          // if (producto) dispatch(agregarProducto(producto));
         }}
       />
       <div className="container border h-50 overflow-auto mt-2">

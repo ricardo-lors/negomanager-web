@@ -1,22 +1,22 @@
 import { useState, ChangeEvent } from "react";
-import { Usuario } from "../../../../../interfaces";
+import { Cliente, Usuario } from "../../../../../interfaces";
 import { buscarUsuarios } from "../../../../../store/slices/usuario";
 import { useDispatch } from "react-redux";
 import { asignarCliente } from "../../../../../store/slices/venta";
+import { obtenerClientesBusqueda } from "../../../../../store/slices/cliente";
 
 export const ModalAsignarCliente = () => {
 
     const dispatch = useDispatch();
 
-    const [clientes, setClientes] = useState<Usuario[]>([]);
+    const [clientes, setClientes] = useState<Cliente[]>([]);
 
     const onChange = async (values: ChangeEvent<HTMLInputElement>) => {
-        const usuarios = await buscarUsuarios({
+        const clientes = await obtenerClientesBusqueda({
             nombre: values.target.value,
-            correo: values.target.value,
-            rol: 'cliente'
+            correo: values.target.value
         });
-        setClientes(usuarios);
+        setClientes(clientes);
     }
 
     // const onSubmit = () => {
@@ -26,7 +26,7 @@ export const ModalAsignarCliente = () => {
 
     return (
         <>
-            <form>
+            <form >
                 <div className="input-group">
                     {/* {...getFieldProps('query')} */}
                     <input name="query" type="text" className="form-control" placeholder="Buscar..." onChange={onChange} />

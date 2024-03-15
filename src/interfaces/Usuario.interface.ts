@@ -2,12 +2,13 @@
 import { Negocio } from "./Negocio.interface";
 import { Almacen } from "./Almacen.interface";
 
-interface UsuarioBasico {
+export interface Usuario {
     id?: string;
     nombre: string;
     correo: string;
     rol: string;
     telefono?: string;
+    imagen?: string;
     activo?: boolean;
     permisos?: string[];
     attributos?: Attributos;
@@ -16,12 +17,14 @@ interface UsuarioBasico {
     negocio?: Negocio;
     token?: string;
     puesto?: string;
+    almacen?: Almacen | string,
+    caja?: Caja | string;
 }
 
-export interface Usuario extends UsuarioBasico {
-    almacen?: Almacen,
-    caja?: Caja;
-}
+// export interface Usuario extends UsuarioBasico {
+//     almacen?: Almacen,
+//     caja?: Caja;
+// }
 
 export interface Attributos {
     caja: number;
@@ -49,11 +52,10 @@ export interface Apertura {
 }
 
 
-export interface UsuarioNuevo extends UsuarioBasico {
+export interface UsuarioNuevo extends Usuario {
     contrasena: string;
     contrasenaRepeat?: string;
-    almacen?: string,
-    caja?: string;
+    file?: File
 }
 
 export interface UsuarioLogin {

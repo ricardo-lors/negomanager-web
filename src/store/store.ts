@@ -14,6 +14,8 @@ import { almacenSlice } from './slices/almacen';
 import { sesionSlice } from './slices/session';
 import { inventarioSlice } from './slices/inventario/inventarioSlice';
 import { cajaSlice } from './slices/caja';
+import { departamentoSlice } from './slices/departamento';
+import { lineaSlice } from './slices/linea';
 
 export const store = configureStore({
     reducer: {
@@ -29,6 +31,8 @@ export const store = configureStore({
         venta: ventaSlice.reducer,
         ui: uiSlice.reducer,
         caja: cajaSlice.reducer,
+        departamento: departamentoSlice.reducer,
+        linea: lineaSlice.reducer,
         counter: counterSlice.reducer,
         // provedor: provedor
     }

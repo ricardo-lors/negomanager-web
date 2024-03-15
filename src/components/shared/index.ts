@@ -1,4 +1,3 @@
-export { UsuarioForm } from "./UsuarioForm";
 
 export { Modal } from "./Modal";
 export { MyCheckbox } from "./MyCheckbox";

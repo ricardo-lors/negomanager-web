@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { UsuarioNuevo, Usuario } from "../../../../interfaces";
+import { UsuarioNuevo, Usuario, Almacen } from "../../../../interfaces";
 import * as Yup from 'yup';
 import { actualizarUsuario, buscarUsuarios, crearUsuario } from "../../../../store/slices/usuario";
 import { useFormik } from "formik";
@@ -47,30 +47,30 @@ export const VendedoresPage = () => {
         onSubmit: async (values) => {
             // onSubmit(values, elper);
 
-            if (!usuarioSeleccionado) {
-                const nuevoUsuario = await crearUsuario({
-                    nombre: values.nombre,
-                    correo: values.correo,
-                    telefono: values.telefono,
-                    contrasena: values.contrasena,
-                    almacen: values.almacen,
-                    permisos: values.permisos,
-                    rol: values.rol
-                });
-                nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
-            } else {
-                const usuarioActualizado = await actualizarUsuario(usuarioSeleccionado.id!, {
-                    nombre: values.nombre,
-                    correo: values.correo,
-                    telefono: values.telefono,
-                    contrasena: values.contrasena,
-                    almacen: values.almacen,
-                    permisos: values.permisos,
-                    rol: values.rol
-                });
-                usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
-            }
-            resetForm();
+            // if (!usuarioSeleccionado) {
+            //     const nuevoUsuario = await crearUsuario({
+            //         nombre: values.nombre,
+            //         correo: values.correo,
+            //         telefono: values.telefono,
+            //         contrasena: values.contrasena,
+            //         almacen: values.almacen,
+            //         permisos: values.permisos,
+            //         rol: values.rol
+            //     });
+            //     nuevoUsuario && setUsuarios([nuevoUsuario, ...usuarios]);
+            // } else {
+            //     const usuarioActualizado = await actualizarUsuario(usuarioSeleccionado.id!, {
+            //         nombre: values.nombre,
+            //         correo: values.correo,
+            //         telefono: values.telefono,
+            //         contrasena: values.contrasena,
+            //         almacen: values.almacen,
+            //         permisos: values.permisos,
+            //         rol: values.rol
+            //     });
+            //     usuarioActualizado && setUsuarios([usuarioActualizado, ...usuarios.filter(sc => sc.id !== usuarioActualizado?.id)]);
+            // }
+            // resetForm();
         },
         validationSchema: Yup.object({
             nombre: Yup.string().required('Requerido'),
@@ -101,7 +101,7 @@ export const VendedoresPage = () => {
                 header: () => <span>Telefono</span>,
             }, {
                 id: 'sucursal',
-                cell: info => info.row.original.almacen?.nombre,
+                cell: info => (info.row.original.almacen as Almacen)?.nombre,
                 header: () => <span>Sucursal</span>,
             },
         ], [usuarios]
@@ -160,7 +160,7 @@ export const VendedoresPage = () => {
                         >
                             {
                                 permisos?.map(opt => (
-                                    <option key={opt} value={opt}>{opt}</option>
+                                    <option key={opt.valor} value={opt.valor}>{opt.nombre}</option>
                                 ))
                             }
                         </MySelect>

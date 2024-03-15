@@ -15,18 +15,18 @@ export const CerrarCaja = () => {
 
     const handleCerrarCaja = async () => {
 
-        await crearCorte({
-            total: usuario!.caja!.dinero
-        });
+        // await crearCorte({
+        //     total: usuario!.caja!.dinero
+        // });
 
-        dispatch(revalidarSesion());
+        // dispatch(revalidarSesion());
 
     }
 
     return (
         <div className='row'>
-            <p>Fecha y Hora de Apertura: {moment(usuario!.caja!.apertura.fecha_inicio).format('YYYY-MM-DD, h:mm a')} a las {moment().format('YYYY-MM-DD, h:mm a')} </p>
-            <h1>Ventas Totales: {formatearNumero(usuario!.caja!.dinero)}</h1>
+            {/* <p>Fecha y Hora de Apertura: {moment(usuario!.caja!.apertura.fecha_inicio).format('YYYY-MM-DD, h:mm a')} a las {moment().format('YYYY-MM-DD, h:mm a')} </p>
+            <h1>Ventas Totales: {formatearNumero(usuario!.caja!.dinero)}</h1> */}
             <h2>Ganancia</h2>
             <button onClick={handleCerrarCaja} >Confirmar</button>
         </div>

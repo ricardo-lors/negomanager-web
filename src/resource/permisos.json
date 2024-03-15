@@ -1,9 +1,30 @@
 [
-    "crear_producto",
-    "editar_producto",
-    "editar_precios",
-    "modificar_mayoreo",
-    "modificar_inventario",
-    "cancelar_ventas",
-    "crear_promociones"
+    {
+        "nombre": "Crear Producto",
+        "valor": "crear_producto"
+    },
+    {
+        "nombre": "Editar Producto",
+        "valor": "editar_producto"
+    },
+    {
+        "nombre": "Editar Precio",
+        "valor": "editar_precios"
+    },
+    {
+        "nombre": "Modificar Mayoreo",
+        "valor": "modificar_mayoreo"
+    },
+    {
+        "nombre": "Modificar Inventario",
+        "valor": "modificar_inventario"
+    },
+    {
+        "nombre": "Cancelar Ventas",
+        "valor": "cancelar_ventas"
+    },
+    {
+        "nombre": "Crear Promociones",
+        "valor": "crear_promociones"
+    }
 ]
