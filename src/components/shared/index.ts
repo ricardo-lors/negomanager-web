@@ -8,3 +8,4 @@ export { Sidebar } from "./Sidebar";
 export { Ticket } from "./Ticket";
 
 export { MyButtonTooltip } from "./MyButtonTooltip";
+export { MyLinkTooltip } from "./MyLinkTooltip";

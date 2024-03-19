@@ -10,6 +10,8 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { TituloPagina } from '../../shared/TituloPagina';
 import { Almacen, QueryParamsProducto } from '../../../../../interfaces';
 import { handleObtenerProductos } from '../../../../../store/slices/inventario';
+import { Col, Container, Row } from 'react-bootstrap';
+import { MyLinkTooltip } from '../../../../shared';
 
 export const InventarioPage = () => {
 
@@ -36,6 +38,8 @@ export const InventarioPage = () => {
     }))
   }, [dispatch, usuario]);
 
+  console.log(almacen)
+
   const { handleSubmit: handleSubmitSearch, errors: errorsSearch, touched: touchedSearch, getFieldProps: getFieldPropsSearch, resetForm: resetFormSearch, } = useFormik<QueryParamsProducto>({
     initialValues: { titulo: '' },
     onSubmit: async (values) => {
@@ -55,44 +59,44 @@ export const InventarioPage = () => {
 
   return (
     <div>
-      <button className='btn btn-outline-secondary' onClick={() => navigate(-1)}><i className="bi bi-arrow-left"></i></button>
-      <div className="row mt-1">
-        {/* <h2 className="text-center">INVENTARIO</h2> */}
-        <TituloPagina centro='INVENTARIO' />
-        <div className="col">
-          {/* <button className="btn btn-primary" onClick={() => setState({ openModal: !openModal })}>Agregar</button>/admin/inventario/nuevo/producto */}
-          {
-            (usuario?.permisos?.includes('crear_producto') || usuario?.rol === 'administrador') &&
-            <Link
-              to={`/dashboard/almacenes/inventario/agregar`}
-              className="btn btn-primary me-2"
+      {/* <button className='btn btn-outline-secondary' onClick={() => navigate(-1)}><i className="bi bi-arrow-left"></i></button> */}
+
+      <TituloPagina centro='INVENTARIO' />
+
+      <Container className='bg-body-secondary p-3' fluid>
+        <Row>
+          <Col className='d-flex'>
+            {
+              (usuario?.permisos?.includes('crear_producto') || usuario?.rol === 'administrador') &&
+              <MyLinkTooltip
+                id='id-agregar-producto-servicio-tooltip'
+                to='/dashboard/almacenes/inventario/agregar'
+                content='Agregar Producto - Servicio'
+                icon='bi bi-plus-square'
+                place='top'
+                state={{ ...almacen }}
+              />
+            }
+            <button
+              className="btn "
+              onClick={handleimprimirProductosList}
               data-bs-toggle="tooltip" data-bs-placement="top"
               data-bs-custom-class="custom-tooltip"
               data-bs-title="This top tooltip is themed via CSS variables."
-              // replace
-              state={{ ...almacen }}
-            >
-              <i className="bi bi-plus-square" />
-            </Link>
-          }
-          <button
-            className="btn btn-primary"
-            onClick={handleimprimirProductosList}
-            data-bs-toggle="tooltip" data-bs-placement="top"
-            data-bs-custom-class="custom-tooltip"
-            data-bs-title="This top tooltip is themed via CSS variables."
-          ><i className="bi bi-printer"></i></button>
-        </div>
-        <div className="col">
-          <form onSubmit={handleSubmitSearch}>
-            <div className="input-group">
-              <input type="text" className="form-control" placeholder="Buscar..." {...getFieldPropsSearch('titulo')} />
-              <button type="submit" className="btn btn-primary">Buscar</button>
-            </div>
-            {touchedSearch.titulo && errorsSearch.titulo && <span className="text-danger">{errorsSearch.titulo}</span>}
-          </form>
-        </div>
-      </div>
+            ><h1><i className="bi bi-printer"></i></h1></button>
+          </Col>
+          <Col>
+            <form onSubmit={handleSubmitSearch}>
+              <div className="input-group">
+                <input type="text" className="form-control" placeholder="Buscar..." {...getFieldPropsSearch('titulo')} />
+                <button type="submit" className="btn btn-primary">Buscar</button>
+              </div>
+              {touchedSearch.titulo && errorsSearch.titulo && <span className="text-danger">{errorsSearch.titulo}</span>}
+            </form>
+          </Col>
+        </Row>
+      </Container>
+
       {
         productos.length !== 0
           ? <div ref={productosList} className="album py-2">

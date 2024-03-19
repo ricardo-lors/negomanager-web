@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from 'react'
-import { MyButtonTooltip, MyTextInput } from '../../../shared';
+import { MyButtonTooltip, MyLinkTooltip, MyTextInput } from '../../../shared';
 import { useFormik } from 'formik';
 import { actualizarAlmacen, agregarAlmacen, crearAlmacen } from '../../../../store/slices/almacen';
 import { useAppDispatch } from '../../../../hooks';
@@ -11,7 +11,7 @@ import { Almacen, NuevoAlmacen } from '../../../../interfaces';
 import { ColumnDef } from '@tanstack/react-table';
 import { Link, useNavigate } from 'react-router-dom';
 import { TituloPagina } from '../shared/TituloPagina';
-import { Badge, Button, Container, ListGroup, OverlayTrigger, Stack } from 'react-bootstrap';
+import { Badge, Button, Col, Container, ListGroup, OverlayTrigger, Row, Stack } from 'react-bootstrap';
 import { Tooltip } from 'react-tooltip';
 import { MyOverlayComponent } from '../../../shared/MyOverlayComponent';
 
@@ -88,21 +88,39 @@ export const AlmacenesPage = () => {
     // }
 
     return (
-        <div className='row mt-3'>
-
+        <div className=''>
             <TituloPagina centro='ALMACENES' />
-
-            <Container className="bg-body-secondary p-2" fluid>
-                {/* <Link to='/dashboard/usuarios/usuario' >ddd</Link> */}
-                <MyButtonTooltip
+            <Container className="bg-body-secondary d-flex p-2" fluid>
+                <MyLinkTooltip
+                    id='id-categorias-link-tooltip'
+                    to='/dashboard/almacenes/categorias'
+                    content='Ver Categorias'
+                    icon='bi bi-tag-fill'
+                    place='top'
+                />
+                <MyLinkTooltip
+                    id='id-departamentos-link-tooltip'
+                    to='/dashboard/almacenes/departamentos'
+                    content='Ver Departamentos'
+                    icon='bi bi-bookmark-plus-fill'
+                    place='top'
+                />
+                <MyLinkTooltip
+                    id='id-lineas-link-tooltip'
+                    to='/dashboard/almacenes/lineas'
+                    content='Ver Lineas'
+                    icon='bi bi-bar-chart-steps'
+                    place='top'
+                />
+                {/* <MyButtonTooltip
                     id="tooltip-category"
                     className='m-2'
                     children={<h1><i className="bi bi-tag-fill"></i></h1>}
                     content='Agregar Categorias'
                     onClick={() => navigate("/dashboard/almacenes/categorias")}
                     place='top'
-                />
-                <MyButtonTooltip
+                /> */}
+                {/* <MyButtonTooltip
                     id="tooltip-departamento"
                     children={<h1><i className="bi bi-bookmark-plus-fill"></i></h1>}
                     content='Agregar Departamento'
@@ -116,82 +134,83 @@ export const AlmacenesPage = () => {
                     content='Agregar Linea'
                     onClick={() => navigate("/dashboard/almacenes/lineas")}
                     place='top'
-                />
+                /> */}
             </Container>
-            <hr />
-            {
-                usuario!.rol === 'administrador' &&
-                <div className="col-md-3 container bg-body-secondary ms-md-2 me-md-2 p-3" style={{ height: '89vh' }}>
-                    <form className="" noValidate onSubmit={handleSubmit}>
-                        <MyTextInput
-                            {...getFieldProps('nombre')}
-                            label="Nombre de el almacen"
-                            placeholder="Nombre"
-                            className="form-control"
-                        // disabled={!usuario?.negocio}
-                        />
-                        <MyTextInput
-                            {...getFieldProps('direccion')}
-                            label="Direccion"
-                            placeholder=""
-                            className="form-control"
-                        // disabled={!usuario?.negocio}
-                        />
-                        <MyTextInput
-                            {...getFieldProps('correo')}
-                            label="Correo"
-                            placeholder="correo@ejemplo.com"
-                            className="form-control"
-                        // disabled={!usuario?.negocio}
-                        />
-                        <MyTextInput
-                            {...getFieldProps('telefono')}
-                            label="Telefono"
-                            placeholder=""
-                            className="form-control mb-3"
-                        // disabled={!usuario?.negocio}
-                        />
+            <div className='row mt-3'>
 
-                        {/* <button type="submit" className="btn btn-primary text-decoration-none" >Guardar</button> */}
-                        <div className="d-grid gap-2">
-                            <Button type="submit" variant="primary" >
-                                Guardar
-                            </Button>
-                        </div>
+                {
+                    usuario!.rol === 'administrador' &&
+                    <div className="col-md-3 container bg-body-secondary ms-md-2 me-md-2 p-3" style={{ height: '89vh' }}>
+                        <form className="" noValidate onSubmit={handleSubmit}>
+                            <MyTextInput
+                                {...getFieldProps('nombre')}
+                                label="Nombre de el almacen"
+                                placeholder="Nombre"
+                                className="form-control"
+                            // disabled={!usuario?.negocio}
+                            />
+                            <MyTextInput
+                                {...getFieldProps('direccion')}
+                                label="Direccion"
+                                placeholder=""
+                                className="form-control"
+                            // disabled={!usuario?.negocio}
+                            />
+                            <MyTextInput
+                                {...getFieldProps('correo')}
+                                label="Correo"
+                                placeholder="correo@ejemplo.com"
+                                className="form-control"
+                            // disabled={!usuario?.negocio}
+                            />
+                            <MyTextInput
+                                {...getFieldProps('telefono')}
+                                label="Telefono"
+                                placeholder=""
+                                className="form-control mb-3"
+                            // disabled={!usuario?.negocio}
+                            />
 
-                    </form>
-                </div>
-            }
+                            {/* <button type="submit" className="btn btn-primary text-decoration-none" >Guardar</button> */}
+                            <div className="d-grid gap-2">
+                                <Button type="submit" variant="primary" >
+                                    Guardar
+                                </Button>
+                            </div>
 
-            <div className='col bg-body-secondary me-2 pt-2' style={{ height: '89vh' }}>
-                <ListGroup as="ol" numbered>
-                    {
-                        almacenes.map((almac) =>
-                            <ListGroup.Item
-                                key={almac.id} as="li"
-                                // action
-                                className="d-flex justify-content-between align-items-start"
-                            // onClick={() => {
-                            //     setAlmacen(almac);
-                            //     setValues({
-                            //         nombre: almac.nombre,
-                            //         direccion: almac.direccion ? almac.direccion : '',
-                            //         correo: almac.correo ? almac.correo : '',
-                            //         telefono: almac.telefono ? almac.telefono : '',
-                            //     });
-                            // }}
-                            >
-                                <div className=" ms-2 me-auto">
-                                    <div className="fw-bold">{almac.nombre}</div>
-                                    <p className='m-0'>{almac.direccion}</p>
-                                    <p className='m-0'>{almac.telefono}</p>
-                                    <p className='m-0'>{almac.correo}</p>
-                                </div>
-                                {/* <div className='me-auto'>
+                        </form>
+                    </div>
+                }
+
+                <div className='col bg-body-secondary me-2 pt-2' style={{ height: '89vh' }}>
+                    <ListGroup as="ol" numbered>
+                        {
+                            almacenes.map((almac) =>
+                                <ListGroup.Item
+                                    key={almac.id} as="li"
+                                    // action
+                                    className="d-flex justify-content-between align-items-start"
+                                // onClick={() => {
+                                //     setAlmacen(almac);
+                                //     setValues({
+                                //         nombre: almac.nombre,
+                                //         direccion: almac.direccion ? almac.direccion : '',
+                                //         correo: almac.correo ? almac.correo : '',
+                                //         telefono: almac.telefono ? almac.telefono : '',
+                                //     });
+                                // }}
+                                >
+                                    <div className=" ms-2 me-auto">
+                                        <div className="fw-bold">{almac.nombre}</div>
+                                        <p className='m-0'>{almac.direccion}</p>
+                                        <p className='m-0'>{almac.telefono}</p>
+                                        <p className='m-0'>{almac.correo}</p>
+                                    </div>
+                                    {/* <div className='me-auto'>
                                     <p>algo mas</p>
                                 </div> */}
-                                <div className='row'>
-                                    {/* <OverlayTrigger
+                                    <div className='row'>
+                                        {/* <OverlayTrigger
                                         placement='top'
                                         overlay={
                                             <Tooltip id={`tooltip-top`}>
@@ -201,17 +220,34 @@ export const AlmacenesPage = () => {
                                         }>
                                         <Button id='tooltip-top' variant="success">Hover me to see</Button>
                                     </OverlayTrigger> */}
-                                    <i className="bi bi-box-seam fs-2" onClick={() => navigate('/dashboard/almacenes/inventario', { state: { ...almac } })} ></i>
-                                    <i className="bi bi-inbox fs-2" onClick={() => navigate('/dashboard/almacenes/cajas', { state: { ...almac } })} ></i>
-                                    {/* <MyOverlayComponent /> */}
-                                </div>
-                                {/* <Badge bg="primary" pill>
+
+                                        <MyLinkTooltip
+                                            id='id-inventario-link-tooltip'
+                                            to='/dashboard/almacenes/inventario'
+                                            content='Ver Inventario'
+                                            icon='bi bi-box-seam fs-2'
+                                            place='top'
+                                            state={{ ...almac }}
+                                        />
+                                        <MyLinkTooltip
+                                            id='id-cajas-link-tooltip'
+                                            to='/dashboard/almacenes/cajas'
+                                            content='Ver Cajas'
+                                            icon='bi bi-inbox fs-2'
+                                            place='top'
+                                            state={{ ...almac }}
+                                        />
+                                        {/* <i className="bi bi-box-seam fs-2" onClick={() => navigate('/dashboard/almacenes/inventario', { state: { ...almac } })} ></i>
+                                        <i className="bi bi-inbox fs-2" onClick={() => navigate('/dashboard/almacenses/cajas', { state: { ...almac } })} ></i> */}
+                                        {/* <MyOverlayComponent /> */}
+                                    </div>
+                                    {/* <Badge bg="primary" pill>
                                     ${almac.dinero}
                                 </Badge> */}
-                            </ListGroup.Item>
-                        )
-                    }
-                    {/* <ListGroup.Item
+                                </ListGroup.Item>
+                            )
+                        }
+                        {/* <ListGroup.Item
                         as="li"
                         className="d-flex justify-content-between align-items-start"
                     >
@@ -224,7 +260,7 @@ export const AlmacenesPage = () => {
                         </Badge>
 
                     </ListGroup.Item> */}
-                    {/* <ListGroup.Item
+                        {/* <ListGroup.Item
                         as="li"
                         className="d-flex justify-content-between align-items-start"
                     >
@@ -248,11 +284,11 @@ export const AlmacenesPage = () => {
                             14
                         </Badge>
                     </ListGroup.Item> */}
-                </ListGroup>
-            </div>
+                    </ListGroup>
+                </div>
 
 
-            {/* <div className='album py-2'>
+                {/* <div className='album py-2'>
                 <div className='row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4'>
                     {
                         almacenes.map(almac =>
@@ -270,13 +306,8 @@ export const AlmacenesPage = () => {
 
                 </div>
             </div> */}
+            </div>
         </div>
-
-        // <Stack gap={3}>
-        //     <div className="p-2 bg-body-secondary">First item</div>
-        //     <div className="p-2">Second item</div>
-        //     <div className="p-2">Third item</div>
-        // </Stack>
 
     )
 }
